@@ -1,6 +1,7 @@
 package com.zx.demo.controller;
 
 import com.huawei.iotplatform.client.NorthApiException;
+import com.zx.demo.domain.DeviceInfo;
 import com.zx.demo.domain.User;
 import com.zx.demo.model.DeviceInfo_all;
 import com.zx.demo.model.DeviceInfo_detail;
@@ -63,6 +64,28 @@ public class DeviceServiceController {
 
         return p;
     }
+
+    @RequestMapping("/searchAll_test")
+    @ResponseBody
+    public Map<String, Object> searchTest(@RequestParam(value = "offset", defaultValue = "0") Integer offset,
+                                      @RequestParam(value = "limit", defaultValue = "10") Integer limit,
+                                      HttpServletRequest request
+    ) {
+        Map<String, Object> p = new HashMap<>();
+
+        User user = UserUtil.getCureentUser(request);
+
+        Pageable pageable = new PageRequest(offset, limit, new Sort(Sort.Direction.DESC, "id"));
+        Page<DeviceInfo> page;
+
+        page = deviceInfoService.getAll_latest(pageable,user.getId());
+
+        p.put("total", page.getTotalPages());
+        p.put("rows", page.getContent());
+
+        return p;
+    }
+
 
     @RequestMapping("/getDeviceInfo_detail")
     @ResponseBody
