@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>SOFTWARE</title>
+    <!-- Bootstrap Styles-->
+    <link href="/style/bootstrap.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:400,100,300,500"/>
+
+    <!-- Custom Styles-->
+    <link href="/style/custom-styles.css" rel="stylesheet"/>
+    <!--<link href="style/custom-styles.css" rel="stylesheet"/>-->
+    <!-- Google Fonts-->
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'/>
+
+    <link href="http://www.bootcss.com/p/buttons/css/buttons.css" rel="stylesheet"/>
+
+    <script src="/javascript/jquery-1.11.1.min.js"></script>
+    <!--<script src="javascript/jquery-1.11.1.min.js"></script>-->
+
+    <!--add-->
+    <link href="/style/jquery-ui.css" rel="stylesheet">
+    <!--<link href="style/jquery-ui.css" rel="stylesheet">-->
+
+    <link href="/style/font-awesome.css" rel="stylesheet"/>
+    <!--<link href="style/font-awesome.css" rel="stylesheet"/>-->
+
+    <link href="/style/bootstrap-datetimepicker.min.css" rel="stylesheet"/>
+    <!--<link href="style/bootstrap-datetimepicker.min.css" rel="stylesheet"/>-->
+
+
+    <script src="/javascript/jquery.metisMenu.js"></script>
+    <!--<script src="javascript/jquery.metisMenu.js"></script>-->
+    <script src="/javascript/custom-scripts.js"></script>
+    <!--<script src="javascript/custom-scripts.js"></script>-->
+
+    <script src="/javascript/jquery-ui.js"></script>
+    <!--<script src="javascript/jquery-ui.js"></script>-->
+    <script src="/javascript/chart.js"></script>
+    <!--<script src="javascript/chart.js"></script>-->
+
+    <!--<script src="/javascript/jquery-1.11.1.min.js"></script>-->
+    <script src="/javascript/bootstrap-table.min.js"></script>
+    <!--<script src="javascript/bootstrap-table.min.js"></script>-->
+    <script src="/javascript/bootstrap-table-zh-CN.js"></script>
+    <!--<script src="javascript/bootstrap-table-zh-CN.js"></script>-->
+
+    <script src="/javascript/bootstrap.min.js"></script>
+    <!--<script src="javascript/bootstrap.min.js"></script>-->
+
+    <script src="/javascript/bootstrap-datetimepicker.js"></script>
+    <!--<script src="javascript/bootstrap-datetimepicker.js"></script>-->
+    <script src="/javascript/bootstrap-datetimepicker.zh-CN.js"></script>
+    <!--<script src="javascript/bootstrap-datetimepicker.zh-CN.js"></script>-->
+
+    <!--editable select-->
+    <!-- <script src="javascript/jquery-editable-select.js"></script>
+    <link href="style/jquery-editable-select.css" rel="stylesheet"/> -->
+
+
+    <style>
+        .fixed-table-body {
+            overflow-x: auto;
+            overflow-y: scroll;
+            height: 30em;
+            width: 100%;
+        }
+
+        .navbar-brand-right_{
+            float:right;
+        }
+        .kv-avatar .krajee-default.file-preview-frame, .kv-avatar .krajee-default.file-preview-frame:hover {
+            margin: 0;
+            padding: 0;
+            border: none;
+            box-shadow: none;
+            text-align: center;
+        }
+        .kv-avatar {
+            display: inline-block;
+        }
+        .kv-avatar .file-input {
+            display: table-cell;
+            width: 213px;
+        }
+        .kv-reqd {
+            color: red;
+            font-family: monospace;
+            font-weight: normal;
+        }
+        .center-vertical {
+            position: relative;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        .table th, .table td {
+            text-align: center;
+            vertical-align: middle !important;
+        }
+
+        .search{
+            padding-bottom: 1em;
+        }
+
+        .person_info{
+            position: absolute;
+            top: 20px;
+            left: 0px;
+        }
+
+        .div_allinline{
+            text-align:center;
+            margin:0 auto;
+            padding:0;
+            clear:both;
+        }
+
+        .info_detail{
+            margin:5px;
+            padding:0;
+            display:inline-block;
+            float: none;
+        }
+
+        label{
+            margin-bottom: 0px;
+        }
+
+        .info_hide{
+
+        }
+
+        .hide{
+            display: none;
+        }
+
+        .chart-wrapper {
+            position: relative;
+            height: 400px;
+        }
+
+        .W180{width:180px;}
+        .W150{width:150px;}
+        .W100 {width:100px !important;}
+        .W280{width:280px !important;}
+        .W400{width:400px !important;}
+        .W30 {width:30px !important;}
+    </style>
+</head>
+<body>
+<div id="wrapper">
+    <nav class="navbar navbar-default top-navbar" role="navigation">
+        <ul class="nav navbar-top-links navbar-brand-right_">
+            <li><a href="#" id="logout"><i class="fa fa-sign-out fa-fw"></i> 退出</a>
+        </ul>
+
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".sidebar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" > <strong> &nbsp &nbsp &nbsp SOFTWARE</strong></a>
+        </div>
+    </nav>
+    <!--/. NAV TOP  -->
+    <nav class="navbar-default navbar-side" role="navigation">
+        <div class="sidebar-collapse">
+            <ul class="nav" id="main-menu">
+                <!--管理员信息-->
+                <li>
+                    <div style="display: table; width: auto; margin-left: auto;margin-right: auto">
+
+                        <img src="/style/images/avtar.png">
+
+                        <!--<div>-->
+                        <!--<label id="adminName" style="alignment: center"></label>-->
+                        <!--</div>-->
+
+                        <!--<div>-->
+                        <!--<label id="adminEmail" style="alignment: center"></label>-->
+                        <!--</div>-->
+                    </div>
+                    <br>
+                </li>
+
+                <!--设备信息-->
+                <li>
+                    <a href="/console/device_info"><i class="fa fa-sitemap"></i> 设备信息</span></a>
+                </li>
+
+                <!--设备管理-->
+                <li>
+                    <a href="/console/device_management"><i class="fa fa-sitemap" ></i> 设备管理</span></a>
+                </li>
+
+
+
+            </ul>
+
+        </div>
+
+    </nav>
+
+    <!-- /. NAV SIDE  -->
+    <div id="page-wrapper">
+        <div id="page-inner">
+            <div class="row">
+                <div class="col-md-12">
+                    <h1 class="page-header" style="color: #FFFFFF;">
+                        湿度详情
+                    </h1>
+                </div>
+            </div>
+            <!-- /. ROW  -->
+
+            <!--main-->
+            <div class="row">
+                <div class="col-md-12">
+                    <!-- Advanced Tables -->
+                    <div class="panel panel-default">
+                        <div class="panel-body" style="padding : 0px">
+                            <div  class="panel-heading" >
+                                <div class="form-inline">
+                                    <div class="form-group" style="margin-bottom: 8px; margin-left: 1em;">
+                                        <lable for="datepicker_start_box" >时间：</lable>
+                                        <div class="input-group date form_date" id="datepicker_start_box"  data-link-field="dtp_input2" >
+                                            <input class="form-control" id="datepicker" size="16" type="text" value="" readonly>
+                                            <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+                                        </div>
+
+                                        <!--<input type="text" class="form-control" id="datepicker" readonly>-->
+                                    </div>
+
+                                    <div class="form-group" style="margin-bottom: 8px; margin-left: 1em;">
+                                        <select class="form-control" id="select_mode">
+                                            <option value="0">24小时(开始时间为00:00)</option>
+                                            <option value="1">12小时(开始时间为00:00)</option>
+                                            <option value="2">12小时(开始时间为12:00)</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="form-group" style="margin-bottom: 8px; margin-left: 1em;">
+                                        <button class="btn btn-primary searchData">查找</button>
+                                    </div>
+
+
+                                </div>
+
+                                <h4 class="searchResult">
+
+                                </h4>
+
+                                <div class="canvas-wrapper form-group" style=" margin:0px;">
+                                    <div class="chart-wrapper">
+                                        <canvas id="line-chart" height="80"></canvas>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--End Advanced Tables -->
+        </div>
+    </div>
+    <!-- /. ROW  -->
+
+</div>
+</div>
+<!-- /. PAGE INNER  -->
+</div>
+
+<!--弹出框-->
+<div id="dialog-user-management-update" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">选择摄像头  <span id="dialog-user-management-update-title"></span></h4>
+            </div>
+            <div class="modal-body" style="padding-bottom: 0px">
+                <form role="form" class="form-horizontal add-new-user" method="POST">
+                    <input type="text" style="display:none;" id="id" name="id" />
+
+                    <div class="form-group" style="margin-bottom: 5px">
+                        <div class="col-sm-22">
+                            <div class="panel panel-default" style="margin-bottom: 5px">
+                                <div class="panel-body">
+                                    <div class="table-responsive">
+                                        <table id="cameraList" class="table table-bordered">
+                                            <thead>
+                                            <tr>
+                                                <th data-field="id" data-formatter="_formatte_camera_id" class="W30" style="border:none; " ></th>
+                                                <th data-field="cameraName" class="W100">摄像头名称</th>
+                                                <th data-field="server.serverName" class="W100" style="border:none;" align="center">服务器名称</th>
+                                                <th data-field="entranceGuardNO" class="W100" style="border:none;" align="center">门禁编号</th>
+                                                <th data-field="entranceGuard" class="W100" data-formatter="_formatted_select" style="border:none;" align="center">是否门禁摄像头</th>
+                                            </tr>
+                                            </thead>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-sm-offset-3 col-sm-9" style="text-align: right;padding-top: 5px;margin-bottom: 5px">
+                            <button type="button" class="btn btn-primary add-new-user">确认</button>
+                            <button type="button" class="btn btn-default add-new-user-close" data-dismiss="modal">取消</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<div id="dialog-return" class="modal fade" style="z-index:99999" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="mySmallModalLabel">提示</h4>
+            </div>
+            <div class="modal-body"></div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<div class="modal fade log-out-bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="log-out-mySmallModalLabel">提示</h4>
+            </div>
+            <div class="modal-body"></div>
+            <div class="modal-footer modal-footer-delete-confirm" style="display:none;">
+                <button type="button" class="btn btn-danger btn-logout" data-dismiss="modal">确定</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<script>
+    var options = {
+        scaleOverride :true ,   //是否用硬编码重写y轴网格线
+        scaleSteps : 10,        //y轴刻度的个数
+        scaleStepWidth : 10,   //y轴每个刻度的宽度
+        scaleStartValue : 0,    //y轴的起始值
+        scaleLabel : "<%=value%>RH",
+
+        showScale : true,
+        responsive:true,
+        showTooltips: true
+    };
+
+    var line_chart;
+
+    var ratio = window.innerHeight/400;
+
+    var timeout_network = 3000;
+
+    var ischoosedCamera = false;
+    var id = getUrlParam("id");
+
+    //获取时间
+    var oDate = new Date();
+    var date = oDate.getFullYear() + '-'+ (parseInt(oDate.getMonth())+1) +'-'+oDate.getDate();
+
+
+    //alert(11111);
+    var args = window.location.href.split("?");
+    //alert(args[1]);
+    !function ($) {
+        $(document).on("click","ul.nav li.parent > a > span.icon", function(){
+            $(this).find('em:first').toggleClass("glyphicon-minus");
+        });
+        $(".sidebar span.icon").find('em:first').addClass("glyphicon-plus");
+    }(window.jQuery);
+    $(window).on('resize', function () {
+        if ($(window).width() > 768) $('#sidebar-collapse').collapse('show');
+        else $('#sidebar-collapse').collapse('hide');
+
+        console.log("chart-wrapper height: "+$(".chart-wrapper").height());
+        console.log("line-chart height: "+$("#line-chart").height());
+
+
+        adjustTableHeight( $(".chart-wrapper"), 20, adjustPositionOfLineChart);//调增wrapper的高度，做到根据页面高度，动态响应页面高度。完毕后调整line-chart在wrapper中的位置
+    })
+
+    var id = getUrlParam("deviceId");
+
+    $(document).ready(function() {
+
+
+        var todayDateTime = getToDayDateTime_00_00(0,0,0);
+
+        var isCellPhone = navigator.userAgent.match(/mobile/i);
+
+        adjustTableHeight( $(".chart-wrapper"), 20, adjustPositionOfLineChart);//调增wrapper的高度，做到根据页面高度，动态响应页面高度。完毕后调整line-chart在wrapper中的位置
+
+        //修改canvas 边距
+        if(isCellPhone){
+            $("#line-chart").css("padding-left","10%");
+            $("#line-chart").css("padding-right","10%");
+        }
+
+        $.ajax({
+            type: "get",
+            dataType:"json",
+            url : "/console/deviceInfo/getHumidityRecord",
+            data : {
+                deviceId : id,
+                dateTime : todayDateTime,
+                select_mode : 0
+            },
+
+            success : function (r) {
+                switch (r.status){
+                    case "SUCCEED" :
+
+                        for(i in r.updateTimeRecord){
+                            //将格林威治时间转化，再获取小时分钟
+                            r.updateTimeRecord[i] = getTimeFromDateTime( r.updateTimeRecord[i] ) ;
+                        }
+
+                        data_chart.labels = r.updateTimeRecord;
+
+                        data_chart.datasets[0].data = r.humidityRecord;
+
+                        displayLineChart( adjustPositionOfLineChart );
+
+                        break;
+                    case "FAILED" :
+                        $("#dialog-return").find(".modal-body").html("获取配置信息失败");
+
+                        if(r.errorMessage != undefined){
+                            $("#dialog-return").find(".modal-body").append("\n原因:"+r.errorMessage);
+                        }
+
+                        $("#dialog-return").modal("show");
+
+                        break;
+                }
+            },
+            error : function (r) {
+
+            }
+        })
+
+        //初始化日历
+        $('.form_date').datetimepicker({
+            format: "yyyy-m-d",
+            language:  'zh-CN',
+            weekStart: 1,
+            todayBtn:  1,
+            autoclose: 1,
+            todayHighlight: 1,
+            startView: 2,
+            minView: 2,
+            forceParse: 0
+        });
+
+
+
+        $("#datepicker").val(todayDateTime.split(" ")[0]);
+
+
+    });
+
+    //动态div框的信息显示与清除
+    $(document).on("mouseover",".info_detail", function () {
+        $(this).find(".info_hide").removeClass("hide");
+        console.log("in");
+    });
+    $(document).on("mouseout", ".info_detail", function(){
+        $(this).find(".info_hide").addClass("hide");
+        console.log("out");
+    });
+
+    /**
+     * 2018-10-25T10:59:41.000+0000
+     * 格林威治时间转为标准时间 xxxx-xx-xx xx:xx
+     */
+    function getFormmerdTimeFromGMT(updateTime){
+        var split_res_month_day = updateTime.split("T")[0];
+        var split_res_hour_min  = updateTime.split("T");
+
+        split_res_month_day = split_res_month_day.split("-");
+        split_res_month_day = split_res_month_day[1] + "-" + split_res_month_da
+        split_res_hour_min = split_res_hour_min.split(".");
+        split_res_hour_min = split_res_hour_min[0].split(":");
+        split_res_hour_min = split_res_hour_min[0] + ":" + split_res_hour_min
+
+        updateTime = split_res_month_day + " " + split_res_hour_min;
+    }
+
+    function createOptions(rows){
+        for(i in rows){
+            var option = '<option value='+rows[i].id+'>'+rows[i].cameraName+'</option>';
+
+            $("#cameraName").append(option);
+        }
+    }
+
+    function getCameraNameById(id){
+        $.ajax({
+            url: "/console/camera_management/get/" + id,
+            timeout : 2000,
+            type: "get",
+            processData: false,
+            contentType: false,
+            success: function (r) {
+                switch (r.status) {
+                    case "SUCCEED" :
+                        $("#cameraName").val(r.cameraName);
+
+                        break
+
+                    case "FAILED" :
+                        $("#dialog-return").find(".modal-body").html("获取摄像头名称失败");
+
+                        if(r.message != undefined){
+                            $("#dialog-return").find(".modal-body").append("\n原因:"+r.message);
+                        }
+
+                        $("#dialog-return").modal("show");
+
+                        break
+                }
+            },
+            error: function (r) {
+
+                $("#dialog-return").find(".modal-body").html("网络错误");
+                $("#dialog-return").modal("show");
+            }
+
+        });
+    }
+
+    function getTimeFromDateTime(dateTime){
+        var time = dateTime.split(" ")[1].split(":");
+
+        return time[0]+":"+time[1];
+    }
+
+    function adjustPositionOfLineChart(){//adjust the position of line-chart
+        console.log("chart-wrapper: " + $(".chart-wrapper").height() );
+        console.log("line-chart margin-top: " + $("#line-chart").css("margin-top") );
+        console.log("line-chart: " + $("#line-chart").height() );
+
+        if( $(".chart-wrapper").height() > $("#line-chart").height() ){
+            $("#line-chart").css("margin-top",  ( $(".chart-wrapper").height() - $("#line-chart").height() ) / 2 );
+        }
+
+        console.log("chart-wrapper: " + $(".chart-wrapper").height() );
+        console.log("line-chart margin-top: " + $("#line-chart").css("margin-top") );
+        console.log("line-chart: " + $("#line-chart").height() );
+
+    }
+
+    function refreshChartAndTable(data){
+        $.ajaxSettings.async = false;
+
+        $.get("/console/deviceInfo/getHumidityRecord", data, function(r, status) {
+
+            for(i in r.updateTimeRecord){
+                r.updateTimeRecord[i] = getTimeFromDateTime( r.updateTimeRecord[i] ) ;
+            }
+
+            data_chart.labels = r.updateTimeRecord;
+
+            data_chart.datasets[0].data = r.humidityRecord;
+
+            lineChart.destroy();
+
+            displayLineChart( adjustPositionOfLineChart );
+
+            if(length == 0){
+                $("#personInfo").append("未查询到数据");
+
+            }
+        });
+
+        $.ajaxSettings.async = true;
+    }
+
+    function createPersonInfo(picUrl, rank, name, personNumber, times, sign){
+        if(sign == 0){
+            return "<div class=\"col-lg-3 col-md-3 col-sm-4 col-xs-6 info_detail\" tabindex=\"0\" style=\"position:relative;width:10em;padding-left:0;padding-right:0;\"> " +
+                "<img src=\""+picUrl+"\" style=\"width:10em;\"/>" +
+
+                "<div style=\"position:absolute; left:0; top:0;height:100%; width : 10em; background:#050404; opacity:0.5\"></div>"+
+
+                "<div style=\"position:absolute;left:0;bottom:0;width:100%\">"+
+                "<label class=\"info_hide hide\" style=\"font-size:12px; color:#ffffff;text-align:center;width: 100%;\">排行: "+rank+"</label>"+
+                "<label class=\"info_hide hide\" style=\"font-size:12px; color:#ffffff;text-align:center;width: 100%;\">编号: "+personNumber+"</label>"+
+                "<label style=\"font-size:12px; color:#ffffff;text-align:center;width: 100%;\">姓名: "+name+"</label>"+
+                "<label style=\"font-size:12px; color:#ffffff;text-align:center;width: 100%;\">出现次数: "+times+"</label>"+
+                "</div>"+
+
+                "</div>";
+
+        } else {
+            return "<div class=\"col-lg-3 col-md-3 col-sm-4 col-xs-6 info_detail\" tabindex=\"0\" style=\"position:relative;width:10em;padding-left:0;padding-right:0;\"> " +
+                "<img src=\""+picUrl+"\" style=\"width:10em;\"/>" +
+
+                "<div style=\"position:absolute; left:0; top:0;height:100%; width : 10em; background:#050404; opacity:0.5\"></div>"+
+
+                "<div style=\"position:absolute;left:0;bottom:0;width:100%\">"+
+                "<label class=\"info_hide hide\" style=\"font-size:12px; color:#ffffff;text-align:center;width: 100%;\">排行: "+rank+"</label>"+
+                "<label class=\"info_hide hide\" style=\"font-size:12px; color:#ffffff;text-align:center;width: 100%;\">编号: "+personNumber+"</label>"+
+                "<label style=\"font-size:12px; color:#ffffff;text-align:center;width: 100%;\">"+name+"</label>"+
+                "<label style=\"font-size:12px; color:#ffffff;text-align:center;width: 100%;\">出现次数: "+times+"</label>"+
+                "</div>"+
+
+                "</div>";
+        }
+
+
+    }
+
+    function getUrlParam(name) {
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+        var r = window.location.search.substr(1).match(reg);
+        if (r != null) return unescape(r[2]); return null;
+    }
+
+    function createTimeLable(startTime_hour, startTime_min, hour_increment, min_increment, numberOfLabel){
+        var timeArray = [12];
+
+        var temp_startTime_hour = startTime_hour;
+        var temp_startTime_min = startTime_min;
+
+        timeArray[0] = temp_startTime_hour + ":" + (temp_startTime_min==0 ? "00" : temp_startTime_min);
+
+        temp_startTime_min = startTime_min;
+
+        for (var i = 1; i < numberOfLabel ;i++){
+            var time = createTime(temp_startTime_hour,temp_startTime_min,hour_increment,min_increment);
+
+            temp_startTime_hour = time.hour;
+            temp_startTime_min = time.min;
+
+            timeArray[i] = temp_startTime_hour+":"+ (temp_startTime_min==0 ? "00" : temp_startTime_min);
+
+        }
+
+        return timeArray;
+    }
+
+    function createTime(hour, min, hour_increment, min_increment){
+        var temp_hour = hour;
+        var temp_min = min;
+
+        temp_min += min_increment;
+
+        if(temp_min >= 60){
+            temp_hour+=1;
+            temp_min -= 60;
+        }
+
+        temp_hour += hour_increment;
+        if(temp_hour > 24){
+            temp_hour -= 24
+        }
+
+        return {
+            hour : temp_hour,
+            min : temp_min
+        };
+    }
+
+    var data_chart = {
+        labels : ["0","1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","6","7","8","9","10","11"],
+        datasets : [
+            {
+                fillColor : "rgba(151,187,205,0.5)",
+                strokeColor : "rgba(151,187,205,1)",
+                pointColor : "rgba(151,187,205,1)",
+                pointStrokeColor : "#fff",
+                data : [1,0,2,0,0,0,0,4,0,0,10,5,1,0,2,0,0,0,0,4,0,0,10,5,]
+            }
+        ]
+    };
+
+
+
+    function displayLineChart(callback) {
+        var ctx = document.getElementById("line-chart").getContext("2d");
+
+        lineChart = new Chart(ctx).Line(data_chart, options);
+
+        callback();
+    }
+
+    $("#logout").click(function () {
+        $(".log-out-bs-example-modal-sm").find(".modal-body").html("确认退出系统？");
+        $(".log-out-bs-example-modal-sm").find(".modal-footer-delete-confirm").css("display", "");
+        $(".log-out-bs-example-modal-sm").modal("show");
+    });
+
+    $(".btn.btn-danger.btn-logout").click(function () {
+        window.location.href = "/logout";
+    })
+
+    $(".searchData").click(function () {
+        var select_mode = $("#select_mode").val();
+
+        var date = $("#datepicker").val();
+
+        switch (select_mode) {
+            case "0" :
+                date+=" 00:00:00";
+                break;
+            case "1" :
+                date+=" 00:00:00";
+                break;
+            case "2" :
+                date+=" 12:00:00";
+                break;
+        }
+
+        refreshChartAndTable( {
+            deviceId : id,
+            dateTime : date,
+            select_mode : select_mode
+        })
+    });
+
+    function clearCanvas(){
+        var c=document.getElementById("line-chart");
+        var cxt=c.getContext("2d");
+        c.height=c.height;
+    }
+
+    $(".btn.btn-primary.add-new-user").click(function () {
+        var id_ = $("input[id='cameraID']:checked").val();
+
+        if(id_ == undefined){
+            $("#dialog-return").find(".modal-body").html("请选择摄像头");
+            $("#dialog-return").modal("show");
+
+            return ;
+        }
+        id = id_;
+
+        getCameraNameById(id_);
+
+        $(".add-new-user-close").click();
+
+        var data = {
+            "cameraID": id,
+            "date": date
+        }
+
+        $("#datepicker").val(date);
+
+        refreshChartAndTable(data);
+
+    });
+
+
+</script>
+
+</body>
+</html>

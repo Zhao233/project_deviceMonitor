@@ -1,0 +1,39 @@
+Manifest-Version: 1.0
+Class-Path: lombok-1.16.10.jar spring-expression-5.0.9.RELEASE.jar spr
+ ing-jcl-5.0.9.RELEASE.jar spring-boot-starter-json-2.0.5.RELEASE.jar 
+ classmate-1.3.4.jar spring-boot-2.0.5.RELEASE.jar tomcat-embed-websoc
+ ket-8.5.34.jar spring-boot-starter-web-2.0.5.RELEASE.jar javax.annota
+ tion-api-1.3.2.jar hibernate-jpa-2.1-api-1.0.2.Final.jar thymeleaf-ex
+ tras-java8time-3.0.1.RELEASE.jar commons-logging-1.2.jar commons-code
+ c-1.9.jar spring-tx-5.0.9.RELEASE.jar logback-core-1.2.3.jar spring-b
+ oot-starter-aop-2.0.5.RELEASE.jar spring-boot-autoconfigure-2.0.5.REL
+ EASE.jar javax.transaction-api-1.2.jar spring-security-config-5.0.8.R
+ ELEASE.jar spring-data-jpa-2.0.10.RELEASE.jar spring-aspects-5.0.9.RE
+ LEASE.jar unbescape-1.1.5.RELEASE.jar spring-core-5.0.9.RELEASE.jar s
+ pring-boot-starter-2.0.5.RELEASE.jar hibernate-commons-annotations-5.
+ 0.1.Final.jar spring-boot-starter-tomcat-2.0.5.RELEASE.jar antlr-2.7.
+ 7.jar jul-to-slf4j-1.7.25.jar spring-security-core-5.0.8.RELEASE.jar 
+ commons-io-2.4.jar httpclient-4.5.2.jar dom4j-1.6.1.jar spring-orm-5.
+ 0.9.RELEASE.jar spring-beans-5.0.9.RELEASE.jar api-client-1.0.0.jar s
+ pring-security-web-5.0.8.RELEASE.jar spring-boot-starter-jdbc-2.0.5.R
+ ELEASE.jar spring-aop-5.0.9.RELEASE.jar log4j-to-slf4j-2.10.0.jar spr
+ ing-boot-starter-security-2.0.5.RELEASE.jar httpcore-4.4.4.jar spring
+ -jdbc-5.0.9.RELEASE.jar spring-boot-devtools-2.0.5.RELEASE.jar attopa
+ rser-2.0.4.RELEASE.jar spring-boot-starter-logging-2.0.5.RELEASE.jar 
+ tomcat-embed-core-8.5.34.jar spring-context-5.0.9.RELEASE.jar javassi
+ st-3.22.0-GA.jar aspectjweaver-1.8.13.jar spring-boot-starter-thymele
+ af-2.0.5.RELEASE.jar thymeleaf-spring5-3.0.9.RELEASE.jar snakeyaml-1.
+ 19.jar log4j-api-2.10.0.jar hibernate-validator-6.0.12.Final.jar jack
+ son-annotations-2.9.7.jar logback-classic-1.2.3.jar spring-web-5.0.9.
+ RELEASE.jar mysql-connector-java-8.0.11.jar spring-data-commons-2.0.1
+ 0.RELEASE.jar jackson-datatype-jsr310-2.9.6.jar hibernate-core-5.2.17
+ .Final.jar springloaded-1.2.6.RELEASE.jar slf4j-api-1.7.25.jar jackso
+ n-datatype-jdk8-2.9.6.jar jackson-databind-2.9.7.jar protobuf-java-2.
+ 6.0.jar HikariCP-2.7.9.jar jackson-module-parameter-names-2.9.6.jar s
+ pring-webmvc-5.0.9.RELEASE.jar jandex-2.0.3.Final.jar spring-boot-sta
+ rter-data-jpa-2.0.5.RELEASE.jar httpmime-4.5.2.jar commons-collection
+ s-3.2.1.jar tomcat-embed-el-8.5.34.jar jboss-logging-3.3.2.Final.jar 
+ thymeleaf-3.0.9.RELEASE.jar jackson-core-2.9.7.jar validation-api-2.0
+ .1.Final.jar
+Main-Class: com.zx.demo.DemoApplication
+

@@ -1,0 +1,37 @@
+server:
+  servlet:
+    context-path: /
+
+  port: 8881
+
+spring:
+
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+
+  # 配置数据库连接信息
+  datasource:
+    url: jdbc:mysql://sh-cdb-75vlqi3r.sql.tencentcdb.com:63169/device_status_db_test?characterEncoding=utf8&useSSL=false&serverTimezone=UTC
+    username: root
+    password: "root1234"
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+    hikari:
+      maximum-pool-size: 20
+      minimum-idle: 5
+
+  jpa:
+    database: MYSQL
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+      naming-strategy: org.hibernate.configuration.ImprovedNamingStrategy
+
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .html
+    mode: LEGACYHTML5
+    encoding: UTF-8
+    cache: false
+
