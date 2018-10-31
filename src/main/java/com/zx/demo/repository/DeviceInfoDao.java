@@ -10,6 +10,8 @@ package com.zx.demo.repository;//package com.zx.demo.repository;
 //import org.springframework.data.jpa.repository.JpaRepository;
 //import org.springframework.data.jpa.repository.Query;
 import com.zx.demo.domain.DeviceInfo;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -84,6 +86,12 @@ public interface DeviceInfoDao extends JpaRepository<DeviceInfo, Long> {
             "and unix_timestamp(device_info.update_time) >= unix_timestamp(?2) " +
             "order by device_info.update_time asc limit 24", nativeQuery = true)
     List<String> getHumidityRecord(long id,String dateTime);
+
+    @Query(value = "select deviceInfo from DeviceInfo deviceInfo where deviceInfo.device_id in " +
+            "(" +
+               "select device.id from Device device where device.user_id = ?1" +
+            ") order by deviceInfo.updateTime" )
+    Page<DeviceInfo> getLatestDeviceInfo(long userId, Pageable pageable);
 //
 ////    @Query(value = "select count(deviceInfo) from DeviceInfo deviceInfo where device_mac_id=?1 ")
 //    int getRecordTimesByDeviceMacId(String device_mac_id);

@@ -1,10 +1,12 @@
 package com.zx.demo.controller;
 
 import com.huawei.iotplatform.client.NorthApiException;
+import com.zx.demo.domain.User;
 import com.zx.demo.model.DeviceInfo_all;
 import com.zx.demo.model.DeviceInfo_detail;
 import com.zx.demo.service.DeviceInfoService;
 import com.zx.demo.service.DeviceService;
+import com.zx.demo.util.UserUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -32,6 +35,7 @@ public class DeviceServiceController {
     @ResponseBody
     public Map<String, Object> search(@RequestParam(value = "offset", defaultValue = "0") Integer offset,
                                       @RequestParam(value = "limit", defaultValue = "10") Integer limit,
+                                      HttpServletRequest request,
                                       @RequestParam(value = "limit", defaultValue = "10", required = false) Integer type,
                                       @RequestParam(value = "limit", defaultValue = "10", required = false) Integer level,
                                       @RequestParam(value = "limit", defaultValue = "10", required = false) Integer statusOfLight,
@@ -42,10 +46,12 @@ public class DeviceServiceController {
                                       ) {
         Map<String, Object> p = new HashMap<>();
 
+        User user = UserUtil.getCureentUser(request);
+
         try {
             Map<String, Object> res = deviceInfoService.getAll_latest(offset, limit);
 
-            List<DeviceInfo_all> list =  (LinkedList)res.get("deviceInfo_allList");
+            List<DeviceInfo_all> list = (LinkedList)res.get("deviceInfo_allList");
 
             p.put("total",res.get("total"));
             p.put("rows", list);

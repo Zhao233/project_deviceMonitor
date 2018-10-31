@@ -15,6 +15,8 @@ import com.zx.demo.service.DeviceInfoService;
 import com.zx.demo.service.DeviceService;
 import com.zx.demo.util.DeviceRemoteSearchUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
@@ -94,6 +96,13 @@ public class DeviceInfoServiceImp implements DeviceInfoService {
         res.put("total", total);
 
         return res;
+    }
+
+    @Override
+    public Page<DeviceInfo> getAll_latest(Pageable pageable, long userId){
+        HashMap<String, Object> map = new HashMap<>();
+
+        return deviceInfoDao.getLatestDeviceInfo(userId,pageable);
     }
 
     /**
