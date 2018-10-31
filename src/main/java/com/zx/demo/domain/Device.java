@@ -50,7 +50,10 @@ public class Device {
     @Column(name = "organization_name")
     private String organization_name;
 
-    public Device(long id, String name, int type, String addressOfDevice, String attributionOfDevice, String organization_name, int organizationId, int level, String mac_id, Timestamp timestamp_update, Timestamp timestamp_create, String imei_id) {
+    @Column(name ="user_id")
+    private long user_id;
+
+    public Device(long id, String name, int type, String addressOfDevice, String attributionOfDevice, String organization_name, int organizationId, int level, String mac_id, Timestamp timestamp_update, Timestamp timestamp_create, String imei_id, long user_id) {
         this.id=id;
         this.name = name;
         this.type = type;
@@ -63,6 +66,7 @@ public class Device {
         this.create_time = timestamp_create;
         this.update_time = timestamp_update;
         this.imei_id = imei_id;
+        this.user_id = user_id;
     }
 
     public Device(){}
