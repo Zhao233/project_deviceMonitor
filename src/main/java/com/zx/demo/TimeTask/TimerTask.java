@@ -26,7 +26,7 @@ public class TimerTask {
         deviceInfoSearchService.refreshDevicesInfoFromRemoteServer();
     }
 
-    @Scheduled(cron = "0 0/30 * * * *")
+    @Scheduled(cron = "0 0/15 * * * *")
     public void getTask2() {//半点刷新一次token
         try {
             System.out.println("refresh token");
