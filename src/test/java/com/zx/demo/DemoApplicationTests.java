@@ -107,6 +107,12 @@ public class DemoApplicationTests {
 //        }
         DeviceRemoteSearchUtil.initRemoteServer();
 
+        Timestamp timestamp = new Timestamp(new Date().getTime());
+
+        DeviceInfo deviceInfo = new DeviceInfo(0,"",0,"","","",0,0,"",0,"",timestamp,timestamp);
+
+        deviceInfoService.addDeviceInfo(deviceInfo);
+
 //        DeviceInfo deviceInfo = deviceInfoSearchService.getDeviceInfoFromRemoteServer("5bc1e78a-e190-4037-884f-07f8d4c500a0");
 //
 //        deviceInfoService.addDeviceInfo(deviceInfo);

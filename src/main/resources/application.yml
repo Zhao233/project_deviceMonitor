@@ -12,7 +12,7 @@ spring:
 
   # 配置数据库连接信息
   datasource:
-    url: jdbc:mysql://sh-cdb-75vlqi3r.sql.tencentcdb.com:63169/device_status_db_test?characterEncoding=utf8&useSSL=false&serverTimezone=UTC
+    url: jdbc:mysql://sh-cdb-75vlqi3r.sql.tencentcdb.com:63169/device_status_db_test?characterEncoding=utf8&useSSL=false&serverTimezone=GMT%2B8
     username: root
     password: "root1234"
     driver-class-name: com.mysql.cj.jdbc.Driver

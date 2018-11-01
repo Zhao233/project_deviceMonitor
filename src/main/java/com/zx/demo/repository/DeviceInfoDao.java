@@ -10,6 +10,7 @@ package com.zx.demo.repository;//package com.zx.demo.repository;
 //import org.springframework.data.jpa.repository.JpaRepository;
 //import org.springframework.data.jpa.repository.Query;
 import com.zx.demo.domain.DeviceInfo;
+import com.zx.demo.model.DeviceInfo_detail;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -39,20 +40,20 @@ public interface DeviceInfoDao extends JpaRepository<DeviceInfo, Long> {
 //    DeviceInfo getDeviceInfoById_latest(long id);
 //
 //
-//    /**
-//     *get latest deviceInfo_detail record by it's device id
-//     * */
-////    @Query(value = "select new com.zx.demo.model.DeviceInfo_detail( deviceInfo.id, device.mac_id,  "      +
-////            "device.name,               device.attributionOfDevice, device.organizationId, "      +
-////            "device.addressOfDevice,    deviceInfo.times,           deviceInfo.signalIntensity, " +
-////            "deviceInfo.statusOfCharge, deviceInfo.statusOfLight,   deviceInfo.temperature, "     +
-////            "deviceInfo.humidity,       deviceInfo.updateTime, device.imei_id ) " +
-////
-////            "from DeviceInfo deviceInfo " +
-////            "inner join Device device " +
-////            "on deviceInfo.device_mac_id = device.mac_id " +
-////            "where device.id = ?1 order by deviceInfo.updateTime desc"+
-////            "")
+    /**
+     *get latest deviceInfo_detail record by it's device id
+     * */
+//    @Query(value = "select new com.zx.demo.model.DeviceInfo_detail( deviceInfo.id, device.mac_id,  "      +
+//            "device.name,               device.attributionOfDevice, device.organizationId, "      +
+//            "device.addressOfDevice,    deviceInfo.times,           deviceInfo.signalIntensity, " +
+//            "deviceInfo.statusOfCharge, deviceInfo.statusOfLight,   deviceInfo.temperature, "     +
+//            "deviceInfo.humidity,       deviceInfo.updateTime, device.imei_id ) " +
+//
+//            "from DeviceInfo deviceInfo " +
+//            "inner join Device device " +
+//            "on deviceInfo.device_mac_id = device.mac_id " +
+//            "where device.id = ?1 order by deviceInfo.updateTime desc"+
+//            "")
 //    Page<DeviceInfo_detail> gerDeviceInfoDetail(long id, Pageable pageable);
 //
 //

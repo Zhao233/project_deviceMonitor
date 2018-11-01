@@ -165,7 +165,7 @@ public class DeviceInfoSearchServiceImp implements DeviceInfoSearchService {
                 int level = 0;
                 String mac_id = queryDeviceDTO.getDeviceId();
 
-                Device device = new Device(0, deviceName, type, addressOfDevice, attributionOfDevice, organization_name, organizationId, level, mac_id, timestamp, timestamp, deviceName);
+                Device device = new Device(0, deviceName, type, addressOfDevice, attributionOfDevice, organization_name, organizationId, level, mac_id, timestamp, timestamp, deviceName,0);
 
                 devicesIdList.add(device);
             }
