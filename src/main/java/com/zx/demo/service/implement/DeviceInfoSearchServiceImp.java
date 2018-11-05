@@ -91,7 +91,7 @@ public class DeviceInfoSearchServiceImp implements DeviceInfoSearchService {
             Date date_now = new Date();
             Calendar calendar_now = Calendar.getInstance();
             calendar_now.setTime(date_now);
-            calendar_now.set(Calendar.HOUR_OF_DAY, calendar_now.get(Calendar.HOUR_OF_DAY) + 8);
+            calendar_now.set(Calendar.HOUR_OF_DAY, calendar_now.get(Calendar.HOUR_OF_DAY));
             Timestamp timestamp_now = new Timestamp(calendar_now.getTimeInMillis());
 
             DeviceInfo deviceInfo = new DeviceInfo(0,device_mac_id,device_id,humidity,status,signalIntensity,battery,light,temperature,0,imei_id,timestamp_update,timestamp_now);
