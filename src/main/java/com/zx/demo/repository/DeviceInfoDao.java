@@ -88,6 +88,12 @@ public interface DeviceInfoDao extends JpaRepository<DeviceInfo, Long> {
             "order by device_info.update_time asc limit 24", nativeQuery = true)
     List<String> getHumidityRecord(long id,String dateTime);
 
+    @Query(value = "select * from device_info where device_info.device_id=?1 and unix_timestamp(device_info.modify_time_search_local)>=unix_timestamp(?2) limit 48",nativeQuery = true)
+    List<DeviceInfo> getTemperatureRecord_local(long id, String dateTime);
+
+    @Query(value = "select * from device_info where device_info.device_id=?1 and unix_timestamp(device_info.modify_time_search_local)>=unix_timestamp(?2) limit 48",nativeQuery = true)
+    List<DeviceInfo> getHumidityRecord_local(long id, String dateTime);
+
     @Query(value = "select deviceInfo from DeviceInfo deviceInfo where deviceInfo.device_id in " +
             "(" +
                "select device.id from Device device where device.user_id = ?1" +
