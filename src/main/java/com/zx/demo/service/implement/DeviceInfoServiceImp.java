@@ -514,8 +514,6 @@ public class DeviceInfoServiceImp implements DeviceInfoService {
         return map;
     }
 
-
-
     @Override
     public Map<String, Object> getTemperatureRecord_Local(long id, String dateTime, int select_mode){
         Map<String, Object> map = new HashMap<>();
