@@ -107,13 +107,13 @@ public class DemoApplicationTests {
 //        }
         DeviceRemoteSearchUtil.initRemoteServer();
 
-        deviceInfoSearchService.refreshDevicesInfoFromRemoteServer();
 
-//        DeviceInfo deviceInfo = deviceInfoSearchService.getDeviceInfoFromRemoteServer("5bc1e78a-e190-4037-884f-07f8d4c500a0");
-//
-//        deviceInfoService.addDeviceInfo(deviceInfo);
-//
-//        System.out.println("asdfasdfasdf");
+//        deviceInfoService.getTemperatureRecord_Local(4,"2018-11-4 12:00:00",1);
+        DeviceInfo deviceInfo = deviceInfoSearchService.getDeviceInfoFromRemoteServer("5bc1e78a-e190-4037-884f-07f8d4c500a0");
+
+        deviceInfoService.addDeviceInfo(deviceInfo);
+
+        System.out.println("asdfasdfasdf");
 
     }
 }
