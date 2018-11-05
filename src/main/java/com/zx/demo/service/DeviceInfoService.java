@@ -29,6 +29,10 @@ public interface DeviceInfoService {
 
     Map<String, Object> getHumidityRecord(long id, String dateTime, int time_gap) throws Exception;
 
+    Map<String, Object> getTemperatureRecord_Local(long id, String dateTime, int time_gap);
+
+    Map<String, Object> getHumidityRecord_Local(long id, String dateTime, int select_mode);
+
     int getSearchTimes(String device_mac_id);
 
     void addDeviceInfo(DeviceInfo deviceInfo);

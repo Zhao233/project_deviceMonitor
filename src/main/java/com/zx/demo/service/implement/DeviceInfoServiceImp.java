@@ -514,6 +514,66 @@ public class DeviceInfoServiceImp implements DeviceInfoService {
         return map;
     }
 
+
+
+    @Override
+    public Map<String, Object> getTemperatureRecord_Local(long id, String dateTime, int select_mode){
+        Map<String, Object> map = new HashMap<>();
+
+        List<DeviceInfo> deviceInfoList = deviceInfoDao.getTemperatureRecord_local(id,dateTime);
+
+        List<String> temperatureRecord = new LinkedList<>();
+        List<String> timeRecord = new LinkedList<>();
+
+
+        if(select_mode == 0){//0点，24条数据，一个小时一个数据
+            for(int i = 0; i < deviceInfoList.size(); i+=2){
+                temperatureRecord.add(deviceInfoList.get(i).getTemperature());
+                timeRecord.add(String.valueOf(deviceInfoList.get(i).getModify_time_search_local()));
+            }
+
+        } else {//24条数据，半个小时一个数据
+            for(int i = 0; i < 24 && i < deviceInfoList.size(); i++){
+                temperatureRecord.add(deviceInfoList.get(i).getTemperature());
+                timeRecord.add(String.valueOf(deviceInfoList.get(i).getModify_time_search_local()));
+            }
+        }
+
+        map.put("temperatureRecord",temperatureRecord);
+        map.put("timeRecord",timeRecord);
+
+        return map;
+    }
+
+    @Override
+    public Map<String, Object> getHumidityRecord_Local(long id, String dateTime, int select_mode){
+        Map<String, Object> map = new HashMap<>();
+
+        List<DeviceInfo> deviceInfoList = deviceInfoDao.getHumidityRecord_local(id,dateTime);
+
+        List<String> humidityRecord = new LinkedList<>();
+        List<String> timeRecord = new LinkedList<>();
+
+
+        if(select_mode == 0){//0点，24条数据，一个小时一个数据
+            for(int i = 0; i < deviceInfoList.size(); i+=2){
+                humidityRecord.add(deviceInfoList.get(i).getTemperature());
+                timeRecord.add(String.valueOf(deviceInfoList.get(i).getModify_time_search_local()));
+            }
+
+        } else {//24条数据，半个小时一个数据
+            for(int i = 0; i < 24 && i < deviceInfoList.size(); i++){
+                humidityRecord.add(deviceInfoList.get(i).getTemperature());
+                timeRecord.add(String.valueOf(deviceInfoList.get(i).getModify_time_search_local()));
+            }
+        }
+
+        map.put("temperatureRecord",humidityRecord);
+        map.put("timeRecord",timeRecord);
+
+        return map;
+    }
+
     @Override
     public int getSearchTimes(String device_mac_id) {
         return 0;
