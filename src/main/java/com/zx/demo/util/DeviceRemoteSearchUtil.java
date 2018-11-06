@@ -5,15 +5,17 @@ import com.huawei.iotplatform.client.NorthApiClient;
 import com.huawei.iotplatform.client.NorthApiException;
 import com.huawei.iotplatform.client.dto.*;
 import com.huawei.iotplatform.client.invokeapi.Authentication;
+
+import java.util.*;
+
 import com.zx.demo.domain.DeviceInfo;
-import com.zx.demo.service.DeviceService;
+import com.zx.demo.domain.User;
+import com.zx.demo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.HashMap;
 
 //import com.huawei.iotplatform.client.dto.DeviceInfo;
 
@@ -27,12 +29,20 @@ public class DeviceRemoteSearchUtil {
     public static final int POSITION_DATA_1 = 1;//六组数据中取第二组
     public static final int POSITION_DATA_2 = 4;//六组数据中取第
 
-//    public static String                  appId = "wukHyW0OkG2xPbShcsev3zolbfEa";
-//    public static String                 secret = "8CYF7_Nx7IaoLM2jB1mzcMMyA3Ya";
-    public static String                  appId = "RLw165YDYe0X_GtouiMLbNF8sZUa";
-    public static String                 secret = "CvQucLCY1QaDz7YEpt4TKY3xlawa";
+    public static String                  appId = "wukHyW0OkG2xPbShcsev3zolbfEa";
+    public static String                 secret = "8CYF7_Nx7IaoLM2jB1mzcMMyA3Ya";
+//    public static String                  appId = "RLw165YDYe0X_GtouiMLbNF8sZUa";
+//    public static String                 secret = "CvQucLCY1QaDz7YEpt4TKY3xlawa";
+
+    private static LinkedList<String> appIdList;
+    private static LinkedList<String> secretList;
+
+    @Autowired
+    private static UserService userService;
 
     public static void initRemoteServer() throws NorthApiException {
+        Map<String, Object> map;
+
         northApiClient = new NorthApiClient();
         clientInfo = new ClientInfo();
 
@@ -50,6 +60,15 @@ public class DeviceRemoteSearchUtil {
         authentication.setNorthApiClient(northApiClient);
 
         authOutDTO = authentication.getAuthToken();
+
+        /**
+         * 获取所有的AppId
+         **/
+        map = getAllAppIdAndSecret();
+
+        appIdList = (LinkedList<String>) map.get("appIdList");
+        secretList = (LinkedList<String>) map.get("secretList");
+
     }
 
     public static void refreshToken() throws NorthApiException {
@@ -68,8 +87,27 @@ public class DeviceRemoteSearchUtil {
         authOutDTO.setTokenType( out.getTokenType() );
     }
 
+    private static  Map<String,Object> getAllAppIdAndSecret(){
+        Map<String, Object> map = new HashMap<>();
 
-public static DeviceInfo getDeviceInfo(int searchTimes, QueryDeviceDTO deviceDTO, HashMap<String, Long> cache_device_mac_id) throws ParseException {
+        LinkedList<String> appIdList = new LinkedList<>();
+        LinkedList<String> secretList = new LinkedList<>();
+
+        List<User> UserList = userService.findAll();
+
+        for(User user_temp : UserList){
+            appIdList.add(user_temp.getAppId());
+            secretList.add(user_temp.getSecret_service());
+        }
+
+        map.put("appIdList", appIdList);
+        map.put("secretList", secretList);
+
+        return map;
+    }
+
+
+    public static DeviceInfo getDeviceInfo(int searchTimes, QueryDeviceDTO deviceDTO, HashMap<String, Long> cache_device_mac_id) throws ParseException {
     com.huawei.iotplatform.client.dto.DeviceInfo deviceInfo = deviceDTO.getDeviceInfo();
 
     System.out.println("size of service :"+deviceDTO.getServices().size());
@@ -112,7 +150,7 @@ public static DeviceInfo getDeviceInfo(int searchTimes, QueryDeviceDTO deviceDTO
     return null;
 }
 
-public static DeviceInfo[] getDeviceInfo(QueryDeviceDataOutDTO queryDeviceDataOutDTO) {
+    public static DeviceInfo[] getDeviceInfo(QueryDeviceDataOutDTO queryDeviceDataOutDTO) {
         DeviceInfo[] deviceInfos = new DeviceInfo[2];
 
         com.huawei.iotplatform.client.dto.DeviceInfo deviceInfo = queryDeviceDataOutDTO.getDeviceInfo();
