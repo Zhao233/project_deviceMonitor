@@ -37,9 +37,6 @@ public class DeviceRemoteSearchUtil {
     private static LinkedList<String> appIdList;
     private static LinkedList<String> secretList;
 
-    @Autowired
-    private static UserService userService;
-
     public static void initRemoteServer() throws NorthApiException {
         Map<String, Object> map;
 
@@ -60,15 +57,6 @@ public class DeviceRemoteSearchUtil {
         authentication.setNorthApiClient(northApiClient);
 
         authOutDTO = authentication.getAuthToken();
-
-        /**
-         * 获取所有的AppId
-         **/
-        map = getAllAppIdAndSecret();
-
-        appIdList = (LinkedList<String>) map.get("appIdList");
-        secretList = (LinkedList<String>) map.get("secretList");
-
     }
 
     public static void refreshToken() throws NorthApiException {
@@ -86,26 +74,6 @@ public class DeviceRemoteSearchUtil {
         authOutDTO.setExpiresIn( out.getExpiresIn() );
         authOutDTO.setTokenType( out.getTokenType() );
     }
-
-    private static  Map<String,Object> getAllAppIdAndSecret(){
-        Map<String, Object> map = new HashMap<>();
-
-        LinkedList<String> appIdList = new LinkedList<>();
-        LinkedList<String> secretList = new LinkedList<>();
-
-        List<User> UserList = userService.findAll();
-
-        for(User user_temp : UserList){
-            appIdList.add(user_temp.getAppId());
-            secretList.add(user_temp.getSecret_service());
-        }
-
-        map.put("appIdList", appIdList);
-        map.put("secretList", secretList);
-
-        return map;
-    }
-
 
     public static DeviceInfo getDeviceInfo(int searchTimes, QueryDeviceDTO deviceDTO, HashMap<String, Long> cache_device_mac_id) throws ParseException {
     com.huawei.iotplatform.client.dto.DeviceInfo deviceInfo = deviceDTO.getDeviceInfo();
