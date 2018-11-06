@@ -184,8 +184,6 @@ public class DeviceInfoSearchServiceImp implements DeviceInfoSearchService {
      * */
     @Override
     public void refreshDevicesInfoFromRemoteServer() throws NorthApiException {
-
-
         Pageable pageable = new PageRequest(0, Integer.MAX_VALUE, new Sort(Sort.Direction.DESC, "id"));
 
         Page<Device> page;
@@ -207,6 +205,8 @@ public class DeviceInfoSearchServiceImp implements DeviceInfoSearchService {
         DataCollection collection = new DataCollection(DeviceRemoteSearchUtil.northApiClient);
 
         QueryDeviceDataOutDTO queryDevicesOutDTO = collection.queryDeviceData(deviceId, DeviceRemoteSearchUtil.appId, DeviceRemoteSearchUtil.authOutDTO.getAccessToken());
+
+        System.out.println(queryDevicesOutDTO.getDeviceInfo().getName());
 
         return queryDevicesOutDTO.getDeviceInfo().getNodeId();
 
