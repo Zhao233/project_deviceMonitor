@@ -113,119 +113,125 @@ public class DemoApplicationTests {
         DeviceRemoteSearchUtil.initRemoteServer();
 
 
-        deviceInfoSearchService.getIEMENumberByDeviceId("bced3021-1516-4535-b4f7-607a75435e9c");
-        deviceInfoSearchService.getIEMENumberByDeviceId("72bbc6b0-b5a8-4d36-a0bf-a467671f5d5f");
-        deviceInfoSearchService.getIEMENumberByDeviceId("853f83b8-907d-4633-8f63-bc259fc4b70a");
-        deviceInfoSearchService.getIEMENumberByDeviceId("523a54c7-003e-482d-acba-6f95178821a8");
-        deviceInfoSearchService.getIEMENumberByDeviceId("017d80be-2c8f-47b7-8bc7-fabb8e04d83b");
+//        deviceInfoSearchService.getIEMENumberByDeviceId("bced3021-1516-4535-b4f7-607a75435e9c");
+//        deviceInfoSearchService.getIEMENumberByDeviceId("72bbc6b0-b5a8-4d36-a0bf-a467671f5d5f");
+//        deviceInfoSearchService.getIEMENumberByDeviceId("853f83b8-907d-4633-8f63-bc259fc4b70a");
+//        deviceInfoSearchService.getIEMENumberByDeviceId("523a54c7-003e-482d-acba-6f95178821a8");
+//        deviceInfoSearchService.getIEMENumberByDeviceId("017d80be-2c8f-47b7-8bc7-fabb8e04d83b");
+//
+//        DataCollection collection = new DataCollection(DeviceRemoteSearchUtil.northApiClient);
+//
+//        QueryDataHistoryOutDTO queryDataHistoryOutDTO;
+//
+//        QueryDataHistoryInDTO queryDataHistoryInDTO = new QueryDataHistoryInDTO();
+//
+//        queryDataHistoryInDTO.setDeviceId("853f83b8-907d-4633-8f63-bc259fc4b70a");
+//        queryDataHistoryInDTO.setGatewayId("853f83b8-907d-4633-8f63-bc259fc4b70a");
+//        queryDataHistoryInDTO.setStartTime("20181030T000000Z");
+//        queryDataHistoryInDTO.setPageNo(0);
+//        queryDataHistoryInDTO.setPageSize( Integer.MAX_VALUE );//10个为一组
+//        queryDataHistoryInDTO.setStartTime("20181029T000000Z");
 
+        String name = getName("bced3021-1516-4535-b4f7-607a75435e9c");
+        System.out.println(name);
+        name = getName("72bbc6b0-b5a8-4d36-a0bf-a467671f5d5f");
+        System.out.println(name);
+        name = getName("853f83b8-907d-4633-8f63-bc259fc4b70a");
+        System.out.println(name);
+        name = getName("523a54c7-003e-482d-acba-6f95178821a8");
+        System.out.println(name);
+        name = getName("017d80be-2c8f-47b7-8bc7-fabb8e04d83b");
+        System.out.println(name);
 
-
-
-
-        DataCollection collection = new DataCollection(DeviceRemoteSearchUtil.northApiClient);
-
-        QueryDataHistoryOutDTO queryDataHistoryOutDTO;
-
-        QueryDataHistoryInDTO queryDataHistoryInDTO = new QueryDataHistoryInDTO();
-
-        queryDataHistoryInDTO.setDeviceId("853f83b8-907d-4633-8f63-bc259fc4b70a");
-        queryDataHistoryInDTO.setGatewayId("853f83b8-907d-4633-8f63-bc259fc4b70a");
-        queryDataHistoryInDTO.setStartTime("20181030T000000Z");
-        queryDataHistoryInDTO.setPageNo(0);
-        queryDataHistoryInDTO.setPageSize( Integer.MAX_VALUE );//10个为一组
-        queryDataHistoryInDTO.setStartTime("20181029T000000Z");
-
-        String name = getName("853f83b8-907d-4633-8f63-bc259fc4b70a");
-
-        queryDataHistoryOutDTO = collection.queryDataHistory(queryDataHistoryInDTO,DeviceRemoteSearchUtil.appId,DeviceRemoteSearchUtil.authOutDTO.getAccessToken());
-
-        List<DeviceDataHistoryDTO> data = queryDataHistoryOutDTO.getDeviceDataHistoryDTOs();
-        List<Temp> tempList = new LinkedList<>();
-
-        for(int i = data.size()-1; i>=0; i--){
-            DeviceDataHistoryDTO temp  = data.get(i);
-
-            if(temp.getServiceId().equals("DataMinute10")){
-                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd'T'HHmmss'Z'");
-                SimpleDateFormat simpleDateFormat1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                Calendar calendar = Calendar.getInstance();
-                calendar.setTime( simpleDateFormat.parse( temp.getTimestamp() ) ) ;
-                calendar.set(Calendar.HOUR_OF_DAY, calendar.get(Calendar.HOUR_OF_DAY)+8);
-                calendar.set(Calendar.MINUTE,10);
-
-                tempList.add( new Temp(name, temp.getData().get("temperature").asText(), simpleDateFormat1.format( calendar.getTime() ) ) );
-
-            }
-
-            if(temp.getServiceId().equals("DataMinute20")){
-                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd'T'HHmmss'Z'");
-                SimpleDateFormat simpleDateFormat1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                Calendar calendar = Calendar.getInstance();
-                calendar.setTime( simpleDateFormat.parse( temp.getTimestamp() ) ) ;
-                calendar.set(Calendar.HOUR_OF_DAY, calendar.get(Calendar.HOUR_OF_DAY)+8);
-                calendar.set(Calendar.MINUTE,20);
-
-                tempList.add( new Temp(name, temp.getData().get("temperature").asText(), simpleDateFormat1.format( calendar.getTime() ) ) );
-
-            }
-
-            if(temp.getServiceId().equals("DataMinute30")){
-                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd'T'HHmmss'Z'");
-                SimpleDateFormat simpleDateFormat1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                Calendar calendar = Calendar.getInstance();
-                calendar.setTime( simpleDateFormat.parse( temp.getTimestamp() ) ) ;
-                calendar.set(Calendar.HOUR_OF_DAY, calendar.get(Calendar.HOUR_OF_DAY)+8);
-                calendar.set(Calendar.MINUTE,30);
-
-                tempList.add( new Temp(name, temp.getData().get("temperature").asText(), simpleDateFormat1.format( calendar.getTime() ) ) );
-
-            }
-
-            if(temp.getServiceId().equals("DataMinute40")){
-                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd'T'HHmmss'Z'");
-                SimpleDateFormat simpleDateFormat1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                Calendar calendar = Calendar.getInstance();
-                calendar.setTime( simpleDateFormat.parse( temp.getTimestamp() ) ) ;
-                calendar.set(Calendar.HOUR_OF_DAY, calendar.get(Calendar.HOUR_OF_DAY)+8);
-                calendar.set(Calendar.MINUTE,40);
-
-                tempList.add( new Temp(name, temp.getData().get("temperature").asText(), simpleDateFormat1.format( calendar.getTime() ) ) );
-
-            }
-
-            if(temp.getServiceId().equals("DataMinute50")){
-                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd'T'HHmmss'Z'");
-                SimpleDateFormat simpleDateFormat1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                Calendar calendar = Calendar.getInstance();
-                calendar.setTime( simpleDateFormat.parse( temp.getTimestamp() ) ) ;
-                calendar.set(Calendar.HOUR_OF_DAY, calendar.get(Calendar.HOUR_OF_DAY)+8);
-                calendar.set(Calendar.MINUTE,50);
-
-                tempList.add( new Temp(name, temp.getData().get("temperature").asText(), simpleDateFormat1.format( calendar.getTime() ) ) );
-
-            }
-
-            if(temp.getServiceId().equals("DataMinute60")){
-                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd'T'HHmmss'Z'");
-                SimpleDateFormat simpleDateFormat1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                Calendar calendar = Calendar.getInstance();
-                calendar.setTime( simpleDateFormat.parse( temp.getTimestamp() ) ) ;
-                calendar.set(Calendar.HOUR_OF_DAY, calendar.get(Calendar.HOUR_OF_DAY)+8);
-                calendar.set(Calendar.MINUTE,60);
-
-                tempList.add( new Temp(name, temp.getData().get("temperature").asText(), simpleDateFormat1.format( calendar.getTime() ) ) );
-
-            }
-        }
-
-
-        for(Temp temp : tempList){
-            tempDao.save(temp);
-        }
-
-
-        System.out.println("aa");
+//
+//        queryDataHistoryOutDTO = collection.queryDataHistory(queryDataHistoryInDTO,DeviceRemoteSearchUtil.appId,DeviceRemoteSearchUtil.authOutDTO.getAccessToken());
+//
+//        List<DeviceDataHistoryDTO> data = queryDataHistoryOutDTO.getDeviceDataHistoryDTOs();
+//        List<Temp> tempList = new LinkedList<>();
+//
+//        for(int i = data.size()-1; i>=0; i--){
+//            DeviceDataHistoryDTO temp  = data.get(i);
+//
+//            if(temp.getServiceId().equals("DataMinute10")){
+//                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd'T'HHmmss'Z'");
+//                SimpleDateFormat simpleDateFormat1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//                Calendar calendar = Calendar.getInstance();
+//                calendar.setTime( simpleDateFormat.parse( temp.getTimestamp() ) ) ;
+//                calendar.set(Calendar.HOUR_OF_DAY, calendar.get(Calendar.HOUR_OF_DAY)+8);
+//                calendar.set(Calendar.MINUTE,10);
+//
+//                tempList.add( new Temp(name, temp.getData().get("temperature").asText(), simpleDateFormat1.format( calendar.getTime() ) ) );
+//
+//            }
+//
+//            if(temp.getServiceId().equals("DataMinute20")){
+//                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd'T'HHmmss'Z'");
+//                SimpleDateFormat simpleDateFormat1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//                Calendar calendar = Calendar.getInstance();
+//                calendar.setTime( simpleDateFormat.parse( temp.getTimestamp() ) ) ;
+//                calendar.set(Calendar.HOUR_OF_DAY, calendar.get(Calendar.HOUR_OF_DAY)+8);
+//                calendar.set(Calendar.MINUTE,20);
+//
+//                tempList.add( new Temp(name, temp.getData().get("temperature").asText(), simpleDateFormat1.format( calendar.getTime() ) ) );
+//
+//            }
+//
+//            if(temp.getServiceId().equals("DataMinute30")){
+//                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd'T'HHmmss'Z'");
+//                SimpleDateFormat simpleDateFormat1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//                Calendar calendar = Calendar.getInstance();
+//                calendar.setTime( simpleDateFormat.parse( temp.getTimestamp() ) ) ;
+//                calendar.set(Calendar.HOUR_OF_DAY, calendar.get(Calendar.HOUR_OF_DAY)+8);
+//                calendar.set(Calendar.MINUTE,30);
+//
+//                tempList.add( new Temp(name, temp.getData().get("temperature").asText(), simpleDateFormat1.format( calendar.getTime() ) ) );
+//
+//            }
+//
+//            if(temp.getServiceId().equals("DataMinute40")){
+//                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd'T'HHmmss'Z'");
+//                SimpleDateFormat simpleDateFormat1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//                Calendar calendar = Calendar.getInstance();
+//                calendar.setTime( simpleDateFormat.parse( temp.getTimestamp() ) ) ;
+//                calendar.set(Calendar.HOUR_OF_DAY, calendar.get(Calendar.HOUR_OF_DAY)+8);
+//                calendar.set(Calendar.MINUTE,40);
+//
+//                tempList.add( new Temp(name, temp.getData().get("temperature").asText(), simpleDateFormat1.format( calendar.getTime() ) ) );
+//
+//            }
+//
+//            if(temp.getServiceId().equals("DataMinute50")){
+//                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd'T'HHmmss'Z'");
+//                SimpleDateFormat simpleDateFormat1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//                Calendar calendar = Calendar.getInstance();
+//                calendar.setTime( simpleDateFormat.parse( temp.getTimestamp() ) ) ;
+//                calendar.set(Calendar.HOUR_OF_DAY, calendar.get(Calendar.HOUR_OF_DAY)+8);
+//                calendar.set(Calendar.MINUTE,50);
+//
+//                tempList.add( new Temp(name, temp.getData().get("temperature").asText(), simpleDateFormat1.format( calendar.getTime() ) ) );
+//
+//            }
+//
+//            if(temp.getServiceId().equals("DataMinute60")){
+//                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd'T'HHmmss'Z'");
+//                SimpleDateFormat simpleDateFormat1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//                Calendar calendar = Calendar.getInstance();
+//                calendar.setTime( simpleDateFormat.parse( temp.getTimestamp() ) ) ;
+//                calendar.set(Calendar.HOUR_OF_DAY, calendar.get(Calendar.HOUR_OF_DAY)+8);
+//                calendar.set(Calendar.MINUTE,60);
+//
+//                tempList.add( new Temp(name, temp.getData().get("temperature").asText(), simpleDateFormat1.format( calendar.getTime() ) ) );
+//
+//            }
+//        }
+//
+//
+//        for(Temp temp : tempList){
+//            tempDao.save(temp);
+//        }
+//
+//
+//        System.out.println("aa");
 
     }
 
@@ -242,5 +248,18 @@ public class DemoApplicationTests {
         }
 
         return "";
+    }
+
+
+    @Test
+    public void refresh(){
+
+        try {
+            DeviceRemoteSearchUtil.initRemoteServer();
+
+            deviceInfoSearchService.refreshDevicesInfoFromRemoteServer_();
+        } catch (NorthApiException e) {
+            e.printStackTrace();
+        }
     }
 }

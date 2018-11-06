@@ -22,6 +22,8 @@ public interface DeviceInfoSearchService {
 
     void refreshDevicesInfoFromRemoteServer() throws NorthApiException;
 
+    void refreshDevicesInfoFromRemoteServer_() throws NorthApiException;
+
     String getIEMENumberByDeviceId(String deviceId) throws NorthApiException;
 
     String getDeviceNameFromRemoteServer(String deviceId) throws NorthApiException;

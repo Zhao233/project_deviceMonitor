@@ -6,15 +6,16 @@ import com.huawei.iotplatform.client.dto.*;
 import com.huawei.iotplatform.client.invokeapi.DataCollection;
 import com.zx.demo.domain.Device;
 import com.zx.demo.domain.DeviceInfo;
+import com.zx.demo.domain.User;
 import com.zx.demo.model.DeviceInfo_all;
 import com.zx.demo.model.DeviceInfo_detail;
 import com.zx.demo.model.DeviceInfo_saveToDataBase;
 import com.zx.demo.service.DeviceInfoSearchService;
 import com.zx.demo.service.DeviceInfoService;
 import com.zx.demo.service.DeviceService;
+import com.zx.demo.service.UserService;
 import com.zx.demo.util.DeviceRemoteSearchUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -39,6 +40,9 @@ public class DeviceInfoSearchServiceImp implements DeviceInfoSearchService {
 
     @Autowired
     DeviceService deviceService;
+
+    @Autowired
+    UserService userService;
 
 
     @Override
@@ -186,7 +190,6 @@ public class DeviceInfoSearchServiceImp implements DeviceInfoSearchService {
     public void refreshDevicesInfoFromRemoteServer() throws NorthApiException {
         Pageable pageable = new PageRequest(0, Integer.MAX_VALUE, new Sort(Sort.Direction.DESC, "id"));
 
-        Page<Device> page;
         List<Device> deviceList_temp = deviceService.getAllDevice(pageable).getContent();
 
         for(Device device_temp : deviceList_temp){
@@ -195,12 +198,32 @@ public class DeviceInfoSearchServiceImp implements DeviceInfoSearchService {
             if(deviceInfo != null){
                 deviceInfoService.addDeviceInfo(deviceInfo);
             }
-
         }
     }
 
     @Override
+    public void refreshDevicesInfoFromRemoteServer_() throws NorthApiException {
+        List<User> userList = userService.findAll();
 
+        for(User userTemp : userList){
+            DeviceRemoteSearchUtil.appId = userTemp.getAppId();
+            DeviceRemoteSearchUtil.secret = userTemp.getSecret_service();
+            DeviceRemoteSearchUtil.refreshToken();
+
+            List<Device> deviceList = deviceService.getDevicesByUserId(userTemp.getId());
+
+            for(Device deviceTemp : deviceList){
+                DeviceInfo deviceInfo = getDeviceInfoFromRemoteServer( deviceTemp.getMac_id() );
+
+                if(deviceInfo != null){
+                    //deviceInfoService.addDeviceInfo(deviceInfo);
+                    System.out.println(deviceInfo.toString());
+                }
+            }
+        }
+    }
+
+    @Override
     public String getIEMENumberByDeviceId(String deviceId) throws NorthApiException {
         DataCollection collection = new DataCollection(DeviceRemoteSearchUtil.northApiClient);
 
