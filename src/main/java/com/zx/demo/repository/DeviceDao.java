@@ -36,4 +36,7 @@ public interface DeviceDao extends JpaRepository<Device, Long> {
     @Query(value = "select device.mac_id from Device device where device.id = ?1")
     String getDevice_mac_id(long id);
 
+    @Query(value = "select device from Device device where device.user_id = ?1")
+    List<Device> getDevicesByUserId(long userId);
+
 }

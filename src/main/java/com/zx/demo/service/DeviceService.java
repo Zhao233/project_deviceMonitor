@@ -4,6 +4,8 @@ import com.zx.demo.domain.Device;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
+
 public interface DeviceService{
     Page<Device> getAllDevice(Pageable pageable);
     Page<Device> getAllDevice(String search, Pageable pageable);
@@ -27,4 +29,6 @@ public interface DeviceService{
     String getDeviceNameById(long id);
 
     String getDevice_mac_idById(long id);
+
+    List<Device> getDevicesByUserId(long userId);
 }

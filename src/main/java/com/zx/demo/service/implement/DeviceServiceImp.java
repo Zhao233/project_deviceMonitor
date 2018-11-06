@@ -8,6 +8,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service(value = "deviceService")
 public class DeviceServiceImp implements DeviceService {
 
@@ -85,5 +87,10 @@ public class DeviceServiceImp implements DeviceService {
     @Override
     public String getDevice_mac_idById(long id){
         return deviceDao.getDevice_mac_id(id);
+    }
+
+    @Override
+    public List<Device> getDevicesByUserId(long userId){
+        return deviceDao.getDevicesByUserId(userId);
     }
 }
