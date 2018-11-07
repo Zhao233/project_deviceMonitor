@@ -104,11 +104,14 @@ public interface DeviceInfoDao extends JpaRepository<DeviceInfo, Long> {
             "device.id,             device.mac_id,            device.type,              " +
             "device.level,              device.name,              deviceInfo.statusOfLight, " +
             "deviceInfo.statusOfCharge, deviceInfo.temperature,   deviceInfo.humidity," +
-            "max (deviceInfo.updateTime), device.imei_id) " +
+            "deviceInfo.updateTime, device.imei_id) " +
 
-            "from DeviceInfo deviceInfo inner join Device device on deviceInfo.device_id = device.id where device.user_id=?2 order by deviceInfo.updateTime asc")
+            "from DeviceInfo deviceInfo " +
+            "inner join Device device " +
+            "on deviceInfo.device_id = device.id " +
+            "where device.user_id=?1 " +
+            "order by deviceInfo.updateTime asc")
     Page<DeviceInfo_all> getLatestDeviceInfo_all(Pageable pageable, long userId);
-//    Page<DeviceInfo_all> getLatestDeviceInfo_all(Pageable pageable, long userId);
 
     /**
      * 获取设备信息（详细）
@@ -119,7 +122,7 @@ public interface DeviceInfoDao extends JpaRepository<DeviceInfo, Long> {
             "deviceInfo.statusOfCharge, deviceInfo.statusOfLight,   deviceInfo.temperature, "     +
             "deviceInfo.humidity,       deviceInfo.updateTime, device.imei_id ) " +
 
-            "from DeviceInfo deviceInfo inner join Device device on deviceInfo.device_id = device.id where device.id = ?1 order by deviceInfo.updateTime asc")
+            "from DeviceInfo deviceInfo inner join Device device on deviceInfo.device_id = device.id where device.id = ?1 order by deviceInfo.updateTime desc")
     Page<DeviceInfo_detail> gerDeviceInfo_detail(Pageable pageable, int deviceId);
 //    Page<DeviceInfo_detail> gerDeviceInfo_detail(int deviceId);
 //

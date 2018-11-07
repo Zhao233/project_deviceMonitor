@@ -25,7 +25,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Service("deviceInfoService")
-public abstract class DeviceInfoServiceImp implements DeviceInfoService {
+public class DeviceInfoServiceImp implements DeviceInfoService {
     @Autowired
     private DeviceInfoDao deviceInfoDao;
 

@@ -278,7 +278,6 @@ public interface DeviceInfoService {
 //    }
 
     Page<DeviceInfo_all> getDeviceInfo_all(Pageable pageable, long userId);
-
     DeviceInfo_detail getDeviceInfo_detail(Pageable pageable, int deviceId);
 
     Map<String, Object> getTemperatureRecord_Local(long id, String dateTime, int select_mode);

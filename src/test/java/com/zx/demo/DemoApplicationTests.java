@@ -7,6 +7,7 @@ import com.huawei.iotplatform.client.dto.QueryDataHistoryOutDTO;
 import com.huawei.iotplatform.client.dto.QueryDeviceDataOutDTO;
 import com.huawei.iotplatform.client.invokeapi.DataCollection;
 import com.zx.demo.domain.*;
+import com.zx.demo.model.DeviceInfo_all;
 import com.zx.demo.repository.AdminDao;
 import com.zx.demo.repository.DeviceDao;
 import com.zx.demo.repository.DeviceInfoDao;
@@ -19,6 +20,7 @@ import org.junit.runner.RunWith;
 import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -95,8 +97,12 @@ public class DemoApplicationTests {
     private TempDao tempDao;
 
     @Test
-    public void get() throws NorthApiException, ParseException {
+    public void get() {
+        Pageable pageable = new PageRequest(0, 50, new Sort(Sort.Direction.DESC, "id"));
 
+        Page<DeviceInfo_all> page = deviceInfoDao.getLatestDeviceInfo_all(pageable,0);
+
+        System.out.println("s");
     }
 
     public String getName(String deviceId){
