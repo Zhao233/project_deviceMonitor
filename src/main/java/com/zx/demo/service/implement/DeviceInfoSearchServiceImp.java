@@ -44,7 +44,6 @@ public class DeviceInfoSearchServiceImp implements DeviceInfoSearchService {
     @Autowired
     UserService userService;
 
-
     @Override
     public DeviceInfo getDeviceInfoFromRemoteServer(String deviceId) {
         DataCollection collection = new DataCollection(DeviceRemoteSearchUtil.northApiClient);
@@ -208,7 +207,7 @@ public class DeviceInfoSearchServiceImp implements DeviceInfoSearchService {
         for(User userTemp : userList){
             DeviceRemoteSearchUtil.appId = userTemp.getAppId();
             DeviceRemoteSearchUtil.secret = userTemp.getSecret_service();
-            DeviceRemoteSearchUtil.refreshToken();
+            DeviceRemoteSearchUtil.initRemoteServer();
 
             List<Device> deviceList = deviceService.getDevicesByUserId(userTemp.getId());
 
