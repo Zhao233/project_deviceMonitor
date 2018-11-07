@@ -100,30 +100,41 @@ public interface DeviceInfoDao extends JpaRepository<DeviceInfo, Long> {
     /**
      * 获取设备信息（概述）
      * */
+//    @Query(value = "select new com.zx.demo.model.DeviceInfo_all(" +
+//            "device.id,                 device.mac_id,            device.type,              " +
+//            "device.level,              device.name,              deviceInfo.statusOfLight, " +
+//            "deviceInfo.statusOfCharge, deviceInfo.temperature,   deviceInfo.humidity," +
+//            "deviceInfo.updateTime,     device.imei_id) " +
+//
+//            "from DeviceInfo deviceInfo " +
+//            "inner join Device device " +
+//            "on deviceInfo.device_id = device.id " +
+//            "where device.user_id=?1 " +
+//            "order by deviceInfo.updateTime asc")
     @Query(value = "select new com.zx.demo.model.DeviceInfo_all(" +
-            "device.id,             device.mac_id,            device.type,              " +
+            "device.id,                 device.mac_id,            device.type,              " +
             "device.level,              device.name,              deviceInfo.statusOfLight, " +
             "deviceInfo.statusOfCharge, deviceInfo.temperature,   deviceInfo.humidity," +
-            "deviceInfo.updateTime, device.imei_id) " +
+            "deviceInfo.updateTime,     device.imei_id) " +
 
             "from DeviceInfo deviceInfo " +
             "inner join Device device " +
             "on deviceInfo.device_id = device.id " +
             "where device.user_id=?1 " +
-            "order by deviceInfo.updateTime asc")
+            "order by deviceInfo.updateTime desc")
     Page<DeviceInfo_all> getLatestDeviceInfo_all(Pageable pageable, long userId);
 
     /**
      * 获取设备信息（详细）
      * */
-    @Query(value = "select new com.zx.demo.model.DeviceInfo_detail( deviceInfo.id, device.mac_id,  "      +
+    @Query(value = "select new com.zx.demo.model.DeviceInfo_detail( device.id, device.mac_id,  "      +
             "device.name,               device.attributionOfDevice, device.organizationId, "      +
             "device.addressOfDevice,    deviceInfo.times,           deviceInfo.signalIntensity, " +
             "deviceInfo.statusOfCharge, deviceInfo.statusOfLight,   deviceInfo.temperature, "     +
             "deviceInfo.humidity,       deviceInfo.updateTime, device.imei_id ) " +
 
             "from DeviceInfo deviceInfo inner join Device device on deviceInfo.device_id = device.id where device.id = ?1 order by deviceInfo.updateTime desc")
-    Page<DeviceInfo_detail> gerDeviceInfo_detail(Pageable pageable, int deviceId);
+    Page<DeviceInfo_detail> getDeviceInfo_detail(Pageable pageable, long deviceId);
 //    Page<DeviceInfo_detail> gerDeviceInfo_detail(int deviceId);
 //
 ////    @Query(value = "select count(deviceInfo) from DeviceInfo deviceInfo where device_mac_id=?1 ")

@@ -35,8 +35,8 @@ public class DeviceInfoServiceImp implements DeviceInfoService {
     }
 
     @Override
-    public DeviceInfo_detail getDeviceInfo_detail(Pageable pageable, int deviceId){
-        Page<DeviceInfo_detail> page = deviceInfoDao.gerDeviceInfo_detail(pageable, deviceId);
+    public DeviceInfo_detail getDeviceInfo_detail(Pageable pageable, long deviceId){
+        Page<DeviceInfo_detail> page = deviceInfoDao.getDeviceInfo_detail(pageable, deviceId);
 
         if(page.getTotalPages() > 0){
             return page.getContent().get(0);
