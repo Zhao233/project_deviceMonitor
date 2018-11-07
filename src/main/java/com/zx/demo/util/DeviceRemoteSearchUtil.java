@@ -25,14 +25,11 @@ public class DeviceRemoteSearchUtil {
     public static Authentication authentication = null;
     public static AuthOutDTO         authOutDTO = null;
 
-
     public static final int POSITION_DATA_1 = 1;//六组数据中取第二组
     public static final int POSITION_DATA_2 = 4;//六组数据中取第
 
     public static String                  appId = "wukHyW0OkG2xPbShcsev3zolbfEa";
     public static String                 secret = "8CYF7_Nx7IaoLM2jB1mzcMMyA3Ya";
-//    public static String                  appId = "RLw165YDYe0X_GtouiMLbNF8sZUa";
-//    public static String                 secret = "CvQucLCY1QaDz7YEpt4TKY3xlawa";
 
     private static LinkedList<String> appIdList;
     private static LinkedList<String> secretList;
@@ -60,8 +57,6 @@ public class DeviceRemoteSearchUtil {
     }
 
     public static void refreshToken() throws NorthApiException {
-        //authOutDTO = authentication.getAuthToken();
-
         AuthRefreshInDTO authRefreshInDTO = new AuthRefreshInDTO();
         authRefreshInDTO.setAppId(clientInfo.getAppId());
         authRefreshInDTO.setSecret(clientInfo.getSecret());

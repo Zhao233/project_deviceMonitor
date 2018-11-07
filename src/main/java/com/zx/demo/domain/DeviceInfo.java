@@ -1,5 +1,6 @@
 package com.zx.demo.domain;
 
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -8,8 +9,7 @@ import java.sql.Timestamp;
 
 @Entity
 @Table(name = "device_info")
-@Getter
-@Setter
+@Data
 public class DeviceInfo{
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)

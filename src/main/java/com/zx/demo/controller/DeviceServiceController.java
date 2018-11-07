@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.servlet.http.HttpServletRequest;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -34,7 +33,6 @@ public class DeviceServiceController {
     @ResponseBody
     public Map<String, Object> search(@RequestParam(value = "offset", defaultValue = "0") Integer offset,
                                       @RequestParam(value = "limit", defaultValue = "10") Integer limit,
-                                      HttpServletRequest request,
                                       @RequestParam(value = "limit", defaultValue = "10", required = false) Integer type,
                                       @RequestParam(value = "limit", defaultValue = "10", required = false) Integer level,
                                       @RequestParam(value = "limit", defaultValue = "10", required = false) Integer statusOfLight,
@@ -45,10 +43,10 @@ public class DeviceServiceController {
                                       ) {
         Map<String, Object> p = new HashMap<>();
 
-        User user = UserUtil.getCureentUser(request);
+        User user = UserUtil.getCureentUser();
 
         try {
-            Map<String, Object> res = deviceInfoService.getAll_latest(offset, limit);
+            Map<String, Object> res = deviceInfoService.getAll_latest(offset, limit, user.getId());
 
             List<DeviceInfo_all> list = (LinkedList)res.get("deviceInfo_allList");
 
@@ -66,20 +64,19 @@ public class DeviceServiceController {
     @RequestMapping("/searchAll_test")
     @ResponseBody
     public Map<String, Object> searchTest(@RequestParam(value = "offset", defaultValue = "0") Integer offset,
-                                      @RequestParam(value = "limit", defaultValue = "10") Integer limit,
-                                      HttpServletRequest request
+                                      @RequestParam(value = "limit", defaultValue = "10") Integer limit
     ) {
         Map<String, Object> p = new HashMap<>();
 
-        User user = UserUtil.getCureentUser(request);
+        User user = UserUtil.getCureentUser();
 
         Pageable pageable = new PageRequest(offset, limit, new Sort(Sort.Direction.DESC, "id"));
         Page<DeviceInfo> page;
 
-        page = deviceInfoService.getAll_latest(pageable,user.getId());
+        //page = deviceInfoService.getAll_latest(pageable,user.getId());
 
-        p.put("total", page.getTotalPages());
-        p.put("rows", page.getContent());
+        //p.put("total", page.getTotalPages());
+        //p.put("rows", page.getContent());
 
         return p;
     }

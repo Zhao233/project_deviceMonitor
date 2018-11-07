@@ -14,10 +14,15 @@ import java.util.Map;
 public interface DeviceInfoService {
     Map<String, Object> getAll_latest(int offset, int pageSize) throws NorthApiException, ParseException;
 
+    Map<String, Object> getAll_latest(int pageNo, int pageSize, long userId) throws NorthApiException, ParseException;
 
-    Page<DeviceInfo> getAll_latest(Pageable pageable, long userId);
+    Page<DeviceInfo> getAll_latest_(Pageable pageable, long userId);
 
     Map<String, Object> getAllDeviceInfoFromRemoteService(int pageNo, int pageSize) throws NorthApiException, ParseException;
+
+    Map<String, Object> getAllDeviceInfoFromRemoteService_(int pageNo, int pageSize) throws NorthApiException, ParseException;
+
+    Page<DeviceInfo> getAllDeviceInfoFromRemoteService_(Pageable pageable, long userId) throws NorthApiException, ParseException;
 
     DeviceInfo getDeviceInfoById(long id);
 

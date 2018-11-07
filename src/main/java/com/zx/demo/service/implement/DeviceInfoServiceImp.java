@@ -25,7 +25,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Service("deviceInfoService")
-public class DeviceInfoServiceImp implements DeviceInfoService {
+public abstract class DeviceInfoServiceImp implements DeviceInfoService {
 
     @Autowired
     private DeviceService deviceService;
@@ -34,8 +34,7 @@ public class DeviceInfoServiceImp implements DeviceInfoService {
     private DeviceInfoDao deviceInfoDao;
 
 
-    @Autowired
-    private DeviceInfoSearchService deviceInfoSearchService;
+
 
 //    @Override
 //    public Page<DeviceInfo_all> getAll_latest(Pageable pageable) {
@@ -61,7 +60,7 @@ public class DeviceInfoServiceImp implements DeviceInfoService {
      * 进行远程搜索
      * */
     @Override
-    public Map<String, Object> getAll_latest(int pageNo, int pageSize) throws NorthApiException, ParseException {
+    public Map<String, Object> getAll_latest(int pageNo, int pageSize, long userId) throws NorthApiException, ParseException {
         Map<String, Object> res = new HashMap<>();
 
         Map<String ,Object> map = getAllDeviceInfoFromRemoteService(pageNo, pageSize);
@@ -99,10 +98,8 @@ public class DeviceInfoServiceImp implements DeviceInfoService {
     }
 
     @Override
-    public Page<DeviceInfo> getAll_latest(Pageable pageable, long userId){
-        HashMap<String, Object> map = new HashMap<>();
-
-        return deviceInfoDao.getLatestDeviceInfo(userId,pageable);
+    public Page<DeviceInfo> getAll_latest_(Pageable pageable, long userId){
+        return deviceInfoDao.getLatestDeviceInfo_all(userId,pageable);
     }
 
     /**
@@ -180,6 +177,11 @@ public class DeviceInfoServiceImp implements DeviceInfoService {
         res.put("total",queryDevicesOutDTO.getTotalCount());
 
         return res;
+    }
+
+    @Override
+    public Page<DeviceInfo> getAllDeviceInfoFromRemoteService_(Pageable pageable, long userId) throws NorthApiException, ParseException {
+        return deviceInfoDao.getLatestDeviceInfo_all(userId, pageable);
     }
 
     @Override
@@ -581,64 +583,6 @@ public class DeviceInfoServiceImp implements DeviceInfoService {
     public void addDeviceInfo(DeviceInfo deviceInfo) {
         deviceInfoDao.save(deviceInfo);
     }
-
-    /**
-     * CRUD
-     * */
-//    @Override
-//    public DeviceInfo getDeviceInfoById(long id) {
-//        DeviceInfo deviceInfo = deviceInfoDao.getDeviceInfoById_latest(id);
-//
-//        return deviceInfo;
-//    }
-//
-//    @Override
-//    public Page<DeviceInfo_detail> getDeviceInfoDetailById(long id, Pageable pageable) {
-//        Page<DeviceInfo_detail> page =  deviceService.getAllDevice(id, pageable);
-//
-//        DeviceInfo_detail deviceInfo_detail = page.getContent().get(0);
-//
-//        deviceInfo_detail.setTimes( deviceInfoDao.getRecordTimesByDeviceMacId( deviceInfo_detail.getDeviceId())  );
-//
-//        try {
-//
-//            deviceInfo_detail = deviceInfoSearchService.replaceDeviceInfoFromRemoteServer(deviceInfo_detail);
-//
-//        } catch (NorthApiException e) {
-//            e.printStackTrace();
-//        }
-//        return page;
-//    }
-//
-//    @Override
-//    public String getOrganizationName(long organizationId) {
-//        return null;
-//    }
-//
-//    @Override
-//    public List<String> getTemperatureRecord(long id, String dateTime) {
-//        return deviceInfoDao.getTemperatureRecord(id,dateTime);
-//    }
-//
-//    @Override
-//    public List<String> getUpdateTimeRecord(long id, String dateTime) {
-//        return deviceInfoDao.getUpdateTimeRecord(id,dateTime);
-//    }
-//
-//    @Override
-//    public List<String> getHumidityRecord(long id, String dateTime) {
-//        return deviceInfoDao.getHumidityRecord(id,dateTime);
-//    }
-//
-//    @Override
-//    public int getSearchTimes(String device_mac_id) {
-//        return deviceInfoDao.getRecordTimesByDeviceMacId(device_mac_id);
-//    }
-//
-//    @Override
-//    public void addDeviceInfo(DeviceInfo deviceInfo){
-//        deviceInfoDao.save(deviceInfo);
-//    }
 
     @Override
     public List<DeviceInfo_saveToDataBase> getAllDeviceMacIdAndDeviceId() {

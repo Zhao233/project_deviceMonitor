@@ -207,6 +207,7 @@ public class DeviceInfoSearchServiceImp implements DeviceInfoSearchService {
         for(User userTemp : userList){
             DeviceRemoteSearchUtil.appId = userTemp.getAppId();
             DeviceRemoteSearchUtil.secret = userTemp.getSecret_service();
+            //重新获取accessToken
             DeviceRemoteSearchUtil.initRemoteServer();
 
             List<Device> deviceList = deviceService.getDevicesByUserId(userTemp.getId());
