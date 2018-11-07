@@ -35,8 +35,8 @@ import java.util.List;
 
 @Service("deviceInfoSearchService")
 public class DeviceInfoSearchServiceImp implements DeviceInfoSearchService {
-    @Autowired
-    DeviceInfoService deviceInfoService;
+//    @Autowired
+//    DeviceInfoService deviceInfoService;
 
     @Autowired
     DeviceService deviceService;
@@ -195,7 +195,7 @@ public class DeviceInfoSearchServiceImp implements DeviceInfoSearchService {
             DeviceInfo deviceInfo = getDeviceInfoFromRemoteServer( device_temp.getMac_id() );
 
             if(deviceInfo != null){
-                deviceInfoService.addDeviceInfo(deviceInfo);
+                //deviceInfoService.addDeviceInfo(deviceInfo);
             }
         }
     }
@@ -301,18 +301,4 @@ public class DeviceInfoSearchServiceImp implements DeviceInfoSearchService {
         return dataCollection.queryDataHistory(dataHistoryInDTO,DeviceRemoteSearchUtil.appId,DeviceRemoteSearchUtil.secret);
     }
 
-    @Override
-    public void Test() throws NorthApiException {
-        List<DeviceInfo_saveToDataBase> deviceIdList = deviceInfoService.getAllDeviceMacIdAndDeviceId();
-
-        DataCollection collection = new DataCollection(DeviceRemoteSearchUtil.northApiClient);
-
-        for (DeviceInfo_saveToDataBase temp_deviceInfo : deviceIdList) {
-            QueryDeviceDataOutDTO deviceDataOutDTO = collection.queryDeviceData(temp_deviceInfo.getDevice_mac_id(), DeviceRemoteSearchUtil.appId, DeviceRemoteSearchUtil.authOutDTO.getAccessToken());
-
-            DeviceInfo[] deviceInfo = DeviceRemoteSearchUtil.getDeviceInfo(deviceDataOutDTO);
-
-            DeviceRemoteSearchUtil.getDeviceInfo(deviceDataOutDTO);
-        }
-    }
 }

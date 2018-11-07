@@ -96,11 +96,7 @@ public class DemoApplicationTests {
 
     @Test
     public void get() throws NorthApiException, ParseException {
-        Pageable pageable = new PageRequest(0, 50, new Sort(Sort.Direction.DESC, "id"));
 
-        deviceInfoDao.getLatestDeviceInfo_all(1,pageable);
-
-        System.out.println("asdfasdfa");
     }
 
     public String getName(String deviceId){

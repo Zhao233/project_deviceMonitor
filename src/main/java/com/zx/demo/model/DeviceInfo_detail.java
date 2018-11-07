@@ -18,7 +18,7 @@ public class DeviceInfo_detail {
     int organizationId;
     String addressOfDevice;
     int times;
-    int signalIntensity;
+    String signalIntensity;
     int statusOfCharge;
     int statusOfLight;
     String temperature;
@@ -30,7 +30,7 @@ public class DeviceInfo_detail {
 
     public DeviceInfo_detail(long   deviceId,                  String device_mac_id,        String name,
                              String attributionOfDevice, int    organizationId,  String addressOfDevice,
-                             int    times,               int signalIntensity, int    statusOfCharge,
+                             int    times,               String signalIntensity, int    statusOfCharge,
                              int    statusOfLight,       String temperature,     String humidity,
                              Date   updateTime, String imei_id) {
 

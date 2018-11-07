@@ -36,5 +36,4 @@ public interface DeviceInfoSearchService {
 
     QueryDataHistoryOutDTO getDeviceInfo_allByDeviceIdFromRemoteServer(int pageSize, int pageNo, String deviceId) throws NorthApiException;
 
-    void Test() throws NorthApiException;
 }

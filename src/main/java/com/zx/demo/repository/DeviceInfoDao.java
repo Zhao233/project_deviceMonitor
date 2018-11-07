@@ -10,6 +10,7 @@ package com.zx.demo.repository;//package com.zx.demo.repository;
 //import org.springframework.data.jpa.repository.JpaRepository;
 //import org.springframework.data.jpa.repository.Query;
 import com.zx.demo.domain.DeviceInfo;
+import com.zx.demo.model.DeviceInfo_all;
 import com.zx.demo.model.DeviceInfo_detail;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -81,18 +82,12 @@ public interface DeviceInfoDao extends JpaRepository<DeviceInfo, Long> {
 //    List<String> getUpdateTimeRecord(long id,String dateTime);
 //
 
-    @Query(value = " select humidity " +
-            "from device_info " +
-            "where device_info.device_id = ?1 " +
-            "and unix_timestamp(device_info.update_time) >= unix_timestamp(?2) " +
-            "order by device_info.update_time asc limit 24", nativeQuery = true)
-    List<String> getHumidityRecord(long id,String dateTime);
-
     /**
      * 温度搜索，本地服务器
      * */
     @Query(value = "select * from device_info where device_info.device_id=?1 and unix_timestamp(device_info.modify_time_search_local)>=unix_timestamp(?2) limit 48",nativeQuery = true)
     List<DeviceInfo> getTemperatureRecord_local(long id, String dateTime);
+//    List<DeviceInfo> getTemperatureRecord_local(long id, String dateTime);
 
     /**
      * 湿度搜索，本地服务器
@@ -100,14 +95,33 @@ public interface DeviceInfoDao extends JpaRepository<DeviceInfo, Long> {
     @Query(value = "select * from device_info where device_info.device_id=?1 and unix_timestamp(device_info.modify_time_search_local)>=unix_timestamp(?2) limit 48",nativeQuery = true)
     List<DeviceInfo> getHumidityRecord_local(long id, String dateTime);
 
+//    List<DeviceInfo> getHumidityRecord_local(long id, String dateTime);
+
+    /**
+     * 获取设备信息（概述）
+     * */
+    @Query(value = "select new com.zx.demo.model.DeviceInfo_all(" +
+            "device.id,             device.mac_id,            device.type,              " +
+            "device.level,              device.name,              deviceInfo.statusOfLight, " +
+            "deviceInfo.statusOfCharge, deviceInfo.temperature,   deviceInfo.humidity," +
+            "max (deviceInfo.updateTime), device.imei_id) " +
+
+            "from DeviceInfo deviceInfo inner join Device device on deviceInfo.device_id = device.id where device.user_id=?2 order by deviceInfo.updateTime asc")
+    Page<DeviceInfo_all> getLatestDeviceInfo_all(Pageable pageable, long userId);
+//    Page<DeviceInfo_all> getLatestDeviceInfo_all(Pageable pageable, long userId);
+
+    /**
+     * 获取设备信息（详细）
+     * */
     @Query(value = "select new com.zx.demo.model.DeviceInfo_detail( deviceInfo.id, device.mac_id,  "      +
             "device.name,               device.attributionOfDevice, device.organizationId, "      +
             "device.addressOfDevice,    deviceInfo.times,           deviceInfo.signalIntensity, " +
             "deviceInfo.statusOfCharge, deviceInfo.statusOfLight,   deviceInfo.temperature, "     +
             "deviceInfo.humidity,       deviceInfo.updateTime, device.imei_id ) " +
 
-            "from DeviceInfo deviceInfo inner join Device device where device.userId=?1 order by deviceInfo.updateTime asc")
-    Page<DeviceInfo> getLatestDeviceInfo_all(long userId, Pageable pageable);
+            "from DeviceInfo deviceInfo inner join Device device on deviceInfo.device_id = device.id where device.id = ?1 order by deviceInfo.updateTime asc")
+    Page<DeviceInfo_detail> gerDeviceInfo_detail(Pageable pageable, int deviceId);
+//    Page<DeviceInfo_detail> gerDeviceInfo_detail(int deviceId);
 //
 ////    @Query(value = "select count(deviceInfo) from DeviceInfo deviceInfo where device_mac_id=?1 ")
 //    int getRecordTimesByDeviceMacId(String device_mac_id);
