@@ -23,13 +23,6 @@ public interface DeviceDao extends JpaRepository<Device, Long> {
             + " or device.addressOfDevice like %?1% or device.attributionOfDevice like %?1% or device.level like %?1%")
     Page<Device> getAllDevice(String q, Pageable pageable);
 
-    @Query("select device from Device device where device.user_id = ?3 and ( device.name like %?1% "
-            + " or device.addressOfDevice like %?1% or device.attributionOfDevice like %?1% or device.level like %?1% )")
-    Page<Device> getAllDevice_(String q, Pageable pageable, long userId);
-
-    @Query("select device from Device device where device.user_id = ?1")
-    Page<Device> getAllDevice_(Pageable pageable, long userId);
-
 
     @Query(value = "select * from device where id=?1",nativeQuery = true)
     Device getDeivce(int id);

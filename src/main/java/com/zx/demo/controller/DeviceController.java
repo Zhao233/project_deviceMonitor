@@ -3,9 +3,7 @@ package com.zx.demo.controller;
 import com.zx.demo.domain.Device;
 import com.zx.demo.domain.User;
 import com.zx.demo.service.DeviceService;
-import com.zx.demo.util.UserUtil;
 import org.apache.catalina.connector.Request;
-import org.apache.http.HttpRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -14,7 +12,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.sql.Timestamp;
 import java.text.ParseException;
@@ -38,16 +35,14 @@ public class DeviceController {
                                             @RequestParam("offset") Integer offset){
         Map<String,Object> map = new HashMap<>();
 
-        User user = UserUtil.getCureentUser();
-
         Pageable pageable = new PageRequest(offset, limit, new Sort(Sort.Direction.DESC, "id"));
 
         Page<Device> page;
 
         if ("".equals(search.trim())) {
-            page = deviceService.getAllDevice_( pageable,user.getId() );
+            page = deviceService.getAllDevice(pageable);
         } else {
-            page = deviceService.getAllDevice_(search.trim(), pageable, user.getId());
+            page = deviceService.getAllDevice(search.trim(), pageable);
         }
 
         map.put("total", page != null ? page.getTotalElements() : 0);
