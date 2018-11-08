@@ -202,8 +202,8 @@
                     <div class="panel panel-default">
                         <div class="panel-body">
                             <div class="table-responsive">
-
                                 <table id="_table_user_search" class="table table-striped table-bordered table-hover">
+
                                     <thead>
                                     <tr>
                                         <th data-field="imei_id" class="W30" data-align="center">设备id</th>
@@ -215,9 +215,7 @@
                                         <th data-field="temperature" class="W100" data-formatter="_formatter_temperature">温度</th>
                                         <th data-field="humidity" class="W100" data-formatter="_formatter_humidity">湿度</th>
                                         <th data-field="updateTime" class="W100">更新时间</th>
-                                        <!--<th data-field="updateTime" data-formatter="_formatted_Time" class="W100">更新时间</th>-->
                                     </tr>
-
                                     </thead>
 
                                 </table>
@@ -321,7 +319,6 @@
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
-
 <div id="dialog-return" class="modal fade" style="z-index:99999" tabindex="-1" role="dialog">
     <div class="modal-dialog modal-sm" role="document">
         <div class="modal-content">
@@ -348,7 +345,6 @@
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
-
 <div class="modal fade log-out-bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
     <div class="modal-dialog modal-sm" role="document">
         <div class="modal-content">
@@ -365,10 +361,53 @@
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
-
 <!-- Custom Js -->
 <script>
     $(document).ready(function() {
+        // $('#_table_user_search').bootstrapTable({
+        //     method: 'get',
+        //     url: "/console/deviceInfo/searchAll",
+        //     striped: true,
+        //     height:300,
+        //     dataType: "json",
+        //     pagination: true,
+        //     queryParamsType: "limit",
+        //     singleSelect: true,
+        //     contentType: "application/x-www-form-urlencoded",
+        //     pageSize: 10,
+        //     search: true,
+        //     showColumns: true,
+        //     showRefresh: true,
+        //     sidePagination: "server", //服务端请求
+        //     showHeader : true,
+        //     pageNumber : 1,
+        //     pageList: [5, 10, 20, 50],//分页步进值
+        //     search: false,//显示搜索框
+        //     clickToSelect: false,
+        //     queryParams: function(params) {
+        //         return {
+        //             limit: params.limit,
+        //             offset: params.offset / params.limit,
+        //             search: $(".search").find("input").val()
+        //         };
+        //     },
+        //     responseHandler: function(res) {
+        //         $("#doAllCheckBtn").checked != $("#doAllCheckBtn").checked;
+        //
+        //         doallcheck();
+        //
+        //         return {
+        //             "rows": res.rows,
+        //             "total": res.total
+        //         };
+        //     },
+        //     onPostBody : function () {
+        //     },
+        //     onPostHeader : function(){
+        //         adjustTableHeight($(".fixed-table-body"),20);
+        //     }
+        // });
+
         $('#_table_user_search').bootstrapTable({
             method: 'get',
             url: "/console/deviceInfo/searchAll",
@@ -380,26 +419,19 @@
             singleSelect: true,
             contentType: "application/x-www-form-urlencoded",
             pageSize: 10,
-            pageNumber:1,
+            pageNumber: 1,
             search: true,
             showColumns: true,
             showRefresh: true,
             sidePagination: "server", //服务端请求
-
-            showHeader : true,
-            //sidePagination : 'server',//服务器端分页
-            pageNumber : 1,
-            pageList: [5, 10, 20, 50],//分页步进值
-            search: false,//显示搜索框
-            clickToSelect: false,
-            queryParams: function(params) {
+            queryParams: function (params) {
                 return {
                     limit: params.limit,
                     offset: params.offset / params.limit,
                     search: $(".search").find("input").val()
                 };
             },
-            responseHandler: function(res) {
+            responseHandler: function (res) {
                 $("#doAllCheckBtn").checked != $("#doAllCheckBtn").checked;
 
                 doallcheck();
@@ -409,25 +441,10 @@
                     "total": res.total
                 };
             },
-            onPostBody : function () {
-            },
             onPostHeader : function(){
-                // adjustTableHeight($(".fixed-table-body"),20);
-            },
-            onLoadSuccess:function () {
-                adjustTableHeight($(".fixed-table-body"),20);
+                //adjustTableHeight($(".fixed-table-body"),20);//custom-script
             }
         });
-
-        // //判断是否有滚动条
-        // if(document.body.scrollHeight > (window.innerHeight || document.documentElement.clientHeight)){
-        //     console.log("有滚动条");
-        //     $(".fixed-table-header").attr("margin-right","17px");
-        // } else {
-        //     console.log("无滚动条");
-        //
-        //     $(".fixed-table-header").attr("margin-right","0px");
-        // }
     });
 </script>
 
