@@ -29,6 +29,9 @@ public class DeviceInfoServiceImp implements DeviceInfoService {
     @Autowired
     private DeviceInfoDao deviceInfoDao;
 
+    @Autowired
+    private DeviceService deviceService;
+
     @Override
     public Page<DeviceInfo_all> getDeviceInfo_all(Pageable pageable, long userId){
         return deviceInfoDao.getLatestDeviceInfo_all(pageable, userId);

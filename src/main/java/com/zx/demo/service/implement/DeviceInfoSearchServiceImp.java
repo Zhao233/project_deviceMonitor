@@ -44,6 +44,9 @@ public class DeviceInfoSearchServiceImp implements DeviceInfoSearchService {
     @Autowired
     UserService userService;
 
+    @Autowired
+    DeviceInfoService deviceInfoService;
+
     @Override
     public DeviceInfo getDeviceInfoFromRemoteServer(String deviceId) {
         DataCollection collection = new DataCollection(DeviceRemoteSearchUtil.northApiClient);
@@ -185,20 +188,20 @@ public class DeviceInfoSearchServiceImp implements DeviceInfoSearchService {
     /**
      * 根据本地的设备device_mac_id 去从远程服务器更新数据
      * */
-    @Override
-    public void refreshDevicesInfoFromRemoteServer() throws NorthApiException {
-        Pageable pageable = new PageRequest(0, Integer.MAX_VALUE, new Sort(Sort.Direction.DESC, "id"));
-
-        List<Device> deviceList_temp = deviceService.getAllDevice(pageable).getContent();
-
-        for(Device device_temp : deviceList_temp){
-            DeviceInfo deviceInfo = getDeviceInfoFromRemoteServer( device_temp.getMac_id() );
-
-            if(deviceInfo != null){
-                //deviceInfoService.addDeviceInfo(deviceInfo);
-            }
-        }
-    }
+//    @Override
+//    public void refreshDevicesInfoFromRemoteServer() throws NorthApiException {
+//        Pageable pageable = new PageRequest(0, Integer.MAX_VALUE, new Sort(Sort.Direction.DESC, "id"));
+//
+//        List<Device> deviceList_temp = deviceService.getAllDevice(pageable).getContent();
+//
+//        for(Device device_temp : deviceList_temp){
+//            DeviceInfo deviceInfo = getDeviceInfoFromRemoteServer( device_temp.getMac_id() );
+//
+//            if(deviceInfo != null){
+//                //deviceInfoService.addDeviceInfo(deviceInfo);
+//            }
+//        }
+//    }
 
     @Override
     public void refreshDevicesInfoFromRemoteServer_() throws NorthApiException {
@@ -216,7 +219,7 @@ public class DeviceInfoSearchServiceImp implements DeviceInfoSearchService {
                 DeviceInfo deviceInfo = getDeviceInfoFromRemoteServer( deviceTemp.getMac_id() );
 
                 if(deviceInfo != null){
-                    //deviceInfoService.addDeviceInfo(deviceInfo);
+                    deviceInfoService.addDeviceInfo(deviceInfo);
                     System.out.println(deviceInfo.toString());
                 }
             }
@@ -232,7 +235,6 @@ public class DeviceInfoSearchServiceImp implements DeviceInfoSearchService {
         System.out.println(queryDevicesOutDTO.getDeviceInfo().getName());
 
         return queryDevicesOutDTO.getDeviceInfo().getNodeId();
-
     }
 
     @Override
