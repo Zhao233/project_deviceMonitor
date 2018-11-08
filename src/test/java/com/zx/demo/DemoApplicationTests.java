@@ -294,4 +294,11 @@ public class DemoApplicationTests {
             tempDao.save(temp);
         }
     }
+
+    @Test
+    public void testInsertDeviceInfo(){
+        DeviceInfo deviceInfo = new DeviceInfo(0,"",100,"","","",1,0,"",0,"",new Timestamp(new Date().getTime()),new Timestamp(new Date().getTime()));
+
+        deviceInfoDao.save(deviceInfo);
+    }
 }

@@ -111,17 +111,28 @@ public interface DeviceInfoDao extends JpaRepository<DeviceInfo, Long> {
 //            "on deviceInfo.device_id = device.id " +
 //            "where device.user_id=?1 " +
 //            "order by deviceInfo.updateTime asc")
+//    @Query(value = "select new com.zx.demo.model.DeviceInfo_all(" +
+//            "device.id,                 device.mac_id,            device.type,              " +
+//            "device.level,              device.name,              deviceInfo.statusOfLight, " +
+//            "deviceInfo.statusOfCharge, deviceInfo.temperature,   deviceInfo.humidity," +
+//            "deviceInfo.updateTime,     device.imei_id) " +
+//
+//            "from DeviceInfo deviceInfo " +
+//            "inner join Device device " +
+//            "on deviceInfo.device_id = device.id " +
+//            "where device.user_id=?1 " +
+//            "order by deviceInfo.updateTime desc")
     @Query(value = "select new com.zx.demo.model.DeviceInfo_all(" +
             "device.id,                 device.mac_id,            device.type,              " +
             "device.level,              device.name,              deviceInfo.statusOfLight, " +
             "deviceInfo.statusOfCharge, deviceInfo.temperature,   deviceInfo.humidity," +
-            "deviceInfo.updateTime,     device.imei_id) " +
+            "max(deviceInfo.updateTime),     device.imei_id) " +
 
             "from DeviceInfo deviceInfo " +
             "inner join Device device " +
             "on deviceInfo.device_id = device.id " +
             "where device.user_id=?1 " +
-            "order by deviceInfo.updateTime desc")
+            "group by deviceInfo.device_id")
     Page<DeviceInfo_all> getLatestDeviceInfo_all(Pageable pageable, long userId);
 
     /**

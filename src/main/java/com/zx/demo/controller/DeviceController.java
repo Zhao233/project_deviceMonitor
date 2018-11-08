@@ -28,7 +28,6 @@ public class DeviceController {
     @Autowired
     private DeviceService deviceService;
 
-
     @RequestMapping("/getAll")
     @ResponseBody
     private Map<String,Object> getAllDevice(@RequestParam("search") String search,

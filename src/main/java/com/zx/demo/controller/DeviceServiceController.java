@@ -56,32 +56,11 @@ public class DeviceServiceController {
 
         page = deviceInfoService.getDeviceInfo_all(pageable, user.getId());
 
-        p.put("total", page.getContent());
-        p.put("rows", page.getTotalPages());
+        p.put("total", page != null ? page.getTotalElements() : 0);
+        p.put("rows", page != null ? page.getContent() : "");
 
         return p;
     }
-
-//    @RequestMapping("/searchAll_test")
-//    @ResponseBody
-//    public Map<String, Object> searchTest(@RequestParam(value = "offset", defaultValue = "0") Integer offset,
-//                                      @RequestParam(value = "limit", defaultValue = "10") Integer limit
-//    ) {
-//        Map<String, Object> p = new HashMap<>();
-//
-//        User user = UserUtil.getCureentUser();
-//
-//        Pageable pageable = new PageRequest(offset, limit, new Sort(Sort.Direction.DESC, "id"));
-//        Page<DeviceInfo> page;
-//
-//        //page = deviceInfoService.getAll_latest(pageable,user.getId());
-//
-//        //p.put("total", page.getTotalPages());
-//        //p.put("rows", page.getContent());
-//
-//        return p;
-//    }
-
 
     @RequestMapping("/getDeviceInfo_detail")
     @ResponseBody
@@ -110,37 +89,42 @@ public class DeviceServiceController {
                                                      @RequestParam(value = "select_mode") int select_mode ) throws ParseException, NorthApiException {
         Map<String, Object> map = new HashMap<>();
 
-        Map<String,Object> res = new HashMap<>();
+        Map<String,Object> res = deviceInfoService.getTemperatureRecord_Local(deviceId,dateTime,select_mode);
 
-        List<String> temperatureRecord = null;
-        List<String> updateTimes = null;
-
-        Date date = null;
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        SimpleDateFormat simpleDateFormat1 = new SimpleDateFormat("yyyyMMdd'T'HHmmss'Z'");
-
-        date = simpleDateFormat.parse(dateTime);
-
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(date);
-
-        calendar.set(Calendar.HOUR_OF_DAY, calendar.get(Calendar.HOUR_OF_DAY)-8);
-
-        String dateTime_formmated = simpleDateFormat1.format(calendar.getTime());
-
-        try {
-            res = deviceInfoService.getTemperatureRecord_Local(deviceId,dateTime_formmated,select_mode);
-
-            temperatureRecord = (LinkedList)res.get("temperatureRecord");
-
-            updateTimes = (LinkedList)res.get("timeRecord");
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        List<String> temperatureRecord = (List<String>) res.get("temperatureRecord");
+        List<String> timeRecord = (List<String>) res.get("timeRecord");
+//
+//        Map<String,Object> res = new HashMap<>();
+//
+//        List<String> temperatureRecord = null;
+//        List<String> updateTimes = null;
+//
+//        Date date = null;
+//        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//        SimpleDateFormat simpleDateFormat1 = new SimpleDateFormat("yyyyMMdd'T'HHmmss'Z'");
+//
+//        date = simpleDateFormat.parse(dateTime);
+//
+//        Calendar calendar = Calendar.getInstance();
+//        calendar.setTime(date);
+//
+//        calendar.set(Calendar.HOUR_OF_DAY, calendar.get(Calendar.HOUR_OF_DAY)-8);
+//
+//        String dateTime_formmated = simpleDateFormat1.format(calendar.getTime());
+//
+//        try {
+//            res = deviceInfoService.getTemperatureRecord_Local(deviceId,dateTime_formmated,select_mode);
+//
+//            temperatureRecord = (LinkedList)res.get("temperatureRecord");
+//
+//            updateTimes = (LinkedList)res.get("timeRecord");
+//
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
 
         map.put("temperatureRecord", temperatureRecord);
-        map.put("updateTimeRecord", updateTimes);
+        map.put("updateTimeRecord", timeRecord);
         map.put("status", "SUCCEED");
 
         return map;
