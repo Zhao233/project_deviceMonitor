@@ -7,6 +7,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 @Controller
 public class IndexController {
@@ -52,4 +53,14 @@ public class IndexController {
 //        }
 
     }
+
+    @RequestMapping("/logout")
+    public void logout(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        if( request.getSession().getAttribute("user") != null){
+            request.getSession().setAttribute("user",null);
+        }
+
+        response.sendRedirect("/login");
+    }
+
 }
