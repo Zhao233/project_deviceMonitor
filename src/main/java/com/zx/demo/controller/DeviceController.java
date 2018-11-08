@@ -3,6 +3,7 @@ package com.zx.demo.controller;
 import com.zx.demo.domain.Device;
 import com.zx.demo.domain.User;
 import com.zx.demo.service.DeviceService;
+import com.zx.demo.util.UserUtil;
 import org.apache.catalina.connector.Request;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -35,14 +36,16 @@ public class DeviceController {
                                             @RequestParam("offset") Integer offset){
         Map<String,Object> map = new HashMap<>();
 
+        User user = UserUtil.getCureentUser();
+
         Pageable pageable = new PageRequest(offset, limit, new Sort(Sort.Direction.DESC, "id"));
 
         Page<Device> page;
 
         if ("".equals(search.trim())) {
-            page = deviceService.getAllDevice(pageable);
+            page = deviceService.getAllDevice(pageable, user.getId());
         } else {
-            page = deviceService.getAllDevice(search.trim(), pageable);
+            page = deviceService.getAllDevice(search.trim(), pageable, user.getId());
         }
 
         map.put("total", page != null ? page.getTotalElements() : 0);

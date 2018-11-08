@@ -7,8 +7,9 @@ import org.springframework.data.domain.Pageable;
 import java.util.List;
 
 public interface DeviceService{
-    Page<Device> getAllDevice(Pageable pageable);
-    Page<Device> getAllDevice(String search, Pageable pageable);
+    Page<Device> getAllDevice(Pageable page, long userId);
+
+    Page<Device> getAllDevice(String search, Pageable pageable, long userId);
 
     boolean isExist(String id);
 

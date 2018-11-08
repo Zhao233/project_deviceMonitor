@@ -16,24 +16,16 @@ public class DeviceServiceImp implements DeviceService {
     @Autowired
     private DeviceDao deviceDao;
 
+
     @Override
-    public Page<Device> getAllDevice(Pageable page) {
-        return deviceDao.findAll(page);
-    }
-    @Override
-    public Page<Device> getAllDevice_(Pageable page, long userId) {
-        return deviceDao.findAll(page);
+    public Page<Device> getAllDevice(Pageable page, long userId) {
+        return deviceDao.getAllDevice(userId,page);
     }
 
     @Override
-    public Page<Device> getAllDevice(String search, Pageable pageable) {
-        return deviceDao.getAllDevice(search, pageable);
+    public Page<Device> getAllDevice(String search, Pageable pageable, long userId) {
+        return deviceDao.getAllDevice(search, userId, pageable);
     }
-    @Override
-    public Page<Device> getAllDevice_(String search, Pageable pageable, long userId) {
-        return deviceDao.getAllDevice(search, pageable);
-    }
-
 
     @Override
     public boolean isExist(String deviceId) {
