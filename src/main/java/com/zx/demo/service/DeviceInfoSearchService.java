@@ -20,7 +20,7 @@ public interface DeviceInfoSearchService {
 
     List<Device> getAllDeviceFromRemoteServer();
 
-    void refreshDevicesInfoFromRemoteServer() throws NorthApiException;
+//    void refreshDevicesInfoFromRemoteServer() throws NorthApiException;
 
     void refreshDevicesInfoFromRemoteServer_() throws NorthApiException;
 
