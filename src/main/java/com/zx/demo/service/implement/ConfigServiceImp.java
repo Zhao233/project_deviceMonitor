@@ -10,8 +10,14 @@ import org.springframework.stereotype.Service;
 public class ConfigServiceImp implements ConfigService {
     @Autowired
     private ConfigDao configDao;
+
     @Override
     public void save(Config config) {
         configDao.save(config);
+    }
+
+    @Override
+    public Config getConfig(long id){
+        return configDao.getOne(id);
     }
 }
