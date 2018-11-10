@@ -35,6 +35,12 @@ public class ConsoleController {
         return new ModelAndView("console/device_management");
     }
 
+    @RequestMapping("/config")
+    private ModelAndView toConfig(){
+        return new ModelAndView("console/config");
+    }
+
+
     @RequestMapping("/test")
     private ModelAndView toTest(){
         return new ModelAndView("/test");
