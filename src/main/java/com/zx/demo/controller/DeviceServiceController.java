@@ -38,6 +38,9 @@ public class DeviceServiceController {
     @ResponseBody
     public Map<String, Object> search(@RequestParam(value = "offset", defaultValue = "0") Integer offset,
                                       @RequestParam(value = "limit", defaultValue = "10") Integer limit,
+                                      @RequestParam(value = "order", required = false) String order,//升序或者降序
+                                      @RequestParam(value = "sort" , required = false) String sort,//排序名
+
                                       @RequestParam(value = "limit", defaultValue = "10", required = false) Integer type,
                                       @RequestParam(value = "limit", defaultValue = "10", required = false) Integer level,
                                       @RequestParam(value = "limit", defaultValue = "10", required = false) Integer statusOfLight,
@@ -48,7 +51,15 @@ public class DeviceServiceController {
                                       ) {
         Map<String, Object> p = new HashMap<>();
 
-        Pageable pageable = new PageRequest(offset, limit, new Sort(Sort.Direction.DESC, "id"));
+        Pageable pageable;
+
+        if(order != null && sort != null && !sort.equals("stargazers_count")){
+            Sort.Direction sort_ = order.equals("asc") ? Sort.Direction.ASC : Sort.Direction.DESC;
+
+            pageable = new PageRequest(offset, limit, sort_, sort);
+        } else {
+            pageable = new PageRequest(offset, limit, new Sort(Sort.Direction.DESC, "id"));
+        }
 
         User user = UserUtil.getCureentUser();
 

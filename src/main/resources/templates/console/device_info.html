@@ -202,7 +202,9 @@
                     <div class="panel panel-default">
                         <div class="panel-body">
                             <div class="table-responsive">
-                                <table id="_table_user_search" class="table table-striped table-bordered table-hover">
+                                <table id="_table_user_search"  data-sort-name="stargazers_count"
+                                       data-sort-order="asc"
+                                       class="table table-striped table-bordered table-hover">
 
                                     <thead>
                                     <tr>
@@ -212,8 +214,8 @@
                                         <th data-field="level" class="W100">等级</th>
                                         <th data-field="statusOfLight" class="W100" data-formatter="_formatter_light">灯开关状态</th>
                                         <th data-field="statusOfCharge" class="W100" data-formatter="_formatter_charge">电池电量</th>
-                                        <th data-field="temperature" class="W100" data-formatter="_formatter_temperature">温度</th>
-                                        <th data-field="humidity" class="W100" data-formatter="_formatter_humidity">湿度</th>
+                                        <th data-field="temperature" data-sortable="true" class="W100" data-formatter="_formatter_temperature">温度</th>
+                                        <th data-field="humidity" data-sortable="true" class="W100" data-formatter="_formatter_humidity">湿度</th>
                                         <th data-field="updateTime" class="W100">更新时间</th>
                                     </tr>
                                     </thead>
@@ -425,10 +427,13 @@
             showRefresh: true,
             sidePagination: "server", //服务端请求
             queryParams: function (params) {
+                console.log("dddd");
                 return {
                     limit: params.limit,
                     offset: params.offset / params.limit,
-                    search: $(".search").find("input").val()
+                    search: $(".search").find("input").val(),
+                    sort: params.sort,
+                    order: params.order
                 };
             },
             responseHandler: function (res) {
