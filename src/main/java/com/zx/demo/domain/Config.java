@@ -1,24 +1,27 @@
-//package com.zx.demo.domain;
-//
-//
-//import lombok.Getter;
-//import lombok.Setter;
-//
-//import javax.persistence.*;
-//
-//@Getter
-//@Setter
-//public class Config {
-//
-//    @Column(name = "max_temperature")
-//    private int max_temperature;
-//
-//    @Column(name = "min_temperature")
-//    private int min_temperature;
-//
-//    @Column(name = "max_humidity")
-//    private int max_humidity;
-//
-//    @Column(name = "min_humidity")
-//    private int min_humidity;
-//}
+package com.zx.demo.domain;
+
+
+import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+
+import javax.persistence.*;
+
+@Entity
+@Table(name = "config")
+
+@Data
+public class Config {
+
+    @Column(name = "temperature_upper_limit")
+    private String temperature_upper_limit;
+
+    @Column(name = "temperature_lower_limit")
+    private String temperature_lower_limit;
+
+    @Column(name = "humidity_upper_limit")
+    private String humidity_upper_limit;
+
+    @Column(name = "humidity_lower_limit")
+    private String humidity_lower_limit;
+}
