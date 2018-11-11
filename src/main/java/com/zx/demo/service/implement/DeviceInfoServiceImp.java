@@ -33,8 +33,13 @@ public class DeviceInfoServiceImp implements DeviceInfoService {
     private DeviceService deviceService;
 
     @Override
-    public Page<DeviceInfo_all> getDeviceInfo_all(Pageable pageable, long userId){
-        return deviceInfoDao.getLatestDeviceInfo_all(pageable, userId);
+    public Page<DeviceInfo_all> getDeviceInfo_all_normal(Pageable pageable, long userId){
+        return deviceInfoDao.getLatestDeviceInfo_all_nomal(pageable, userId);
+    }
+
+    @Override
+    public Page<DeviceInfo_all> getDeviceInfo_all_abnormal(Pageable pageable, long userId){
+       return deviceInfoDao.getLatestDeviceInfo_all_abnomal(pageable, userId);
     }
 
     @Override

@@ -46,6 +46,8 @@ public class DeviceServiceController {
                                       @RequestParam(value = "order", required = false) String order,//升序或者降序
                                       @RequestParam(value = "sort" , required = false) String sort,//排序名
 
+                                      @RequestParam(value = "isNormal" , required = false) boolean isNormal,//排序名
+
                                       @RequestParam(value = "limit", defaultValue = "10", required = false) Integer type,
                                       @RequestParam(value = "limit", defaultValue = "10", required = false) Integer level,
                                       @RequestParam(value = "limit", defaultValue = "10", required = false) Integer statusOfLight,
@@ -70,7 +72,12 @@ public class DeviceServiceController {
 
         Page<DeviceInfo_all> page;
 
-        page = deviceInfoService.getDeviceInfo_all(pageable, user.getId());
+
+        if( !isNormal  ){//查找不正常设备（电信平台更新时间与本地时间不同）
+            page = deviceInfoService.getDeviceInfo_all_abnormal(pageable, user.getId());
+        } else {//查找正常设备
+            page = deviceInfoService.getDeviceInfo_all_normal(pageable, user.getId());
+        }
 
         p.put("total", page != null ? page.getTotalElements() : 0);
         p.put("rows", page != null ? page.getContent() : "");

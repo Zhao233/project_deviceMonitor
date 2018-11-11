@@ -596,6 +596,12 @@
         $.ajaxSettings.async = true;
     }
 
+    function _set(el, message) {
+        el.addClass("alert-danger");
+        el.attr("title", message);
+        el.tooltip('show');
+    }
+
     function createPersonInfo(picUrl, rank, name, personNumber, times, sign){
         if(sign == 0){
             return "<div class=\"col-lg-3 col-md-3 col-sm-4 col-xs-6 info_detail\" tabindex=\"0\" style=\"position:relative;width:10em;padding-left:0;padding-right:0;\"> " +

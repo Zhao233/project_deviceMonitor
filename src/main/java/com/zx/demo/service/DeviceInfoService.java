@@ -14,6 +14,21 @@ import java.util.Map;
 
 public interface DeviceInfoService {
 
+    Page<DeviceInfo_all> getDeviceInfo_all_normal(Pageable pageable, long userId);
+
+    Page<DeviceInfo_all> getDeviceInfo_all_abnormal(Pageable pageable, long userId);
+
+
+    DeviceInfo_detail getDeviceInfo_detail(Pageable pageable, long deviceId);
+
+    Map<String, Object> getTemperatureRecord_Local(long id, String dateTime, int select_mode);
+
+    Map<String, Object> getHumidityRecord_Local(long id, String dateTime, int select_mode);
+
+    int getSearchTimes(String device_mac_id);
+
+    void addDeviceInfo(DeviceInfo deviceInfo);
+
     //    @Override
 //    public Map<String, Object> getTemperatureRecord(long id, String dateTime, int time_gap) throws Exception {
 //        Map<String, Object> map = new HashMap<>();
@@ -277,14 +292,5 @@ public interface DeviceInfoService {
 //        return map;
 //    }
 
-    Page<DeviceInfo_all> getDeviceInfo_all(Pageable pageable, long userId);
-    DeviceInfo_detail getDeviceInfo_detail(Pageable pageable, long deviceId);
 
-    Map<String, Object> getTemperatureRecord_Local(long id, String dateTime, int select_mode);
-
-    Map<String, Object> getHumidityRecord_Local(long id, String dateTime, int select_mode);
-
-    int getSearchTimes(String device_mac_id);
-
-    void addDeviceInfo(DeviceInfo deviceInfo);
 }

@@ -122,18 +122,48 @@ public interface DeviceInfoDao extends JpaRepository<DeviceInfo, Long> {
 //            "on deviceInfo.device_id = device.id " +
 //            "where device.user_id=?1 " +
 //            "order by deviceInfo.updateTime desc")
+//    @Query(value = "select new com.zx.demo.model.DeviceInfo_all(" +
+////            "device.id,                  device.mac_id,                          device.type,              " +
+////            "device.level,               device.name,                            deviceInfo.statusOfLight, " +
+////            "deviceInfo.statusOfCharge,  deviceInfo.temperature,                 deviceInfo.humidity," +
+////            "max(deviceInfo.updateTime), max(deviceInfo.modify_time_search_local),    device.imei_id) " +
+////
+////            "from DeviceInfo deviceInfo " +
+////            "inner join Device device " +
+////            "on deviceInfo.device_id = device.id " +
+////            "where device.user_id=?1 " +
+////            "group by deviceInfo.device_id")
+////    Page<DeviceInfo_all> getLatestDeviceInfo_all(Pageable pageable, long userId);
+
     @Query(value = "select new com.zx.demo.model.DeviceInfo_all(" +
-            "device.id,                 device.mac_id,            device.type,              " +
-            "device.level,              device.name,              deviceInfo.statusOfLight, " +
-            "deviceInfo.statusOfCharge, deviceInfo.temperature,   deviceInfo.humidity," +
-            "max(deviceInfo.updateTime),     device.imei_id) " +
+            "device.id,                  device.mac_id,                          device.type,              " +
+            "device.level,               device.name,                            deviceInfo.statusOfLight, " +
+            "deviceInfo.statusOfCharge,  deviceInfo.temperature,                 deviceInfo.humidity," +
+            "deviceInfo.updateTime, deviceInfo.modify_time_search_local,    device.imei_id) " +
 
             "from DeviceInfo deviceInfo " +
             "inner join Device device " +
-            "on deviceInfo.device_id = device.id " +
-            "where device.user_id=?1 " +
-            "group by deviceInfo.device_id")
-    Page<DeviceInfo_all> getLatestDeviceInfo_all(Pageable pageable, long userId);
+            "on deviceInfo.device_id = device.id "  +
+            "where device.user_id=?1 and deviceInfo.id in (" +
+            "   select max(id) from DeviceInfo deviceInfo group by deviceInfo.device_id" +
+            ") and  deviceInfo.modify_time_search_local-deviceInfo.updateTime<600000 " +
+            "order by deviceInfo.modify_time_search_local")
+    Page<DeviceInfo_all> getLatestDeviceInfo_all_nomal(Pageable pageable, long userId);
+
+    @Query(value = "select new com.zx.demo.model.DeviceInfo_all(" +
+            "device.id,                  device.mac_id,                          device.type,              " +
+            "device.level,               device.name,                            deviceInfo.statusOfLight, " +
+            "deviceInfo.statusOfCharge,  deviceInfo.temperature,                 deviceInfo.humidity," +
+            "deviceInfo.updateTime, deviceInfo.modify_time_search_local,    device.imei_id) " +
+
+            "from DeviceInfo deviceInfo " +
+            "inner join Device device " +
+            "on deviceInfo.device_id = device.id "  +
+            "where device.user_id=?1 and deviceInfo.id in (" +
+            "   select max(id) from DeviceInfo deviceInfo group by deviceInfo.device_id" +
+            ") and deviceInfo.modify_time_search_local-deviceInfo.updateTime>600000 " +
+            "order by deviceInfo.modify_time_search_local")
+    Page<DeviceInfo_all> getLatestDeviceInfo_all_abnomal(Pageable pageable, long userId);
 
     /**
      * 获取设备信息（详细）

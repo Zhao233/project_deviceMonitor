@@ -375,8 +375,27 @@
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
-<!-- Custom Js -->
 <script>
+    var timeout_network = 3000;
+
+    var contactsNameMap;
+
+    var isNormal = true;
+
+    !function ($) {
+        $(document).on("click","ul.nav li.parent > a > span.icon", function(){
+            $(this).find('em:first').toggleClass("glyphicon-minus");
+        });
+        $(".sidebar span.icon").find('em:first').addClass("glyphicon-plus");
+    }(window.jQuery);
+
+    $(window).on('resize', function () {
+        if ($(window).width() > 768) $('#sidebar-collapse').collapse('show');
+        else $('#sidebar-collapse').collapse('hide');
+
+        adjustTableHeight($(".fixed-table-body"),20);
+    });
+
     $(document).ready(function() {
         $('#_table_user_search').bootstrapTable({
             method: 'get',
@@ -401,7 +420,8 @@
                     offset: params.offset / params.limit,
                     search: $(".search").find("input").val(),
                     sort: params.sort,
-                    order: params.order
+                    order: params.order,
+                    isNormal:isNormal
                 };
             },
             responseHandler: function (res) {
@@ -419,25 +439,13 @@
             }
         });
     });
-</script>
 
-<script>
-    var timeout_network = 3000;
+    $(".searchAbnormalDevices").click(function(){
+        isNormal = !isNormal;
 
-    var contactsNameMap;
+        $(".searchAbnormalDevices").text( isNormal? "查看不正常设备" : "查看正常设备" )
 
-    !function ($) {
-        $(document).on("click","ul.nav li.parent > a > span.icon", function(){
-            $(this).find('em:first').toggleClass("glyphicon-minus");
-        });
-        $(".sidebar span.icon").find('em:first').addClass("glyphicon-plus");
-    }(window.jQuery);
-
-    $(window).on('resize', function () {
-        if ($(window).width() > 768) $('#sidebar-collapse').collapse('show');
-        else $('#sidebar-collapse').collapse('hide');
-
-        adjustTableHeight($(".fixed-table-body"),20);
+        $('#_table_user_search').bootstrapTable("refresh");
     });
 
     function doallcheck(e){

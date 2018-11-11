@@ -458,6 +458,12 @@
         window.location.href = "/logout";
     })
 
+    function _set(el, message) {
+        el.addClass("alert-danger");
+        el.attr("title", message);
+        el.tooltip('show');
+    }
+
     function _reset_input(input) {
         input.removeClass("alert-danger");
         input.tooltip('destroy');
@@ -472,14 +478,14 @@
         var humidity_upper_limit = $("#humidity_upper_limit").val();
         var humidity_lower_limit = $("#humidity_lower_limit").val();
 
-        if( parseInt(temperature_lower_limit) >= parseInt( temperature_upper_limit ) ){
+        if( parseFloat(temperature_lower_limit) >= parseFloat( temperature_upper_limit ) ){
             _set($("input[id='temperature_upper_limit']"), "温度下限不能高于温度上限");
             _set($("input[id='temperature_lower_limit']"), "温度下限不能高于温度上限");
 
             return;
         }
 
-        if( parseInt(humidity_lower_limit) >= parseInt( humidity_upper_limit ) ){
+        if( parseFloat(humidity_lower_limit) >= parseFloat( humidity_upper_limit ) ){
             _set($("input[id='humidity_upper_limit']"), "湿度下限不能高于湿度上限");
             _set($("input[id='humidity_lower_limit']"), "湿度下限不能高于湿度上限");
 
