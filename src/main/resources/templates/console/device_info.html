@@ -210,7 +210,7 @@
                         <div class="panel-body">
                             <div class="table-responsive">
                                 <table id="_table_user_search"  data-sort-name="stargazers_count"
-                                       data-sort-order="asc"
+                                       data-sort-order="asc" data-toolbar="#toolbar"
                                        class="table table-striped table-bordered table-hover">
 
                                     <thead>
@@ -228,6 +228,11 @@
                                     </thead>
 
                                 </table>
+
+                                <div id="toolbar">
+                                    <button class="btn btn-primary searchAbnormalDevices" data-toggle="modal">查看不正常设备</button>
+                                </div>
+
                             </div>
                         </div>
                     </div>
@@ -373,50 +378,6 @@
 <!-- Custom Js -->
 <script>
     $(document).ready(function() {
-        // $('#_table_user_search').bootstrapTable({
-        //     method: 'get',
-        //     url: "/console/deviceInfo/searchAll",
-        //     striped: true,
-        //     height:300,
-        //     dataType: "json",
-        //     pagination: true,
-        //     queryParamsType: "limit",
-        //     singleSelect: true,
-        //     contentType: "application/x-www-form-urlencoded",
-        //     pageSize: 10,
-        //     search: true,
-        //     showColumns: true,
-        //     showRefresh: true,
-        //     sidePagination: "server", //服务端请求
-        //     showHeader : true,
-        //     pageNumber : 1,
-        //     pageList: [5, 10, 20, 50],//分页步进值
-        //     search: false,//显示搜索框
-        //     clickToSelect: false,
-        //     queryParams: function(params) {
-        //         return {
-        //             limit: params.limit,
-        //             offset: params.offset / params.limit,
-        //             search: $(".search").find("input").val()
-        //         };
-        //     },
-        //     responseHandler: function(res) {
-        //         $("#doAllCheckBtn").checked != $("#doAllCheckBtn").checked;
-        //
-        //         doallcheck();
-        //
-        //         return {
-        //             "rows": res.rows,
-        //             "total": res.total
-        //         };
-        //     },
-        //     onPostBody : function () {
-        //     },
-        //     onPostHeader : function(){
-        //         adjustTableHeight($(".fixed-table-body"),20);
-        //     }
-        // });
-
         $('#_table_user_search').bootstrapTable({
             method: 'get',
             url: "/console/deviceInfo/searchAll",

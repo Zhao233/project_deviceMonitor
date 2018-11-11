@@ -89,18 +89,18 @@ public class DeviceInfoServiceImp implements DeviceInfoService {
 
         if(select_mode == 0){//0点，24条数据，一个小时一个数据
             for(int i = 0; i < deviceInfoList.size(); i+=2){
-                humidityRecord.add(deviceInfoList.get(i).getTemperature());
+                humidityRecord.add(deviceInfoList.get(i).getHumidity());
                 timeRecord.add(String.valueOf(deviceInfoList.get(i).getModify_time_search_local()));
             }
 
         } else {//24条数据，半个小时一个数据
             for(int i = 0; i < 24 && i < deviceInfoList.size(); i++){
-                humidityRecord.add(deviceInfoList.get(i).getTemperature());
+                humidityRecord.add(deviceInfoList.get(i).getHumidity());
                 timeRecord.add(String.valueOf(deviceInfoList.get(i).getModify_time_search_local()));
             }
         }
 
-        map.put("temperatureRecord",humidityRecord);
+        map.put("humidityRecord",humidityRecord);
         map.put("timeRecord",timeRecord);
 
         return map;

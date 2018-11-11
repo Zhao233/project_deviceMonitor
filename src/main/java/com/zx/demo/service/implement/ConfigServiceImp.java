@@ -18,6 +18,6 @@ public class ConfigServiceImp implements ConfigService {
 
     @Override
     public Config getConfig(long id){
-        return configDao.getOne(id);
+        return configDao.getConfig(id);
     }
 }

@@ -441,6 +441,10 @@
 
                         displayLineChart( adjustPositionOfLineChart );
 
+                        var humidityUpperLimit = r.humidityUpperLimit;
+                        var humidityLowerLimit = r.humidityLowerLimit;
+
+                        updateData(humidityUpperLimit,humidityLowerLimit);
                         break;
                     case "FAILED" :
                         $("#dialog-return").find(".modal-body").html("获取配置信息失败");
@@ -587,6 +591,11 @@
 
             displayLineChart( adjustPositionOfLineChart );
 
+            var humidityUpperLimit = r.humidityUpperLimit;
+            var humidityLowerLimit = r.humidityLowerLimit;
+
+            updateData(humidityUpperLimit,humidityLowerLimit);
+
             if(length == 0){
                 $("#personInfo").append("未查询到数据");
 
@@ -635,6 +644,24 @@
         var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
         var r = window.location.search.substr(1).match(reg);
         if (r != null) return unescape(r[2]); return null;
+    }
+
+    //检查数据是否有超过最高，最低限制
+    function updateData(temperatureUpperLimit, temperatureLowerLimit){
+
+        for(i in lineChart.datasets[0].points){
+            if( parseFloat( lineChart.datasets[0].points[i].value ) > parseFloat( temperatureUpperLimit ) ){//超过最高值，设为红色
+                lineChart.datasets[0].points[i].fillColor ="rgba(235,16,27,0.5)";
+                lineChart.datasets[0].points[i].highlightFill = "rgba(235,16,27,0.5)";
+            }
+
+            if( parseFloat( lineChart.datasets[0].points[i].value ) < parseFloat( temperatureLowerLimit ) ){
+                lineChart.datasets[0].points[i].fillColor = "rgba(43,206,30,0.5)" ;
+                lineChart.datasets[0].points[i].highlightFill = "rgba(43,206,30,0.5)" ;
+            }
+        }
+
+        lineChart.update();
     }
 
     function createTimeLable(startTime_hour, startTime_min, hour_increment, min_increment, numberOfLabel){

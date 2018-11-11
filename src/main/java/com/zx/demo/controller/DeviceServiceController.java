@@ -1,5 +1,7 @@
 package com.zx.demo.controller;
 
+import com.zx.demo.domain.Config;
+import com.zx.demo.service.ConfigService;
 import com.zx.demo.service.DeviceInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -33,6 +35,9 @@ public class DeviceServiceController {
 
     @Autowired
     private DeviceInfoService deviceInfoService;
+
+    @Autowired
+    private ConfigService configService;
 
     @RequestMapping("/searchAll")
     @ResponseBody
@@ -104,6 +109,10 @@ public class DeviceServiceController {
 
         List<String> temperatureRecord = (List<String>) res.get("temperatureRecord");
         List<String> timeRecord = (List<String>) res.get("timeRecord");
+
+        Config config = configService.getConfig(0);
+        String temperatureUpperLimit = config.getTemperature_upper_limit();
+        String temperatureLowerLimit = config.getTemperature_lower_limit();
 //
 //        Map<String,Object> res = new HashMap<>();
 //
@@ -136,6 +145,10 @@ public class DeviceServiceController {
 
         map.put("temperatureRecord", temperatureRecord);
         map.put("updateTimeRecord", timeRecord);
+
+        map.put("temperatureUpperLimit", temperatureUpperLimit);
+        map.put("temperatureLowerLimit", temperatureLowerLimit);
+
         map.put("status", "SUCCEED");
 
         return map;
@@ -155,37 +168,21 @@ public class DeviceServiceController {
                                                      @RequestParam(value = "select_mode") int select_mode) throws ParseException {
         Map<String, Object> map = new HashMap<>();
 
-        Map<String,Object> res = new HashMap<>();
+        Map<String,Object> res = deviceInfoService.getHumidityRecord_Local(deviceId,dateTime,select_mode);
 
-        List<String> humidityRecord = null;
-        List<String> updateTimes = null;
+        List<String> humidityRecord = (List<String>) res.get("humidityRecord");
+        List<String> timeRecord = (List<String>) res.get("timeRecord");
 
-        Date date = null;
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        SimpleDateFormat simpleDateFormat1 = new SimpleDateFormat("yyyyMMdd'T'HHmmss'Z'");
-
-        date = simpleDateFormat.parse(dateTime);
-
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(date);
-
-        calendar.set(Calendar.HOUR_OF_DAY, calendar.get(Calendar.HOUR_OF_DAY)-8);
-
-        String dateTime_formmated = simpleDateFormat1.format(calendar.getTime());
-
-        try {
-            res = deviceInfoService.getHumidityRecord_Local(deviceId, dateTime_formmated, select_mode);
-
-            humidityRecord = (LinkedList)res.get("humidityRecord");
-
-            updateTimes = (LinkedList)res.get("timeRecord");
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        Config config = configService.getConfig(0);
+        String humidityUpperLimit = config.getHumidity_upper_limit();
+        String humidityLowerLimit = config.getHumidity_lower_limit();
 
         map.put("humidityRecord", humidityRecord);
-        map.put("updateTimeRecord", updateTimes);
+        map.put("updateTimeRecord", timeRecord);
+
+        map.put("humidityUpperLimit", humidityUpperLimit);
+        map.put("humidityLowerLimit", humidityLowerLimit);
+
         map.put("status", "SUCCEED");
 
         return map;

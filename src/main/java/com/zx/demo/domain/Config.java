@@ -10,8 +10,13 @@ import javax.persistence.*;
 @Entity
 @Table(name = "config")
 
-@Data
+@Setter
+@Getter
 public class Config {
+
+    @Id
+    @GeneratedValue(strategy= GenerationType.AUTO)
+    private long id;
 
     @Column(name = "temperature_upper_limit")
     private String temperature_upper_limit;
@@ -24,4 +29,8 @@ public class Config {
 
     @Column(name = "humidity_lower_limit")
     private String humidity_lower_limit;
+
+    @Column(name = "device_id")
+    private long device_id;
+
 }

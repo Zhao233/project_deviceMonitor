@@ -10,10 +10,8 @@ import com.huawei.iotplatform.client.invokeapi.DataCollection;
 import com.zx.demo.domain.*;
 import com.zx.demo.model.DeviceInfo_all;
 import com.zx.demo.model.Test1;
-import com.zx.demo.repository.AdminDao;
-import com.zx.demo.repository.DeviceDao;
-import com.zx.demo.repository.DeviceInfoDao;
-import com.zx.demo.repository.TempDao;
+import com.zx.demo.repository.*;
+import com.zx.demo.service.ConfigService;
 import com.zx.demo.service.DeviceInfoSearchService;
 import com.zx.demo.service.DeviceInfoService;
 import com.zx.demo.util.DeviceRemoteSearchUtil;
@@ -300,5 +298,26 @@ public class DemoApplicationTests {
         DeviceInfo deviceInfo = new DeviceInfo(0,"",100,"","","",1,0,"",0,"",new Timestamp(new Date().getTime()),new Timestamp(new Date().getTime()));
 
         deviceInfoDao.save(deviceInfo);
+    }
+
+    @Autowired
+    private ConfigService configService;
+
+    @Autowired
+    private ConfigDao configDao;
+
+    @Test
+    public void testConfig(){
+//        Config config = new Config();
+//        config.setTemperature_upper_limit("30");
+//        config.setTemperature_lower_limit("10");
+//        config.setHumidity_upper_limit("70");
+//        config.setHumidity_lower_limit("10");
+//
+//        configService.save(config);
+
+        Config config = configService.getConfig(Long.valueOf(0));
+
+        System.out.println("asdfasd");
     }
 }

@@ -7,7 +7,6 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.HashMap;
@@ -51,6 +50,8 @@ public class ConfigController {
         map.put("temperatureLowerLimit", config.getTemperature_lower_limit());
         map.put("humidityUpperLimit", config.getHumidity_upper_limit());
         map.put("humidityLowerLimit", config.getHumidity_lower_limit());
+
+        map.put("status","SUCCEED");
 
         return map;
     }

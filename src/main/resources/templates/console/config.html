@@ -203,7 +203,7 @@
                 <div class="col-md-12">
                     <!-- Advanced Tables -->
                     <div class="panel panel-default">
-                        <div class="panel-body">
+                        <div class="panel-body" style="height: 45em;">
                             <div class="table-responsive">
 
                                 <form class="form-horizontal form-profile-save" method="post" style="margin-top: 20px">
@@ -211,32 +211,32 @@
 
                                         <div class="form-group">
                                             <label for="temperature_upper_limit" class="col-sm-3 control-label">温度上限</label>
-                                            <div class="col-sm-5">
-                                                <input type="number" class="form-control" id="temperature_upper_limit" name="showTimes" maxlength="30" required="required" />
+                                            <div class="col-sm-5 form-inline">
+                                                <input type="number" class="form-control" id="temperature_upper_limit" name="temperatureUpperLimit" maxlength="30" required="required" />°C
                                             </div>
                                             <div class="col-sm-4"></div>
                                         </div>
 
                                         <div class="form-group">
                                             <label for="temperature_lower_limit" class="col-sm-3 control-label">温度下限</label>
-                                            <div class="col-sm-5">
-                                                <input type="number" class="form-control" id="temperature_lower_limit" name="showTimes" maxlength="30" required="required" />
+                                            <div class="col-sm-5 form-inline">
+                                                <input type="number" class="form-control" id="temperature_lower_limit" name="temperatureLowerLimit" maxlength="30" required="required" />°C
                                             </div>
                                             <div class="col-sm-4"></div>
                                         </div>
 
                                         <div class="form-group">
                                             <label for="humidity_upper_limit" class="col-sm-3 control-label">湿度上限</label>
-                                            <div class="col-sm-5">
-                                                <input type="number" class="form-control" id="humidity_upper_limit" name="showTimes" maxlength="30" required="required" />
+                                            <div class="col-sm-5 form-inline">
+                                                <input type="number" class="form-control" id="humidity_upper_limit" name="humidityUpperLimit" maxlength="30" required="required" />%RH
                                             </div>
                                             <div class="col-sm-4"></div>
                                         </div>
 
                                         <div class="form-group">
                                             <label for="temperature_lower_limit" class="col-sm-3 control-label">湿度下限</label>
-                                            <div class="col-sm-5">
-                                                <input type="number" class="form-control" id="humidity_lower_limit" name="showTimes" maxlength="30" required="required" />
+                                            <div class="col-sm-5 form-inline">
+                                                <input type="number" class="form-control" id="humidity_lower_limit" name="humidityLowerLimit" maxlength="30" required="required" />%RH
                                             </div>
                                             <div class="col-sm-4"></div>
                                         </div>
@@ -244,7 +244,7 @@
                                         <div class="form-group">
                                             <div class="col-sm-3"></div>
                                             <div class="col-sm-5">
-                                                <button type="button" class="btn btn-primary form-profile-save">保存</button>
+                                                <button type="button" class="btn btn-primary save-profile">保存</button>
                                             </div>
                                             <div class="col-sm-4"></div>
                                         </div>
@@ -398,15 +398,42 @@
 <!-- Custom Js -->
 <script>
     $(document).ready(function() {
+        $.ajax({
+            url: "/console/config_management/getConfig",
+            type: "get",
+            processData: false,
+            contentType: false,
+            success : function(res){
+                switch (res.status){
+                    case "SUCCEED":
 
+
+                        $("#temperature_upper_limit").val(res.temperatureUpperLimit);
+                        $("#temperature_lower_limit").val(res.temperatureLowerLimit);
+                        $("#humidity_upper_limit").val(res.humidityUpperLimit);
+                        $("#humidity_lower_limit").val(res.humidityLowerLimit);
+
+                        break;
+                    case "FAILED":
+                        $(".save-profile").disable = "disable";
+
+                        $("#dialog-return").find(".modal-body").html("获取配置信息失败,请刷新页面重试");
+                        $("#dialog-return").modal("show");
+
+                        break;
+                }
+            },
+            fail : function(res){
+                $(".save-profile").disable = "disable";
+
+                $("#dialog-return").find(".modal-body").html("获取配置信息失败,请刷新页面重试");
+                $("#dialog-return").modal("show");
+            }
+        });
     });
 </script>
 
 <script>
-    var timeout_network = 3000;
-
-    var contactsNameMap;
-
     !function ($) {
         $(document).on("click","ul.nav li.parent > a > span.icon", function(){
             $(this).find('em:first').toggleClass("glyphicon-minus");
@@ -417,49 +444,9 @@
     $(window).on('resize', function () {
         if ($(window).width() > 768) $('#sidebar-collapse').collapse('show');
         else $('#sidebar-collapse').collapse('hide');
+
     });
 
-    function doallcheck(e){
-        var list = $("input[name='user_id']");
-
-        for(i in list){
-            list[i].checked = !list[i].checked;
-        }
-    }
-
-    function _formatte_user_id(value, row, index) {
-        if(index == 0){
-            contactsNameMap = new Map();
-        }
-
-        contactsNameMap.set(value,row.username);
-
-        return '<input name="user_id" type="checkbox" value="' + value + '" />';
-    }
-
-    function _formatted_select(value, row, index) {
-        return $.trim(value) ==$.trim('true') ? "是":"否" ;
-    }
-
-    // function _formatted_Time(value, row, index){
-    //     return getFormmattedTime(value)
-    // }
-
-    function _reset(from) {
-        from[0].reset();
-        _reset_input(from.find("input"));
-    }
-
-    function _reset_input(input) {
-        input.removeClass("alert-danger");
-        input.tooltip('destroy');
-    }
-
-    function _set(el, message) {
-        el.addClass("alert-danger");
-        el.attr("title", message);
-        el.tooltip('show');
-    }
 
     $("#logout").click(function () {
         $(".log-out-bs-example-modal-sm").find(".modal-body").html("确认退出系统？");
@@ -471,236 +458,51 @@
         window.location.href = "/logout";
     })
 
-    $(".btn.btn-primary.open-add-new-user-dialog").click(function() {
-        window.flag = 'add';
-
-        _reset($(".form-horizontal.add-new-user"));
-        $("#dialog-user-management-update-title").html("增加");
-        $("#dialog-user-management-update").modal("show");
-    });
-
-    $(".btn.btn-success.open-update-use-dialog").click(function() {
-        window.flag = 'update';
-
-
-        var id = new Array();
-
-        var selectedBox = $("input[name='user_id']:checked");
-
-        for(var i = 0; i < selectedBox.length; i++){
-            id.push( selectedBox[i].value );
-
-            if(id.length > 2){
-                break;
-            }
-        }
-        if ( id.length != 0 ) {
-            if(id.length > 1){
-                $("#dialog-return").find(".modal-body").html("请选择一个用户");
-                $("#dialog-return").modal("show");
-
-                return ;
-            }
-
-            _reset($(".form-horizontal.add-new-user"));
-            // 读取用户选中的用户信息
-            $.get("/console/user_management/get/" + id, null, function(r, status) {
-                $("#dialog-user-management-update").find("input[id='id']").val(r.id);
-                $("#dialog-user-management-update").find("input[id='version']").val(r.version);
-                $("#dialog-user-management-update").find("input[id='username']").val(r.username);
-                $("#dialog-user-management-update").find("input[id='firstName']").val(r.firstName);
-                $("#dialog-user-management-update").find("input[id='lastName']").val(r.lastName);
-                $("#dialog-user-management-update").find("input[id='email']").val(r.email);
-                $("#dialog-user-management-update").find("select[id='role']").val(r.role);
-                $("#dialog-user-management-update").find("select[id='enabled']").val(r.enabled ? "True" : "False");
-
-                $("#dialog-user-management-update-title").html("修改");
-                $("#dialog-user-management-update").modal("show");
-            });
-        } else {
-            $("#dialog-return").find(".modal-body").html("请选中用户后操作");
-            $("#dialog-return").modal("show");
-        }
-    });
-
-    $(".btn.btn-primary.add-new-user").click(function() {
-        var isComplete = true;
-        var isFormatted = true;
-
-        //check input
-        if($("input[id='username']").val() == ""){
-            _set($("input[id='username']"), "请输入用户名");
-            isComplete = false;
-        }
-        if($("input[id='firstName']").val() == ""){
-            _set($("input[id='firstName']"), "请输入姓");
-            isComplete = false;
-        }
-        if($("input[id='lastName']").val() == ""){
-            _set($("input[id='lastName']"), "请输入名");
-            isComplete = false;
-        }
-        if($("input[id='email']").val() ==""){
-            _set($("input[id='email']"), "请输入邮箱地址");
-            isComplete = false;
-        }
-
-        if($("input[id='password']").val() ==""){
-            _set($("input[id='password']"), "请输入密码");
-            isComplete = false;
-        }
-        if($("input[id='confirmPassword']").val() ==""){
-            _set($("input[id='confirmPassword']"), "请确认密码");
-            isComplete = false;
-        }
-
-        if(isComplete) {
-            _reset_input($("#dialog-user-management-update").find(".form-group").find("input"));
-
-            if (!isName($("input[id='username']").val())) {
-                isFormatted = false;
-
-                _set($("input[id='username']"), "请输入包含中文，英文，数字和-的名字");
-            }
-
-            if (!isName($("input[id='firstName']").val())) {
-                isFormatted = false;
-
-                _set($("input[id='firstName']"), "请输入包含中文，英文，数字和-的名字");
-            }
-
-            if (!isName($("input[id='lastName']").val())) {
-                isFormatted = false;
-
-                _set($("input[id='lastName']"), "请输入包含中文，英文，数字和-的名字");
-            }
-
-            if (!isEmail($("input[id='email']").val())) {
-                isFormatted = false;
-
-                _set($("input[id='email']"), "请输入合法邮箱");
-            }
-
-            var pass = $("input[id='password']").val();
-            var pass_confirm = $("input[id='confirmPassword']").val()
-            if (pass != pass_confirm) {
-                isFormatted = false;
-
-                _set($("input[id='password']"), "两次密码输入不一致");
-                _set($("input[id='confirmPassword']"), "两次密码输入不一致");
-            }//确认密码一致
-
-            if (isFormatted) {
-
-                var data = $(".form-horizontal.add-new-user").serializeArray();
-                $.post("/console/user_management/save", data, function (r, status) {
-                    switch (r.status) {
-                        case "SUCCEED" :
-                            var message = "";
-
-                            message = window.flag=='add' ? '增加成功' : '修改成功';
-
-                            $("#dialog-return").find(".modal-body").html(message)
-                            $("#dialog-return").modal("show");
-
-                            $(".btn.btn-default.add-new-user-close").click();
-                            $(".panel.panel-default").find("button[name='refresh']").click();
-
-
-                            // $("#dialog-user-management-update").find(".modal-body").html("新增成功");
-                            // $("#dialog-user-management-update").modal("show");
-                            //
-                            // $(".panel.panel-default").find("button[name='refresh']").click();
-
-                            break
-
-                        case "FAILED" :
-                            var inputError = false;
-
-                            var message = "";
-
-                            message = window.flag=='add' ? '增加失败' : '修改失败';
-
-                            if(r.message != undefined) {
-                                var checkIsExist = true;
-
-                                if(r.message.username != undefined){
-                                    _reset_input( $("input[id='username']") );
-                                    _set($("input[id='username']"), "用户名已存在，请重新输入");
-
-                                    checkIsExist = false;
-                                }
-
-                                if(r.message.email != undefined){
-                                    _reset_input( $("input[id='email']") );
-                                    _set( $("input[id='email']"), "邮箱已存在，请重新输入" );
-
-                                    checkIsExist = false;
-                                }
-
-                                if(!checkIsExcit){
-                                    return ;
-                                }
-
-
-                                $("#dialog-return").find(".modal-body").html(r.message.message)
-                                $("#dialog-return").modal("show");
-                            }
-
-
-                            break
-                    }
-
-
-                    // if (r.status == "SUCCEED") {
-                    //     $(".bs-example-modal-sm").find(".modal-body").html(
-                    //         $("#dialog-user-management-update-title").html() + " succeeded."
-                    //     );
-                    //     $(".bs-example-modal-sm").modal("show");
-                    //     $(".btn.btn-default.add-new-user-close").click();
-                    //     $(".panel.panel-default").find("button[name='refresh']").click();
-                    //     // location.reload();
-                    // } else {
-                    //     if (r.message.username) {
-                    //         _set($(".form-horizontal.add-new-user").find("input[id='username']"), r.message.username);
-                    //     }
-                    //     if (r.message.email) {
-                    //         _set($(".form-horizontal.add-new-user").find("input[id='email']"), r.message.email);
-                    //     }
-                    //     if (r.message.password) {
-                    //         _set($(".form-horizontal.add-new-user").find("input[id='password']"), r.message.password);
-                    //     }
-                    //     if (r.message.firstName) {
-                    //         _set($(".form-horizontal.add-new-user").find("input[id='firstName']"), r.message.firstName);
-                    //     }
-                    //     if (r.message.lastName) {
-                    //         _set($(".form-horizontal.add-new-user").find("input[id='lastName']"), r.message.lastName);
-                    //     }
-                    //     if (r.message.WARNING) {
-                    //         $(".bs-example-modal-sm").find(".modal-body").html(r.message.WARNING);
-                    //         $(".bs-example-modal-sm").modal("show");
-                    //     }
-                    // }
-
-                });
-            }
-        }
-    });
-
-    function isName(val){//包括中文和英文数字-
-        var reg = /^([\u4E00-\uFA29]|[\uE7C7-\uE7F3]|[a-zA-Z0-9_-]){1,20}$/;
-
-        return reg.test(val);
+    function _reset_input(input) {
+        input.removeClass("alert-danger");
+        input.tooltip('destroy');
     }
 
-    function isEmail(val){
-        var myreg = /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/;
-        return myreg.test(val);
-    }
 
-    function _formatte_device_name(value, row, index) {
-        return '<a href="/console/device_info_detail?deviceId=' + row.deviceId +'">'+value+'</a>';
-    }
+    $(".save-profile").click(function() {
+        _reset_input($("#dialog-user-management-update").find(".form-group").find("input"));
+
+        var temperature_upper_limit = $("#temperature_upper_limit").val();
+        var temperature_lower_limit = $("#temperature_lower_limit").val();
+        var humidity_upper_limit = $("#humidity_upper_limit").val();
+        var humidity_lower_limit = $("#humidity_lower_limit").val();
+
+        if( parseInt(temperature_lower_limit) >= parseInt( temperature_upper_limit ) ){
+            _set($("input[id='temperature_upper_limit']"), "温度下限不能高于温度上限");
+            _set($("input[id='temperature_lower_limit']"), "温度下限不能高于温度上限");
+
+            return;
+        }
+
+        if( parseInt(humidity_lower_limit) >= parseInt( humidity_upper_limit ) ){
+            _set($("input[id='humidity_upper_limit']"), "湿度下限不能高于湿度上限");
+            _set($("input[id='humidity_lower_limit']"), "湿度下限不能高于湿度上限");
+
+            return;
+        }
+
+        var data = $(".form-horizontal").serializeArray();
+        $.post("/console/config_management/save", data, function (r, status) {
+            switch (r.status) {
+                case "SUCCEED" :
+                    $("#dialog-return").find(".modal-body").html("修改成功")
+                    $("#dialog-return").modal("show");
+
+                    break
+
+                case "FAILED" :
+                    $("#dialog-return").find(".modal-body").html("修改失败")
+                    $("#dialog-return").modal("show");
+
+                    break;
+            }
+        });
+    });
 
     $(".btn.btn-danger.delete-employee-dialog").click(function (){
         var selectedBox = $("input[name='user_id']:checked");
@@ -830,21 +632,6 @@
         });
     });
 
-    function _formatter_light (value,row,index) {
-        return value == 0 ? '开':'关';
-    }
-
-    function _formatter_temperature (value,row,index) {
-        return value + "°C";
-    }
-
-    function _formatter_humidity (value,row,index) {
-        return value + "%RH";
-    }
-
-    function _formatter_charge (value,row,index) {
-        return value +"%";
-    }
 
 </script>
 
