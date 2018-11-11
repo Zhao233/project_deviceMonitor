@@ -79,8 +79,8 @@ public class DeviceInfoSearchServiceImp implements DeviceInfoSearchService {
             String device_mac_id = deviceDataOutDTO.getDeviceId();
             int device_id = (int) deviceService.getIdByDevice_mac_id(device_mac_id);
 
-            String humidity = String.format("%.1f",objectNode.get("humidity").asDouble());
-            String temperature = String.format("%.1f", objectNode.get("temperature").asDouble());
+            double humidity = Double.parseDouble(String.format("%.1f",objectNode.get("humidity").asDouble()));
+            double temperature = Double.parseDouble(String.format("%.1f", objectNode.get("temperature").asDouble()));
             int light = objectNode.get("light").asInt();
             int battery = objectNode.get("battery").asInt();
 

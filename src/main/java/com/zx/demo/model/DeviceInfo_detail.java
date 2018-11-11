@@ -21,8 +21,8 @@ public class DeviceInfo_detail {
     String signalIntensity;
     int statusOfCharge;
     int statusOfLight;
-    String temperature;
-    String humidity;
+    double temperature;
+    double humidity;
 
     String imei_id;
 
@@ -31,7 +31,7 @@ public class DeviceInfo_detail {
     public DeviceInfo_detail(long   deviceId,                  String device_mac_id,        String name,
                              String attributionOfDevice, int    organizationId,  String addressOfDevice,
                              int    times,               String signalIntensity, int    statusOfCharge,
-                             int    statusOfLight,       String temperature,     String humidity,
+                             int    statusOfLight,       double temperature,     double humidity,
                              Date   updateTime, String imei_id) {
 
         this.deviceId = deviceId;

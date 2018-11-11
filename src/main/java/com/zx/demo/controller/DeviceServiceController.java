@@ -46,7 +46,9 @@ public class DeviceServiceController {
                                       @RequestParam(value = "order", required = false) String order,//升序或者降序
                                       @RequestParam(value = "sort" , required = false) String sort,//排序名
 
-                                      @RequestParam(value = "isNormal" , required = false) boolean isNormal,//排序名
+                                      @RequestParam(value = "isNormal", required = false) boolean isNormal,//排序名
+
+                                      @RequestParam(value = "search") String search,
 
                                       @RequestParam(value = "limit", defaultValue = "10", required = false) Integer type,
                                       @RequestParam(value = "limit", defaultValue = "10", required = false) Integer level,
@@ -64,7 +66,8 @@ public class DeviceServiceController {
             Sort.Direction sort_ = order.equals("asc") ? Sort.Direction.ASC : Sort.Direction.DESC;
 
             pageable = new PageRequest(offset, limit, sort_, sort);
-        } else {
+        } else {//默认
+
             pageable = new PageRequest(offset, limit, new Sort(Sort.Direction.DESC, "id"));
         }
 
@@ -74,9 +77,9 @@ public class DeviceServiceController {
 
 
         if( !isNormal  ){//查找不正常设备（电信平台更新时间与本地时间不同）
-            page = deviceInfoService.getDeviceInfo_all_abnormal(pageable, user.getId());
+            page = deviceInfoService.getDeviceInfo_all_abnormal(pageable, user.getId(), search);
         } else {//查找正常设备
-            page = deviceInfoService.getDeviceInfo_all_normal(pageable, user.getId());
+            page = deviceInfoService.getDeviceInfo_all_normal(pageable, user.getId(), search);
         }
 
         p.put("total", page != null ? page.getTotalElements() : 0);

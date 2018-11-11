@@ -146,9 +146,11 @@ public interface DeviceInfoDao extends JpaRepository<DeviceInfo, Long> {
             "on deviceInfo.device_id = device.id "  +
             "where device.user_id=?1 and deviceInfo.id in (" +
             "   select max(id) from DeviceInfo deviceInfo group by deviceInfo.device_id" +
-            ") and  deviceInfo.modify_time_search_local-deviceInfo.updateTime<600000 " +
+            ") " +
+            "and  deviceInfo.modify_time_search_local-deviceInfo.updateTime<600000 " +
+            "and device.name like %?2% " +
             "order by deviceInfo.modify_time_search_local")
-    Page<DeviceInfo_all> getLatestDeviceInfo_all_nomal(Pageable pageable, long userId);
+    Page<DeviceInfo_all> getLatestDeviceInfo_all_normal(Pageable pageable, long userId, String search);
 
     @Query(value = "select new com.zx.demo.model.DeviceInfo_all(" +
             "device.id,                  device.mac_id,                          device.type,              " +
@@ -161,9 +163,11 @@ public interface DeviceInfoDao extends JpaRepository<DeviceInfo, Long> {
             "on deviceInfo.device_id = device.id "  +
             "where device.user_id=?1 and deviceInfo.id in (" +
             "   select max(id) from DeviceInfo deviceInfo group by deviceInfo.device_id" +
-            ") and deviceInfo.modify_time_search_local-deviceInfo.updateTime>600000 " +
+            ") and " +
+            "deviceInfo.modify_time_search_local-deviceInfo.updateTime>600000 " +
+            "and device.name like %?2% " +
             "order by deviceInfo.modify_time_search_local")
-    Page<DeviceInfo_all> getLatestDeviceInfo_all_abnomal(Pageable pageable, long userId);
+    Page<DeviceInfo_all> getLatestDeviceInfo_all_abnormal(Pageable pageable, long userId, String search);
 
     /**
      * 获取设备信息（详细）

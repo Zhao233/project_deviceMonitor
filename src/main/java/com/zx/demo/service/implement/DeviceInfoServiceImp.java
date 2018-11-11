@@ -33,13 +33,13 @@ public class DeviceInfoServiceImp implements DeviceInfoService {
     private DeviceService deviceService;
 
     @Override
-    public Page<DeviceInfo_all> getDeviceInfo_all_normal(Pageable pageable, long userId){
-        return deviceInfoDao.getLatestDeviceInfo_all_nomal(pageable, userId);
+    public Page<DeviceInfo_all> getDeviceInfo_all_normal(Pageable pageable, long userId, String search){
+        return deviceInfoDao.getLatestDeviceInfo_all_normal(pageable, userId, search);
     }
 
     @Override
-    public Page<DeviceInfo_all> getDeviceInfo_all_abnormal(Pageable pageable, long userId){
-       return deviceInfoDao.getLatestDeviceInfo_all_abnomal(pageable, userId);
+    public Page<DeviceInfo_all> getDeviceInfo_all_abnormal(Pageable pageable, long userId, String search){
+       return deviceInfoDao.getLatestDeviceInfo_all_abnormal(pageable, userId, search);
     }
 
     @Override
@@ -59,7 +59,7 @@ public class DeviceInfoServiceImp implements DeviceInfoService {
 
         List<DeviceInfo> deviceInfoList = deviceInfoDao.getTemperatureRecord_local(id,dateTime);
 
-        List<String> temperatureRecord = new LinkedList<>();
+        List<Double> temperatureRecord = new LinkedList<>();
         List<String> timeRecord = new LinkedList<>();
 
 
@@ -88,7 +88,7 @@ public class DeviceInfoServiceImp implements DeviceInfoService {
 
         List<DeviceInfo> deviceInfoList = deviceInfoDao.getHumidityRecord_local(id,dateTime);
 
-        List<String> humidityRecord = new LinkedList<>();
+        List<Double> humidityRecord = new LinkedList<>();
         List<String> timeRecord = new LinkedList<>();
 
 

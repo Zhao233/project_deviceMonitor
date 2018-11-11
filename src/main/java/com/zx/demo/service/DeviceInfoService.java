@@ -14,9 +14,9 @@ import java.util.Map;
 
 public interface DeviceInfoService {
 
-    Page<DeviceInfo_all> getDeviceInfo_all_normal(Pageable pageable, long userId);
+    Page<DeviceInfo_all> getDeviceInfo_all_normal(Pageable pageable, long userId, String search);
 
-    Page<DeviceInfo_all> getDeviceInfo_all_abnormal(Pageable pageable, long userId);
+    Page<DeviceInfo_all> getDeviceInfo_all_abnormal(Pageable pageable, long userId, String search);
 
 
     DeviceInfo_detail getDeviceInfo_detail(Pageable pageable, long deviceId);

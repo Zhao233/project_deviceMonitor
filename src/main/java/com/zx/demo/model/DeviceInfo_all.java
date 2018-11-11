@@ -9,7 +9,7 @@ import java.util.Date;
 @Setter
 @Getter
 public class DeviceInfo_all implements Serializable {
-    public DeviceInfo_all(long deviceId, String device_mac_id, int type, int level, String name, int statusOfLight, int statusOfCharge, String temperature, String humidity, Date updateTime, Date modify_time_search_local, String imei_id) {
+    public DeviceInfo_all(long deviceId, String device_mac_id, int type, int level, String name, int statusOfLight, int statusOfCharge, double temperature, double humidity, Date updateTime, Date modify_time_search_local, String imei_id) {
         this.deviceId = deviceId;
         this.device_mac_id = device_mac_id;
         this.type = type;
@@ -34,8 +34,8 @@ public class DeviceInfo_all implements Serializable {
     private String imei_id;
     private int statusOfLight;
     private int statusOfCharge;
-    private String temperature;
-    private String humidity;
+    private double temperature;
+    private double humidity;
     private Date updateTime;
     private Date modify_time_search_local;
 }

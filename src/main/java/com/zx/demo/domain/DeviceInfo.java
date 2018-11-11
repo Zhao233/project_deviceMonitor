@@ -22,7 +22,7 @@ public class DeviceInfo{
     private int device_id;
 
     @Column(name = "humidity")
-    private String humidity;
+    private double humidity;
 
     @Column(name = "status")
     private String status;
@@ -37,7 +37,7 @@ public class DeviceInfo{
     private int statusOfLight;
 
     @Column(name = "temperature")
-    private String temperature;
+    private double temperature;
 
     @Column(name = "times")
     private int times;
@@ -59,7 +59,7 @@ public class DeviceInfo{
     @Column(name = "modify_time_search_local")
     private Timestamp modify_time_search_local;
 
-    public DeviceInfo(long id,String device_mac_id, int device_id, String humidity, String status, String signalIntensity, int statusOfCharge, int statusOfLight, String temperature, int times, String imei_id, Timestamp updateTime, Timestamp modify_time_search_local) {
+    public DeviceInfo(long id,String device_mac_id, int device_id, double humidity, String status, String signalIntensity, int statusOfCharge, int statusOfLight, double temperature, int times, String imei_id, Timestamp updateTime, Timestamp modify_time_search_local) {
         this.id = id;
         this.device_mac_id = device_mac_id;
         this.device_id = device_id;

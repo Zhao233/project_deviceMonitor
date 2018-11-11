@@ -1,43 +1,85 @@
-//package com.zx.demo;
+package com.zx.demo;
+
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.huawei.iotplatform.client.NorthApiException;
+import com.huawei.iotplatform.client.dto.DeviceDataHistoryDTO;
+import com.huawei.iotplatform.client.dto.QueryDataHistoryInDTO;
+import com.huawei.iotplatform.client.dto.QueryDataHistoryOutDTO;
+import com.huawei.iotplatform.client.dto.QueryDeviceDataOutDTO;
+import com.huawei.iotplatform.client.invokeapi.DataCollection;
+import com.zx.demo.domain.*;
+import com.zx.demo.model.DeviceInfo_all;
+import com.zx.demo.model.Test1;
+import com.zx.demo.repository.*;
+import com.zx.demo.service.ConfigService;
+import com.zx.demo.service.DeviceInfoSearchService;
+import com.zx.demo.service.DeviceInfoService;
+import com.zx.demo.util.DeviceRemoteSearchUtil;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.test.context.junit4.SpringRunner;
+
+import javax.management.Query;
+import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
+
+@RunWith(SpringRunner.class)
+@SpringBootTest
+public class DemoApplicationTests {
+    @Autowired
+    private DeviceInfoService deviceInfoService;
+
+    @Autowired
+    private UserDao userDao;
+
+    @Test
+    public void Test(){
+//        Sort sort = new Sort(Sort.Direction.DESC, "statusOfCharge");
 //
-//import com.fasterxml.jackson.databind.node.ObjectNode;
-//import com.huawei.iotplatform.client.NorthApiException;
-//import com.huawei.iotplatform.client.dto.DeviceDataHistoryDTO;
-//import com.huawei.iotplatform.client.dto.QueryDataHistoryInDTO;
-//import com.huawei.iotplatform.client.dto.QueryDataHistoryOutDTO;
-//import com.huawei.iotplatform.client.dto.QueryDeviceDataOutDTO;
-//import com.huawei.iotplatform.client.invokeapi.DataCollection;
-//import com.zx.demo.domain.*;
-//import com.zx.demo.model.DeviceInfo_all;
-//import com.zx.demo.model.Test1;
-//import com.zx.demo.repository.*;
-//import com.zx.demo.service.ConfigService;
-//import com.zx.demo.service.DeviceInfoSearchService;
-//import com.zx.demo.service.DeviceInfoService;
-//import com.zx.demo.util.DeviceRemoteSearchUtil;
-//import org.junit.Test;
-//import org.junit.runner.RunWith;
-//import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.boot.test.context.SpringBootTest;
-//import org.springframework.data.domain.Page;
-//import org.springframework.data.domain.PageRequest;
-//import org.springframework.data.domain.Pageable;
-//import org.springframework.data.domain.Sort;
-//import org.springframework.test.context.junit4.SpringRunner;
+//        Pageable pageable = new PageRequest(0,50,sort);
+//        Page<DeviceInfo_all> page = deviceInfoService.getDeviceInfo_all_abnormal(pageable,0, "");
 //
-//import javax.management.Query;
-//import java.sql.Timestamp;
-//import java.text.ParseException;
-//import java.text.SimpleDateFormat;
-//import java.util.Calendar;
-//import java.util.Date;
-//import java.util.LinkedList;
-//import java.util.List;
 //
-//@RunWith(SpringRunner.class)
-//@SpringBootTest
-//public class DemoApplicationTests {
+//        for( DeviceInfo_all deviceInfo_all : page.getContent() ){
+//            System.out.println(deviceInfo_all.getTemperature());
+//        }
+//
+//        System.out.println();
+//
+//        sort = new Sort(Sort.Direction.DESC, "id");
+//
+//        pageable = new PageRequest(0,50, sort);
+//        page = deviceInfoService.getDeviceInfo_all_abnormal(pageable,0, "");
+//
+//        for( DeviceInfo_all deviceInfo_all : page.getContent() ){
+//            System.out.println(deviceInfo_all.getTemperature());
+//        }
+
+        Sort sort = new Sort(Sort.Direction.ASC, "id");
+        Pageable pageable = new PageRequest(0,50,sort);
+
+        Page<User> page = userDao.findAll("",pageable);
+
+        for( User deviceInfo_all : page.getContent() ){
+            System.out.println(deviceInfo_all.getId());
+        }
+
+    }
+
+
+}
 //
 ////    @Autowired
 ////    private UserDao userDao;
