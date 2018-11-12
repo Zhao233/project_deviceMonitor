@@ -59,6 +59,7 @@ public class DeviceServiceController {
                                       @RequestParam(value = "limit", defaultValue = "10", required = false) Integer updateTime
                                       ) {
         Map<String, Object> p = new HashMap<>();
+        Map<String, Object> res;
 
         Pageable pageable;
 
@@ -73,17 +74,17 @@ public class DeviceServiceController {
 
         User user = UserUtil.getCureentUser();
 
-        Page<DeviceInfo_all> page;
-
-
         if( !isNormal  ){//查找不正常设备（电信平台更新时间与本地时间不同）
-            page = deviceInfoService.getDeviceInfo_all_abnormal(pageable, user.getId(), search);
+            res = deviceInfoService.getDeviceInfo_all_abnormal(offset, limit, sort, order,user.getId(), search);
         } else {//查找正常设备
-            page = deviceInfoService.getDeviceInfo_all_normal(pageable, user.getId(), search);
+            res = deviceInfoService.getDeviceInfo_all_normal(offset, limit, sort, order, user.getId(), search);
         }
 
-        p.put("total", page != null ? page.getTotalElements() : 0);
-        p.put("rows", page != null ? page.getContent() : "");
+        List<DeviceInfo_all> list = (List<DeviceInfo_all>) res.get("rows");
+        int total = (int) res.get("total");
+
+        p.put("total", total);
+        p.put("rows", list);
 
         return p;
     }

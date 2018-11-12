@@ -15,6 +15,7 @@ import com.zx.demo.service.DeviceInfoService;
 import com.zx.demo.service.DeviceService;
 import com.zx.demo.util.DeviceRemoteSearchUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnJava;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -33,13 +34,111 @@ public class DeviceInfoServiceImp implements DeviceInfoService {
     private DeviceService deviceService;
 
     @Override
-    public Page<DeviceInfo_all> getDeviceInfo_all_normal(Pageable pageable, long userId, String search){
-        return deviceInfoDao.getLatestDeviceInfo_all_normal(pageable, userId, search);
+    public Map<String, Object> getDeviceInfo_all_normal(int pageNumber, int limit, String property, String order, long userId, String search){
+        Map<String, Object> map = new HashMap<>();
+
+        List<DeviceInfo_all> deviceInfoList = deviceInfoDao.getLatestDeviceInfo_all_normal(userId, search);
+
+        List<DeviceInfo_all> deviceInfo_result = new LinkedList<>();
+
+        deviceInfoList = sort(deviceInfoList,property,order);
+
+        int pageNum = 0;
+        for(int i = pageNumber*limit; i < deviceInfoList.size(); i++){
+            if(pageNum > limit){
+                break;
+            }
+
+            deviceInfo_result.add(deviceInfoList.get(i));
+
+            pageNum++;
+        }
+
+        map.put("total", deviceInfoList.size());
+        map.put("rows", deviceInfo_result);
+
+        return map;
     }
 
     @Override
-    public Page<DeviceInfo_all> getDeviceInfo_all_abnormal(Pageable pageable, long userId, String search){
-       return deviceInfoDao.getLatestDeviceInfo_all_abnormal(pageable, userId, search);
+    public Map<String, Object> getDeviceInfo_all_abnormal(int pageNumber, int limit, String property, String order, long userId, String search){
+        Map<String, Object> map = new HashMap<>();
+
+        List<DeviceInfo_all> deviceInfoList = deviceInfoDao.getLatestDeviceInfo_all_abnormal(userId, search);
+
+        List<DeviceInfo_all> deviceInfo_result = new LinkedList<>();
+
+        deviceInfoList = sort(deviceInfoList,property,order);
+
+        int pageNum = 0;
+        for(int i = pageNumber*limit; i < deviceInfoList.size(); i++){
+            if(pageNum > limit){
+                break;
+            }
+
+            deviceInfo_result.add(deviceInfoList.get(i));
+
+            pageNum++;
+        }
+
+        map.put("total", deviceInfoList.size());
+        map.put("rows", deviceInfo_result);
+
+        return map;
+    }
+
+
+    private List<DeviceInfo_all> sort(List<DeviceInfo_all> list, String property, String order){
+        int len=list.size();
+
+        double value = 0;
+
+        for(int i=0;i<len;i++){//循环次数
+            switch (property){
+                case "temperature" :
+                    value = list.get(i).getTemperature();
+
+                    break;
+                case "humidity" :
+                    value = list.get(i).getHumidity();
+                    break;
+            }
+
+            int position=i;
+
+            for(int j=i+1;j<len;j++){//找到最小的值和位置
+                double value_=0;
+
+                switch (property){
+                    case "temperature" :
+                        value_ = list.get(j).getTemperature();
+
+                        break;
+                    case "humidity" :
+                        value_ = list.get(j).getHumidity();
+                        break;
+                }
+
+                if(order.equals("DESC")){
+                    if(value_ >= value){
+                        value = value_;
+                        position=j;
+                    }
+                } else {
+                    if(value_ <= value){
+                        value = value_;
+                        position=j;
+                    }
+                }
+            }
+
+            DeviceInfo_all temp = list.get(position);
+
+            list.set(position, list.get(i));
+            list.set(i,temp);
+        }
+
+        return list;
     }
 
     @Override

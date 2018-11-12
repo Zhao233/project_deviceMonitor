@@ -15,15 +15,13 @@ import com.zx.demo.service.ConfigService;
 import com.zx.demo.service.DeviceInfoSearchService;
 import com.zx.demo.service.DeviceInfoService;
 import com.zx.demo.util.DeviceRemoteSearchUtil;
+import net.bytebuddy.dynamic.scaffold.MethodGraph;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.management.Query;
@@ -44,13 +42,15 @@ public class DemoApplicationTests {
     @Autowired
     private UserDao userDao;
 
+    @Autowired
+    private DeviceInfoDao deviceInfoDao;
+
     @Test
-    public void Test(){
-//        Sort sort = new Sort(Sort.Direction.DESC, "statusOfCharge");
+    public void Test() {
+//        PageRequest pageRequest = new PageRequest(0,50,Sort.Direction.DESC);
 //
-//        Pageable pageable = new PageRequest(0,50,sort);
+//        Pageable pageable = new PageRequest(0,50,pageRequest);
 //        Page<DeviceInfo_all> page = deviceInfoService.getDeviceInfo_all_abnormal(pageable,0, "");
-//
 //
 //        for( DeviceInfo_all deviceInfo_all : page.getContent() ){
 //            System.out.println(deviceInfo_all.getTemperature());
@@ -58,7 +58,7 @@ public class DemoApplicationTests {
 //
 //        System.out.println();
 //
-//        sort = new Sort(Sort.Direction.DESC, "id");
+//        sort = new Sort(Sort.Direction.ASC, "statusOfCharge");
 //
 //        pageable = new PageRequest(0,50, sort);
 //        page = deviceInfoService.getDeviceInfo_all_abnormal(pageable,0, "");
@@ -67,15 +67,73 @@ public class DemoApplicationTests {
 //            System.out.println(deviceInfo_all.getTemperature());
 //        }
 
-        Sort sort = new Sort(Sort.Direction.ASC, "id");
-        Pageable pageable = new PageRequest(0,50,sort);
+//        Pageable pageable = PageRequest.of(0, 50, Sort.Direction.DESC, "temperature");
+//
+//        Page<DeviceInfo_all> page = deviceInfoService.getDeviceInfo_all_abnormal(pageable, 0, "");
+//
+//        for (DeviceInfo_all deviceInfo_all : page.getContent()) {
+//            System.out.println(deviceInfo_all.getTemperature());
+//        }
 
-        Page<User> page = userDao.findAll("",pageable);
+        List<DeviceInfo_all> deviceInfo_alls = deviceInfoDao.getLatestDeviceInfo_all_abnormal(0,"");
 
-        for( User deviceInfo_all : page.getContent() ){
-            System.out.println(deviceInfo_all.getId());
+        deviceInfo_alls = sort(deviceInfo_alls,"temperature","asc");
+
+        for(DeviceInfo_all deviceInfo_all : deviceInfo_alls){
+            System.out.println(deviceInfo_all.getTemperature());
+        }
+    }
+    private List<DeviceInfo_all> sort(List<DeviceInfo_all> list, String property, String order){
+        int len=list.size();
+
+        double value = 0;
+
+        for(int i=0;i<len;i++){//循环次数
+            switch (property){
+                case "temperature" :
+                    value = list.get(i).getTemperature();
+
+                    break;
+                case "humidity" :
+                    value = list.get(i).getHumidity();
+                    break;
+            }
+
+            int position=i;
+
+            for(int j=i+1;j<len;j++){//找到最小的值和位置
+                double value_=0;
+
+                switch (property){
+                    case "temperature" :
+                        value_ = list.get(j).getTemperature();
+
+                        break;
+                    case "humidity" :
+                        value_ = list.get(j).getHumidity();
+                        break;
+                }
+
+                if(order.equals("desc")){
+                    if(value_ >= value){
+                        value = value_;
+                        position=j;
+                    }
+                } else {
+                    if(value_ <= value){
+                        value = value_;
+                        position=j;
+                    }
+                }
+            }
+
+            DeviceInfo_all temp = list.get(position);
+
+            list.set(position, list.get(i));
+            list.set(i,temp);
         }
 
+        return list;
     }
 
 

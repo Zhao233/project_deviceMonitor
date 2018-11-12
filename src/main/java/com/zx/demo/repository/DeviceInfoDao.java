@@ -149,8 +149,8 @@ public interface DeviceInfoDao extends JpaRepository<DeviceInfo, Long> {
             ") " +
             "and  deviceInfo.modify_time_search_local-deviceInfo.updateTime<600000 " +
             "and device.name like %?2% " +
-            "order by deviceInfo.modify_time_search_local")
-    Page<DeviceInfo_all> getLatestDeviceInfo_all_normal(Pageable pageable, long userId, String search);
+            "order by deviceInfo.modify_time_search_local ")
+    List<DeviceInfo_all> getLatestDeviceInfo_all_normal(long userId, String search);
 
     @Query(value = "select new com.zx.demo.model.DeviceInfo_all(" +
             "device.id,                  device.mac_id,                          device.type,              " +
@@ -167,7 +167,7 @@ public interface DeviceInfoDao extends JpaRepository<DeviceInfo, Long> {
             "deviceInfo.modify_time_search_local-deviceInfo.updateTime>600000 " +
             "and device.name like %?2% " +
             "order by deviceInfo.modify_time_search_local")
-    Page<DeviceInfo_all> getLatestDeviceInfo_all_abnormal(Pageable pageable, long userId, String search);
+    List<DeviceInfo_all> getLatestDeviceInfo_all_abnormal( long userId, String search);
 
     /**
      * 获取设备信息（详细）

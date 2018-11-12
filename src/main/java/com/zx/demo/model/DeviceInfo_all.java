@@ -1,13 +1,15 @@
 package com.zx.demo.model;
 
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.persistence.MappedSuperclass;
 import java.io.Serializable;
 import java.util.Date;
 
-@Setter
-@Getter
+@Data
+@MappedSuperclass
 public class DeviceInfo_all implements Serializable {
     public DeviceInfo_all(long deviceId, String device_mac_id, int type, int level, String name, int statusOfLight, int statusOfCharge, double temperature, double humidity, Date updateTime, Date modify_time_search_local, String imei_id) {
         this.deviceId = deviceId;
