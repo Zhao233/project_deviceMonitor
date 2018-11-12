@@ -119,7 +119,7 @@ public class DeviceInfoServiceImp implements DeviceInfoService {
                         break;
                 }
 
-                if(order.equals("DESC")){
+                if(order.equals("desc")){
                     if(value_ >= value){
                         value = value_;
                         position=j;
