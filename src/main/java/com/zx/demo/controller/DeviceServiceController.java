@@ -83,8 +83,11 @@ public class DeviceServiceController {
         List<DeviceInfo_all> list = (List<DeviceInfo_all>) res.get("rows");
         int total = (int) res.get("total");
 
+        Config config = configService.getConfig(0);
+
         p.put("total", total);
         p.put("rows", list);
+        p.put("config",config);
 
         return p;
     }

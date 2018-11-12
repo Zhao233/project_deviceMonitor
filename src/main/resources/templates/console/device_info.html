@@ -382,6 +382,8 @@
 
     var isNormal = true;
 
+    var config;
+
     !function ($) {
         $(document).on("click","ul.nav li.parent > a > span.icon", function(){
             $(this).find('em:first').toggleClass("glyphicon-minus");
@@ -428,6 +430,8 @@
                 $("#doAllCheckBtn").checked != $("#doAllCheckBtn").checked;
 
                 doallcheck();
+
+                config = res.config;
 
                 return {
                     "rows": res.rows,
@@ -864,12 +868,27 @@
     }
 
     function _formatter_temperature (value,row,index) {
-        return
+        if(parseFloat(value) > parseFloat(config.temperature_upper_limit)){//高于最高值
+            return '<font face="arial" color="#EB101B">'+value+'°C</font>';
+        }
+
+        if( parseFloat(value) < parseFloat(config.temperature_upper_limit) ){//低于最低值
+            return '<font face="arial" color="#2BCE1E">'+value+'°C</font>';
+        }
 
         return value + "°C";
     }
 
     function _formatter_humidity (value,row,index) {
+        if(parseFloat(value) > parseFloat(config.humidity_upper_limit)){//高于最高值
+            return '<font color="#EB101B">'+value+'%RH</font>';
+        }
+
+        if( parseFloat(value) < parseFloat(config.humidity_upper_limit) ){//低于最低值
+            return '<font color="#2BCE1E">'+value+'%RH</font>';
+        }
+
+
         return value + "%RH";
     }
 
