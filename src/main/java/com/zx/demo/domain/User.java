@@ -43,6 +43,9 @@ public class User implements UserDetails {
     @Column(name = "secret_service")
     private String secret_service;
 
+    @Column(name = "role")
+    private int role;
+
     public User converter() {
         User user = new User();
 
