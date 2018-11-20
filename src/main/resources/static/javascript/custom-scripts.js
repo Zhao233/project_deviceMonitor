@@ -256,15 +256,6 @@ function adjustTableHeight(Object, adjustment){
     Object.height( Object.height() - (wrapperHeight - windowHeight) - topNavbarHeight - adjustment);
 
     console.log("after: " + Object.height());
-
-    // var AltitudeDifference = $("body")[0].scrollHeight - $(window).height();
-    // console.log("高度差："+ AltitudeDifference );
-    // console.log("屏幕大小："+ $(window).height() );
-    // console.log("body高："+ $("body").height() ) ;
-    //
-    // $(".fixed-table-body").height( $(".fixed-table-body").height() - AltitudeDifference);
-    //
-    // console.log("调整后高度："+$(".fixed-table-body").height());
 };
 
 function adjustHeight(Object, adjustment){
@@ -304,9 +295,9 @@ function getAdminInfo(){
         //     },
         //     error : function () {
         //         $("#dialog-return").find(".modal-body").html("获取管理员信息失败---网络错误");
-        //         $("#dialog-return").modal("show");
-        //     }
-        // });
+    //         $("#dialog-return").modal("show");
+    //     }
+    // });
 };
 
 function getUrlParam(name) {
@@ -320,6 +311,9 @@ function getToDayDateTime(offset_year, offset_month, offset_day) {
 
     var dateTime = "";
 
+    dateTime += ( date.getFullYear()  +"-")
+    dateTime += ( parseInt( date.getMonth() ) + 1) + "-";
+    dateTime +=  date.getDate() ;
     dateTime += ( parseInt(date.getFullYear()) + parseInt(offset_year) )  + "-"
     dateTime += ( parseInt( date.getMonth() ) + parseInt(offset_month) + 1) + "-";
     dateTime += parseInt( date.getDate() ) + parseInt(offset_day);
@@ -333,12 +327,8 @@ function getToDayDateTime(offset_year, offset_month, offset_day) {
 
 function getToDayDateTime_00_00() {
     var date = new Date();
-
     var dateTime = "";
 
-    dateTime += ( date.getFullYear()  +"-")
-    dateTime += ( parseInt( date.getMonth() ) + 1) + "-";
-    dateTime +=  date.getDate() ;
 
     dateTime += " "+"00";
     dateTime += ":"+"00";

@@ -32,5 +32,4 @@ public class Config {
 
     @Column(name = "device_id")
     private long device_id;
-
 }

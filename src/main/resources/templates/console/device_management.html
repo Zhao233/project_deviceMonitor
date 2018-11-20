@@ -105,8 +105,8 @@
                         "total": res.total
                     };
                 },
-                onPostHeader : function(){
-                    adjustTableHeight();//custom-script
+                onPostBody : function(){
+                    adjustTableHeight($(".fixed-table-body"),20);//custom-script
                 }
             });
 

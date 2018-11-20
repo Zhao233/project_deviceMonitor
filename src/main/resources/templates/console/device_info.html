@@ -122,6 +122,18 @@
             padding-bottom: 1em;
         }
 
+        .sort_desc:before{
+            content: '\e156';
+        }
+
+        .sort_asc:before{
+            content: '\e155';
+        }
+
+        .sort_default:before{
+            content: '\e150';
+        }
+
         .W180{width:180px;}
         .W150{width:150px;}
         .W150 {width:100px !important;}
@@ -221,8 +233,14 @@
                                         <th data-field="level" class="W100">等级</th>
                                         <th data-field="statusOfLight" class="W100" data-formatter="_formatter_light">灯开关状态</th>
                                         <th data-field="statusOfCharge" class="W100" data-formatter="_formatter_charge">电池电量</th>
-                                        <th data-field="temperature" data-sortable="true" class="W100" data-formatter="_formatter_temperature">温度</th>
-                                        <th data-field="humidity" data-sortable="true" class="W100" data-formatter="_formatter_humidity">湿度</th>
+                                        <th data-field="temperature" data-sortable="true" class="W100 temperature" data-formatter="_formatter_temperature">
+                                            温度
+                                            <i class="glyphicon sort_default"></i>
+                                        </th>
+                                        <th data-field="humidity" data-sortable="true" class="W100 humidity" data-formatter="_formatter_humidity">
+                                            湿度
+                                            <i class="glyphicon sort_default"></i>
+                                        </th>
                                         <th data-field="updateTime" class="W100">更新时间</th>
                                     </tr>
                                     </thead>
@@ -394,8 +412,6 @@
     $(window).on('resize', function () {
         if ($(window).width() > 768) $('#sidebar-collapse').collapse('show');
         else $('#sidebar-collapse').collapse('hide');
-
-        adjustTableHeight($(".fixed-table-body"),20);
     });
 
     $(document).ready(function() {
@@ -438,8 +454,35 @@
                     "total": res.total
                 };
             },
-            onPostHeader : function(){
-                //adjustTableHeight($(".fixed-table-body"),20);//custom-script
+            onPostBody : function(){
+                adjustTableHeight($(".fixed-table-body"),20);//custom-script
+            },
+            onSort(name,order){
+                $(".temperature").find(".sortable").empty();
+                $(".humidity").find(".sortable").empty();
+
+                $(".temperature").find(".sortable").append("温度");
+                $(".humidity").find(".sortable").append("湿度");
+
+                if(name == "temperature"){
+
+                    $(".humidity").find(".sortable").append('<i class="glyphicon sort_default"></i>');
+
+                    if(order == "asc"){
+                        $(".temperature").find(".sortable").append('<i class="glyphicon sort_asc"></i>');
+                    } else {
+                        $(".temperature").find(".sortable").append('<i class="glyphicon sort_desc"></i>');
+                    }
+
+                } else {//humidity
+                    $(".temperature").find(".sortable").append('<i class="glyphicon sort_default"></i>');
+
+                    if (order == "asc") {
+                        $(".humidity").find(".sortable").append('<i class="glyphicon sort_asc"></i>');
+                    } else {
+                        $(".humidity").find(".sortable").append('<i class="glyphicon sort_desc"></i>');
+                    }
+                }
             }
         });
     });
@@ -872,19 +915,19 @@
             return '<font face="arial" color="#EB101B">'+value+'°C</font>';
         }
 
-        if( parseFloat(value) < parseFloat(config.temperature_upper_limit) ){//低于最低值
+        if( parseFloat(value) < parseFloat(config.temperature_lower_limit) ){//低于最低值
             return '<font face="arial" color="#2BCE1E">'+value+'°C</font>';
         }
 
         return value + "°C";
     }
 
-    function _formatter_humidity (value,row,index) {
+    function _formatter_humidity (value, row, index) {
         if(parseFloat(value) > parseFloat(config.humidity_upper_limit)){//高于最高值
             return '<font color="#EB101B">'+value+'%RH</font>';
         }
 
-        if( parseFloat(value) < parseFloat(config.humidity_upper_limit) ){//低于最低值
+        if( parseFloat(value) < parseFloat(config.humidity_lower_limit) ){//低于最低值
             return '<font color="#2BCE1E">'+value+'%RH</font>';
         }
 

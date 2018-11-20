@@ -45,43 +45,21 @@ public class DemoApplicationTests {
     @Autowired
     private DeviceInfoDao deviceInfoDao;
 
+    @Autowired
+    private DeviceInfoSearchService deviceInfoSearchService;
+
     @Test
     public void Test() {
-//        PageRequest pageRequest = new PageRequest(0,50,Sort.Direction.DESC);
+        List<DeviceInfo_all> all = (List<DeviceInfo_all>) deviceInfoService.getDeviceInfo_all_normal(50,0,"","",0,"").get("rows");
+
+        System.out.println("ss");
+//        List<DeviceInfo_all> deviceInfo_alls = deviceInfoDao.getLatestDeviceInfo_all_abnormal(0,"");
 //
-//        Pageable pageable = new PageRequest(0,50,pageRequest);
-//        Page<DeviceInfo_all> page = deviceInfoService.getDeviceInfo_all_abnormal(pageable,0, "");
+//        deviceInfo_alls = sort(deviceInfo_alls,"temperature","asc");
 //
-//        for( DeviceInfo_all deviceInfo_all : page.getContent() ){
+//        for(DeviceInfo_all deviceInfo_all : deviceInfo_alls){
 //            System.out.println(deviceInfo_all.getTemperature());
 //        }
-//
-//        System.out.println();
-//
-//        sort = new Sort(Sort.Direction.ASC, "statusOfCharge");
-//
-//        pageable = new PageRequest(0,50, sort);
-//        page = deviceInfoService.getDeviceInfo_all_abnormal(pageable,0, "");
-//
-//        for( DeviceInfo_all deviceInfo_all : page.getContent() ){
-//            System.out.println(deviceInfo_all.getTemperature());
-//        }
-
-//        Pageable pageable = PageRequest.of(0, 50, Sort.Direction.DESC, "temperature");
-//
-//        Page<DeviceInfo_all> page = deviceInfoService.getDeviceInfo_all_abnormal(pageable, 0, "");
-//
-//        for (DeviceInfo_all deviceInfo_all : page.getContent()) {
-//            System.out.println(deviceInfo_all.getTemperature());
-//        }
-
-        List<DeviceInfo_all> deviceInfo_alls = deviceInfoDao.getLatestDeviceInfo_all_abnormal(0,"");
-
-        deviceInfo_alls = sort(deviceInfo_alls,"temperature","asc");
-
-        for(DeviceInfo_all deviceInfo_all : deviceInfo_alls){
-            System.out.println(deviceInfo_all.getTemperature());
-        }
     }
     private List<DeviceInfo_all> sort(List<DeviceInfo_all> list, String property, String order){
         int len=list.size();

@@ -81,7 +81,16 @@ public class DeviceInfoSearchServiceImp implements DeviceInfoSearchService {
 
             double humidity = Double.parseDouble(String.format("%.1f",objectNode.get("humidity").asDouble()));
             double temperature = Double.parseDouble(String.format("%.1f", objectNode.get("temperature").asDouble()));
-            int light = objectNode.get("light").asInt();
+
+            int light;
+
+            if(objectNode.get("light").asText().equals("On")){
+                light = 0;
+            } else {
+                light = 1;
+            }
+            System.out.println("light : "+objectNode.get("light"));
+
             int battery = objectNode.get("battery").asInt();
 
             String status = deviceDataOutDTO.getDeviceInfo().getStatus();
@@ -219,7 +228,7 @@ public class DeviceInfoSearchServiceImp implements DeviceInfoSearchService {
                 DeviceInfo deviceInfo = getDeviceInfoFromRemoteServer( deviceTemp.getMac_id() );
 
                 if(deviceInfo != null){
-                    deviceInfoService.addDeviceInfo(deviceInfo);
+                    //deviceInfoService.addDeviceInfo(deviceInfo);
                     System.out.println(deviceInfo.toString());
                 }
             }

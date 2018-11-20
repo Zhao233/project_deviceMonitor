@@ -14,6 +14,7 @@ import com.zx.demo.service.DeviceInfoSearchService;
 import com.zx.demo.service.DeviceInfoService;
 import com.zx.demo.service.DeviceService;
 import com.zx.demo.util.DeviceRemoteSearchUtil;
+import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnJava;
 import org.springframework.data.domain.Page;
@@ -45,8 +46,12 @@ public class DeviceInfoServiceImp implements DeviceInfoService {
 
         int pageNum = 0;
         for(int i = pageNumber*limit; i < deviceInfoList.size(); i++){
-            if(pageNum > limit){
+            if(pageNum >= limit){
                 break;
+            }
+
+            if(deviceInfoList.get(i).getDeviceId()==16){
+                System.out.println("");
             }
 
             deviceInfo_result.add(deviceInfoList.get(i));
@@ -72,7 +77,7 @@ public class DeviceInfoServiceImp implements DeviceInfoService {
 
         int pageNum = 0;
         for(int i = pageNumber*limit; i < deviceInfoList.size(); i++){
-            if(pageNum > limit){
+            if(pageNum >= limit){
                 break;
             }
 
