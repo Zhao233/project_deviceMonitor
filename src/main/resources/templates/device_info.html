@@ -417,7 +417,7 @@
     $(document).ready(function() {
         $('#_table_user_search').bootstrapTable({
             method: 'get',
-            url: "/console/deviceInfo/searchAll",
+            url: "/deviceInfo/searchAll",
             striped: true,
             height:300,
             dataType: "json",
@@ -775,7 +775,7 @@
     }
 
     function _formatte_device_name(value, row, index) {
-        return '<a href="/console/device_info_detail?deviceId=' + row.deviceId +'">'+value+'</a>';
+        return '<a href="/device_info_detail?deviceId=' + row.deviceId +'">'+value+'</a>';
     }
 
     $(".btn.btn-danger.delete-employee-dialog").click(function (){

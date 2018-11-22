@@ -392,7 +392,7 @@
         if ($(window).width() > 768) $('#sidebar-collapse').collapse('show');
         else $('#sidebar-collapse').collapse('hide');
 
-        console.log("chart-wrapper height: "+$(".chart-wrapper").height());
+        console.log("chart-wrapper heuight: "+$(".chart-wrapper").height());
         console.log("line-chart height: "+$("#line-chart").height());
 
 
@@ -417,7 +417,7 @@
         $.ajax({
             type: "get",
             dataType:"json",
-            url : "/console/deviceInfo/getHumidityRecord",
+            url : "/deviceInfo/getHumidityRecord",
             data : {
                 deviceId : id,
                 dateTime : todayDateTime,
@@ -516,40 +516,40 @@
         }
     }
 
-    function getCameraNameById(id){
-        $.ajax({
-            url: "/console/camera_management/get/" + id,
-            timeout : 2000,
-            type: "get",
-            processData: false,
-            contentType: false,
-            success: function (r) {
-                switch (r.status) {
-                    case "SUCCEED" :
-                        $("#cameraName").val(r.cameraName);
-
-                        break
-
-                    case "FAILED" :
-                        $("#dialog-return").find(".modal-body").html("获取摄像头名称失败");
-
-                        if(r.message != undefined){
-                            $("#dialog-return").find(".modal-body").append("\n原因:"+r.message);
-                        }
-
-                        $("#dialog-return").modal("show");
-
-                        break
-                }
-            },
-            error: function (r) {
-
-                $("#dialog-return").find(".modal-body").html("网络错误");
-                $("#dialog-return").modal("show");
-            }
-
-        });
-    }
+    // function getCameraNameById(id){
+    //     $.ajax({
+    //         url: "/console/camera_management/get/" + id,
+    //         timeout : 2000,
+    //         type: "get",
+    //         processData: false,
+    //         contentType: false,
+    //         success: function (r) {
+    //             switch (r.status) {
+    //                 case "SUCCEED" :
+    //                     $("#cameraName").val(r.cameraName);
+    //
+    //                     break
+    //
+    //                 case "FAILED" :
+    //                     $("#dialog-return").find(".modal-body").html("获取摄像头名称失败");
+    //
+    //                     if(r.message != undefined){
+    //                         $("#dialog-return").find(".modal-body").append("\n原因:"+r.message);
+    //                     }
+    //
+    //                     $("#dialog-return").modal("show");
+    //
+    //                     break
+    //             }
+    //         },
+    //         error: function (r) {
+    //
+    //             $("#dialog-return").find(".modal-body").html("网络错误");
+    //             $("#dialog-return").modal("show");
+    //         }
+    //
+    //     });
+    // }
 
     function getTimeFromDateTime(dateTime){
         var time = dateTime.split(" ")[1].split(":");
@@ -575,7 +575,7 @@
     function refreshChartAndTable(data){
         $.ajaxSettings.async = false;
 
-        $.get("/console/deviceInfo/getHumidityRecord", data, function(r, status) {
+        $.get("/deviceInfo/getHumidityRecord", data, function(r, status) {
 
             for(i in r.updateTimeRecord){
                 r.updateTimeRecord[i] = getTimeFromDateTime( r.updateTimeRecord[i] ) ;

@@ -30,7 +30,7 @@ import java.util.*;
 
 /**与设备信息查询有关的服务*/
 @Controller
-@RequestMapping("/console/deviceInfo")
+@RequestMapping("/deviceInfo")
 public class DeviceServiceController {
 
     @Autowired
