@@ -147,7 +147,7 @@ public interface DeviceInfoDao extends JpaRepository<DeviceInfo, Long> {
             "where device.user_id=?1 and deviceInfo.id in (" +
             "   select max(id) from DeviceInfo deviceInfo group by deviceInfo.device_id" +
             ") " +
-            "and  deviceInfo.modify_time_search_local-deviceInfo.updateTime<600000 " +
+            "and  deviceInfo.modify_time_search_local-deviceInfo.updateTime<6000000 " +
             "and device.name like %?2% " +
             "order by deviceInfo.modify_time_search_local ")
     List<DeviceInfo_all> getLatestDeviceInfo_all_normal(long userId, String search);
@@ -164,7 +164,7 @@ public interface DeviceInfoDao extends JpaRepository<DeviceInfo, Long> {
             "where device.user_id=?1 and deviceInfo.id in (" +
             "   select max(id) from DeviceInfo deviceInfo group by deviceInfo.device_id" +
             ") and " +
-            "deviceInfo.modify_time_search_local-deviceInfo.updateTime>600000 " +
+            "deviceInfo.modify_time_search_local-deviceInfo.updateTime>6000000 " +
             "and device.name like %?2% " +
             "order by deviceInfo.modify_time_search_local")
     List<DeviceInfo_all> getLatestDeviceInfo_all_abnormal( long userId, String search);
