@@ -12,11 +12,15 @@ import javax.servlet.http.HttpServletResponse;
 
 @Configuration
 public class CustomMvcConfigurer extends WebMvcConfigurerAdapter {
+    static final int ROLE_CUSTOMER = 0;
+    static final int ROLE_ADMIN = 1;
+
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         super.addInterceptors(registry);
 
-        registry.addInterceptor(new SecurityInterceptor()).addPathPatterns("/console/**").excludePathPatterns("login");
+        registry.addInterceptor(new SecurityInterceptor()).addPathPatterns("/user/*").excludePathPatterns("/login");
+        registry.addInterceptor(new SecurityInterceptor_ConsoleCheck()).addPathPatterns("/console/*").excludePathPatterns("/login");
     }
 
     /**
@@ -32,19 +36,7 @@ public class CustomMvcConfigurer extends WebMvcConfigurerAdapter {
 
             if (user != null) {
 
-                String uri = request.getRequestURI();
 
-                System.out.println(uri.indexOf("/console/profile"));
-
-//                if (role.equals(User.ROLE_ADMINISTRATOR)  /**&& uri.contains("/console/employee_management")*/) {
-//                    return true;
-//                } else if (role.equals(User.ROLE_CUSTOMER) /**&& uri.contains("/console/task_schedule_tracking")*/) {
-//                    return true;
-//                } else if (role.equals(User.ROLE_SUPPLIER) /**&& uri.contains("/console/task_management")*/) {
-//                    return true;
-//                } else if (role.equals(User.ROLE_PROJECT_MANAGEMENT) /**&& uri.contains("/console/task_allocation")*/) {
-//                    return true;
-//                }
             } else {
                 response.sendRedirect("/login");
 
@@ -69,11 +61,29 @@ public class CustomMvcConfigurer extends WebMvcConfigurerAdapter {
         }
     }
 
-    static class SecurityInterceptor_RTSP implements HandlerInterceptor {
+    static class SecurityInterceptor_ConsoleCheck implements HandlerInterceptor {
         @Override
         public boolean preHandle(HttpServletRequest request,
                                  HttpServletResponse response,
                                  Object handler) throws Exception {
+            User user = (User) request.getSession().getAttribute("user");
+
+            if (user != null) {
+
+                String uri = request.getRequestURI();
+
+                if(user.getRole() == CustomMvcConfigurer.ROLE_CUSTOMER && uri.contains("/console")){
+                    //不是管理员却访问与管理员界面相关的页面
+
+                    response.sendRedirect("/login?error=");
+
+                    return false;
+                }
+            } else {
+                response.sendRedirect("/login");
+
+                return false;
+            }
 
             return true;
         }
