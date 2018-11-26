@@ -6,25 +6,25 @@ import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 public class TemplateController {
-    @RequestMapping("/device_info")
+    @RequestMapping("/user/device_info")
     private ModelAndView toDeviceInfo(){
         System.out.print("device_info");
-        return new ModelAndView("device_info");
+        return new ModelAndView("user/device_info");
     }
 
-    @RequestMapping("/device_info_detail")
+    @RequestMapping("/user/device_info_detail")
     private ModelAndView toDeviceInfoDetail(){
-        return new ModelAndView("device_info_detail");
+        return new ModelAndView("user/device_info_detail");
     }
 
-    @RequestMapping("/temperature_detail")
+    @RequestMapping("/user/temperature_detail")
     private ModelAndView toTemperatureDetail(){
-        return new ModelAndView("temperature_detail");
+        return new ModelAndView("user/temperature_detail");
     }
 
-    @RequestMapping("/humidity_detail")
+    @RequestMapping("/user/humidity_detail")
     private ModelAndView toHumidityDetail(){
-        return new ModelAndView("humidity_detail");
+        return new ModelAndView("user/humidity_detail");
     }
 
 }

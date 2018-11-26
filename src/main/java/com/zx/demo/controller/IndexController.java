@@ -21,7 +21,7 @@ public class IndexController {
 
 
         if (request.getSession().getAttribute("user") != null) {
-            return new ModelAndView("redirect:device_info");
+            return new ModelAndView("redirect:user/device_info");
         }
 
         return new ModelAndView("login");

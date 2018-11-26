@@ -48,7 +48,7 @@ public class CustomSecurityConfigurer extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
                 .antMatchers("/", "/style/**", "/javascript/**", "/fonts/**", "/api/**", "/console/**", "/images/**", "/voices/**", "/image/**", "/", "/RTSP/*").permitAll() //
-                .anyRequest().authenticated() //
+                .anyRequest().authenticated()
                 .and().formLogin().loginPage("/login").successForwardUrl("/logged").failureUrl("/?error").permitAll() //
                 .and().logout().logoutUrl("/logout").logoutSuccessUrl("/").permitAll(); //
 
