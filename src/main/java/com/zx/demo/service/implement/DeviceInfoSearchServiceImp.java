@@ -217,6 +217,11 @@ public class DeviceInfoSearchServiceImp implements DeviceInfoSearchService {
         List<User> userList = userService.findAll();
 
         for(User userTemp : userList){
+            if(userTemp.getSecret_service() == null || userTemp.getSecret_service().equals("")){
+                //如果是管理员就跳过
+                continue;
+            }
+
             DeviceRemoteSearchUtil.appId = userTemp.getAppId();
             DeviceRemoteSearchUtil.secret = userTemp.getSecret_service();
             //重新获取accessToken
@@ -228,7 +233,7 @@ public class DeviceInfoSearchServiceImp implements DeviceInfoSearchService {
                 DeviceInfo deviceInfo = getDeviceInfoFromRemoteServer( deviceTemp.getMac_id() );
 
                 if(deviceInfo != null){
-                    //deviceInfoService.addDeviceInfo(deviceInfo);
+                    deviceInfoService.addDeviceInfo(deviceInfo);
                     System.out.println(deviceInfo.toString());
                 }
             }

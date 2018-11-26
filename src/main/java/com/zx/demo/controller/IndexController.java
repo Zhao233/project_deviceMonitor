@@ -1,4 +1,5 @@
 package com.zx.demo.controller;
+import com.zx.demo.configuration.CustomMvcConfigurer;
 import com.zx.demo.domain.User;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -18,10 +19,19 @@ public class IndexController {
 
     @RequestMapping(value = {"/", "/login"})
     public ModelAndView toHome(HttpServletRequest request, HttpServletResponse response) {
+        User user = (User)request.getSession().getAttribute("user");
 
 
-        if (request.getSession().getAttribute("user") != null) {
-            return new ModelAndView("redirect:user/device_info");
+        if (user != null) {
+            switch ( user.getRole() ){
+                case CustomMvcConfigurer.ROLE_CUSTOMER :
+                    return new ModelAndView("redirect:user/device_info");
+
+                case CustomMvcConfigurer.ROLE_ADMIN:
+                    return new ModelAndView("redirect:console/device_management");
+            }
+
+
         }
 
         return new ModelAndView("login");
