@@ -1,8 +1,11 @@
 package com.zx.demo.configuration;
 
+import com.zx.demo.domain.Device;
 import com.zx.demo.domain.User;
+import com.zx.demo.repository.DeviceDao;
 import com.zx.demo.repository.UserDao;
 import com.zx.demo.util.PasswordEncodeAssistant;
+import org.hibernate.validator.constraints.EAN;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -14,6 +17,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Configuration
 @EnableWebSecurity
@@ -67,14 +72,20 @@ public class CustomSecurityConfigurer extends WebSecurityConfigurerAdapter {
         @Autowired
         private UserDao userDao;
 
+        @Autowired
+        private DeviceDao deviceDao;
+
         @Override
         public UserDetails loadUserByUsername(String username) {
 
             User user = userDao.findByName(username);
 
+            List<Device> a = deviceDao.findAll();
+
             if (user == null) {
                 throw new UsernameNotFoundException(username);
             } else {
+                System.out.println("");
             }
 
             return user;

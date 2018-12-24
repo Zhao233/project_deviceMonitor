@@ -12,7 +12,7 @@ import javax.persistence.Table;
 import java.util.Collection;
 
 @Entity
-@Table(name = "user")
+@Table(name = "users")
 
 @Getter
 @Setter
@@ -26,22 +26,20 @@ public class User implements UserDetails {
     @Id
     private long id;
 
+    @Column(name = "level")
+    private int level;
+
     @Column(name = "name")
     private String name;
 
     @Column(name = "password")
     private String password;
 
-    @Column(name = "level")
-    private int level;
-
+    @Column(name = "secret_service")
+    private String secret_service;
 
     @Column(name = "appId")
     private String appId;
-
-
-    @Column(name = "secret_service")
-    private String secret_service;
 
     @Column(name = "role")
     private int role;

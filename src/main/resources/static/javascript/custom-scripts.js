@@ -327,7 +327,7 @@ function getToDayDateTime(offset_year, offset_month, offset_day) {
 
 function getToDayDateTime_00_00() {
     var date = new Date();
-    var dateTime = "";
+    var dateTime = date.getFullYear()+"-"+parseInt( date.getMonth() )+1+"-"+date.getDate();
 
 
     dateTime += " "+"00";

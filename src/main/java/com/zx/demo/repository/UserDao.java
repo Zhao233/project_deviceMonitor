@@ -10,14 +10,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface UserDao extends JpaRepository <User,Long> {
-
+    @Query(value = "select user from User user where user.name=?1")
     User findByName(String name);
-
-    User findById(long id);
-
-    @Query("select user from User user where user.name like %?1% "
-            + " or user.level like %?1%")
-    Page<User> findAll(String q, Pageable pageable);
-
-    void deleteById(long id);
 }

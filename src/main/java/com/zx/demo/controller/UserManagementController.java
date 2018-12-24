@@ -2,6 +2,7 @@ package com.zx.demo.controller;
 
 import com.zx.demo.domain.User;
 import com.zx.demo.repository.UserDao;
+import org.omg.CORBA.OBJ_ADAPTER;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 
+import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -36,12 +38,18 @@ public class UserManagementController {
         if ("".equals(search.trim())) {
             page = userDao.findAll(pageable);
         } else {
-            page = userDao.findAll(search.trim(), pageable);
+            //page = userDao.findAll(search.trim(), pageable);
         }
+
+        //测试 可删除
+        page = userDao.findAll(pageable);
+
 
         p.put("total", page != null ? page.getTotalElements() : 0);
         p.put("rows", page != null ? page.getContent() : "");
 
         return p;
     }
+
+
 }

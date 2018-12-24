@@ -9,7 +9,7 @@ import org.springframework.web.servlet.ModelAndView;
 public class ConsoleController {
     @RequestMapping("/device_management")
     private ModelAndView toDeviceManager(){
-        return new ModelAndView("console/device_management");
+        return new ModelAndView("user_management");
     }
 
     @RequestMapping("/config")

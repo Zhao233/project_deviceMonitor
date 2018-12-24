@@ -59,17 +59,25 @@
             <version>1.16.10</version>
         </dependency>
 
-        <dependency>
+<!--        <dependency>
         <groupId>mysql</groupId>
         <artifactId>mysql-connector-java</artifactId>
         <scope>runtime</scope>
         </dependency>
 
-        <!--mysql connector-->
+        &lt;!&ndash;mysql connector&ndash;&gt;
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
             <version>8.0.11</version>
+        </dependency>-->
+
+
+        <!--sql server connector-->
+        <dependency>
+            <groupId>com.microsoft.sqlserver</groupId>
+            <artifactId>mssql-jdbc</artifactId>
+            <scope>runtime</scope>
         </dependency>
 
         <!-- spring热部署 -->
