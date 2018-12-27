@@ -18,12 +18,12 @@ public class TimerTask {
 
     private static final SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
 
-    @Scheduled(cron = "59 0/30 * * * ?")
+/*    @Scheduled(cron = "59 0/30 * * * ?")
     public void getTask1() throws NorthApiException {//每到半点，向数据库中查询设备信息，存入数据库中
         System.out.println("update data from remote server");
 
         deviceInfoSearchService.refreshDevicesInfoFromRemoteServer_();
-    }
+    }*/
 
     @Scheduled(cron = "0 0/15 * * * *")
     public void getTask2() {//半点刷新一次token

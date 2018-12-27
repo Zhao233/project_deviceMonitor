@@ -117,16 +117,6 @@ public class DemoApplicationTests {
         return list;
     }
 
-    @Test
-    public void testAddRecord() throws NorthApiException {
-        //deviceInfoSearchService.refreshDevicesInfoFromRemoteServer_();
-//        try {
-//            //deviceInfoSearchService.refreshDevicesInfoFromRemoteServer_();
-//        } catch (NorthApiException e) {
-//            e.printStackTrace();
-//        }
-    }
-
     //
 ////    @Autowired
 ////    private UserDao userDao;
@@ -224,6 +214,9 @@ public class DemoApplicationTests {
 //
     @Autowired
     TempDao tempDao;
+
+    @Autowired
+    DeviceInfoDao dao;
 
     @Test
     public void getInfo() throws NorthApiException, ParseException {
@@ -385,6 +378,12 @@ public class DemoApplicationTests {
         for (Temp temp : list) {
             //tempDao.save(temp);
         }
+    }
+
+
+    @Test
+    public void test() throws NorthApiException {
+        deviceInfoSearchService.refreshDevicesInfoFromRemoteServer_();
     }
 }
 //

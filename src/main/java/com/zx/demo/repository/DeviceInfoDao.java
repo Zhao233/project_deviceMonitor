@@ -84,15 +84,17 @@ public interface DeviceInfoDao extends JpaRepository<DeviceInfo, Long> {
 
     /**
      * 温度搜索，本地服务器
+     *
      * */
-    @Query(value = "select * from device_info where device_info.device_id=?1 and unix_timestamp(device_info.modify_time_search_local)>=unix_timestamp(?2) limit 48",nativeQuery = true)
+    @Query(value = "select top 48 * from device_info where device_info.device_id=?1 and datediff(ss, ?2, device_info.modify_time_search_local)>=0",nativeQuery = true)
     List<DeviceInfo> getTemperatureRecord_local(long id, String dateTime);
 //    List<DeviceInfo> getTemperatureRecord_local(long id, String dateTime);
 
     /**
      * 湿度搜索，本地服务器
+     *
      * */
-    @Query(value = "select * from device_info where device_info.device_id=?1 and unix_timestamp(device_info.modify_time_search_local)>=unix_timestamp(?2) limit 48",nativeQuery = true)
+    @Query(value = "select top 48 * from device_info where device_info.device_id=?1 and datediff(ss, ?2, device_info.modify_time_search_local)>=0",nativeQuery = true)
     List<DeviceInfo> getHumidityRecord_local(long id, String dateTime);
 
 //    List<DeviceInfo> getHumidityRecord_local(long id, String dateTime);
@@ -140,16 +142,29 @@ public interface DeviceInfoDao extends JpaRepository<DeviceInfo, Long> {
             "device.level,               device.name,                            deviceInfo.statusOfLight, " +
             "deviceInfo.statusOfCharge,  deviceInfo.temperature,                 deviceInfo.humidity," +
             "deviceInfo.updateTime, deviceInfo.modify_time_search_local,    device.imei_id) " +
-
             "from DeviceInfo deviceInfo " +
             "inner join Device device " +
             "on deviceInfo.device_id = device.id "  +
             "where device.user_id=?1 and deviceInfo.id in (" +
             "   select max(id) from DeviceInfo deviceInfo group by deviceInfo.device_id" +
             ") " +
-            "and  deviceInfo.modify_time_search_local-deviceInfo.updateTime<6000000 " +
+            "and DATEDIFF(ss, deviceInfo.modify_time_search_local, deviceInfo.updateTime) < 600 " +
             "and device.name like %?2% " +
             "order by deviceInfo.modify_time_search_local ")
+/*    @Query(value = "select new com.zx.demo.model.DeviceInfo_all(" +
+            "device.id,                   device.mac_id,                           device.type,              " +
+            "device.level,                device.name,                             device_info.status_of_light, " +
+            "device_info.status_of_charge,  device_info.temperature,                 device_info.humidity," +
+            "device_info.update_time,      device_info.modify_time_search_local,    device.imei_id) " +
+            "from device_info " +
+            "inner join device " +
+            "on device_info.device_id = device.id " +
+            "where device.user_id=?1 and device_info.id in (" +
+            "   select max(id) from device_info group by device_info.device_id" +
+            ") " +
+            "and DATEDIFF(ss,device_info.update_time,device_info.modify_time_search_local) < 6000000 " +
+            "and device.name like %?2% " +
+            "order by device_info.modify_time_search_local ", nativeQuery = true)*/
     List<DeviceInfo_all> getLatestDeviceInfo_all_normal(long userId, String search);
 
     @Query(value = "select new com.zx.demo.model.DeviceInfo_all(" +
@@ -164,7 +179,7 @@ public interface DeviceInfoDao extends JpaRepository<DeviceInfo, Long> {
             "where device.user_id=?1 and deviceInfo.id in (" +
             "   select max(id) from DeviceInfo deviceInfo group by deviceInfo.device_id" +
             ") and " +
-            "deviceInfo.modify_time_search_local-deviceInfo.updateTime>6000000 " +
+            "DATEDIFF(ss, deviceInfo.modify_time_search_local, deviceInfo.updateTime) > 600 " +
             "and device.name like %?2% " +
             "order by deviceInfo.modify_time_search_local")
     List<DeviceInfo_all> getLatestDeviceInfo_all_abnormal( long userId, String search);
