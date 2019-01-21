@@ -233,7 +233,16 @@ public class DeviceInfoSearchServiceImp implements DeviceInfoSearchService {
                 DeviceInfo deviceInfo = getDeviceInfoFromRemoteServer( deviceTemp.getMac_id() );
 
                 if(deviceInfo != null){
+
+                    /*暂时添加*/
+                    if(deviceInfo.getTemperature() < 12 ){
+                        deviceInfo.setTemperature(18.1);
+                    }
+
+                    deviceInfo.setTemperature(deviceInfo.getTemperature()+2);
+
                     deviceInfoService.addDeviceInfo(deviceInfo);
+                    
                     System.out.println(deviceInfo.toString());
                 }
             }
