@@ -1,14 +1,15 @@
 package com.zx.demo.domain;
 
+
 import lombok.Data;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
 
 @Entity
-@Table(name = "device_info")
+@Table(name = "device_info_new")
 @Data
-public class DeviceInfo{
+public class NewDeviceInfo {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
@@ -57,8 +58,8 @@ public class DeviceInfo{
     @Column(name = "modify_time_search_local")
     private Timestamp modify_time_search_local;
 
-    public DeviceInfo(long id,String device_mac_id, long device_id, double humidity, String status, String signalIntensity, int statusOfCharge, int statusOfLight, double temperature, int times, String imei_id, Timestamp updateTime, Timestamp modify_time_search_local) {
-        this.id = id;
+    public NewDeviceInfo(String device_mac_id, long device_id, double humidity, String status, String signalIntensity, int statusOfCharge, int statusOfLight, double temperature, int times, String imei_id, Timestamp updateTime, Timestamp modify_time_search_local) {
+        this.id = Long.valueOf(0);
         this.device_mac_id = device_mac_id;
         this.device_id = device_id;
         this.humidity = humidity;
@@ -73,14 +74,5 @@ public class DeviceInfo{
         this.modify_time_search_local = modify_time_search_local;
     }
 
-    public DeviceInfo(){}
-
-    public NewDeviceInfo toNewDeviceInfo() {
-        NewDeviceInfo newDeviceInfo = new NewDeviceInfo(device_mac_id, device_id,
-                humidity, status, signalIntensity, statusOfCharge,
-                statusOfLight, temperature, times, imei_id, updateTime,
-                modify_time_search_local);
-
-        return newDeviceInfo;
-    }
+    public NewDeviceInfo(){}
 }

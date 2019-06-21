@@ -1,6 +1,6 @@
 package com.zx.demo.service.implement;
 
-import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.huawei.iotplatform.client.NorthApiException;
 import com.huawei.iotplatform.client.dto.*;
 import com.huawei.iotplatform.client.invokeapi.DataCollection;
@@ -9,25 +9,21 @@ import com.zx.demo.domain.DeviceInfo;
 import com.zx.demo.domain.User;
 import com.zx.demo.model.DeviceInfo_all;
 import com.zx.demo.model.DeviceInfo_detail;
-import com.zx.demo.model.DeviceInfo_saveToDataBase;
 import com.zx.demo.service.DeviceInfoSearchService;
 import com.zx.demo.service.DeviceInfoService;
 import com.zx.demo.service.DeviceService;
 import com.zx.demo.service.UserService;
 import com.zx.demo.util.DeviceRemoteSearchUtil;
+import com.zx.demo.util_api.Constant;
+import com.zx.demo.util_api.HttpsUtil;
+import com.zx.demo.util_api.JsonUtil;
+import com.zx.demo.util_api.StreamClosedHttpResponse;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 /**
  * 向远程服务器查询信息
@@ -47,173 +43,155 @@ public class DeviceInfoSearchServiceImp implements DeviceInfoSearchService {
     @Autowired
     DeviceInfoService deviceInfoService;
 
-    @Override
-    public DeviceInfo getDeviceInfoFromRemoteServer(String deviceId) {
-        DataCollection collection = new DataCollection(DeviceRemoteSearchUtil.northApiClient);
-
-        try {
-            QueryDeviceDataOutDTO deviceDataOutDTO = collection.queryDeviceData(deviceId, DeviceRemoteSearchUtil.appId, DeviceRemoteSearchUtil.authOutDTO.getAccessToken());
-
-            System.out.println( deviceDataOutDTO.getServices().size() );
-
-            int length = deviceDataOutDTO.getServices().size();
-
-            if( length == 1 ){
-                return null;
-            }
-
-            ObjectNode objectNode = null;
-
-            String signalIntensity = "";
-
-            if( length == 10){
-                objectNode = deviceDataOutDTO.getServices().get(4).getData();
-
-                signalIntensity = deviceDataOutDTO.getServices().get(3).getData().get("signalStrength").asText();
-            } else {
-                objectNode = deviceDataOutDTO.getServices().get(5).getData();
-
-                signalIntensity = deviceDataOutDTO.getServices().get(4).getData().get("signalStrength").asText();
-            }
-
-            String device_mac_id = deviceDataOutDTO.getDeviceId();
-            int device_id = (int) deviceService.getIdByDevice_mac_id(device_mac_id);
-
-            double humidity = Double.parseDouble(String.format("%.1f",objectNode.get("humidity").asDouble()));
-            double temperature = Double.parseDouble(String.format("%.1f", objectNode.get("temperature").asDouble()));
-
-            int light;
-
-            if(objectNode.get("light").asText().equals("On")){
-                light = 0;
-            } else {
-                light = 1;
-            }
-            System.out.println("light : "+objectNode.get("light"));
-
-            int battery = objectNode.get("battery").asInt();
-
-            String status = deviceDataOutDTO.getDeviceInfo().getStatus();
-            String imei_id = deviceDataOutDTO.getDeviceInfo().getNodeId();
-
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd'T'hhmmss'Z'");
-            Date date_update = simpleDateFormat.parse(deviceDataOutDTO.getLastModifiedTime());
-            Calendar calendar_update = Calendar.getInstance();
-            calendar_update.setTime(date_update);
-            calendar_update.set(Calendar.HOUR_OF_DAY, calendar_update.get(Calendar.HOUR_OF_DAY) + 8);
-            Timestamp timestamp_update = new Timestamp(calendar_update.getTimeInMillis());
-
-            Date date_now = new Date();
-            Calendar calendar_now = Calendar.getInstance();
-            calendar_now.setTime(date_now);
-            calendar_now.set(Calendar.HOUR_OF_DAY, calendar_now.get(Calendar.HOUR_OF_DAY));
-            Timestamp timestamp_now = new Timestamp(calendar_now.getTimeInMillis());
-
-            DeviceInfo deviceInfo = new DeviceInfo(0,device_mac_id,device_id,humidity,status,signalIntensity,battery,light,temperature,0,imei_id,timestamp_update,timestamp_now);
-
-            System.out.println(deviceInfo.toString());
-
-            return deviceInfo;
-        } catch (NorthApiException e) {
-            e.printStackTrace();
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-
-        return null;
-    }
-
     /**
-     * 根据此appid, secret 下，远程服务器所拥有的所有设备的device_mac_id
+     * 从服务器获取信息
      * */
     @Override
-    public List<String> getAllDeviceIdListFromRemoteServer() {
-        DataCollection collection = new DataCollection(DeviceRemoteSearchUtil.northApiClient);
+    public DeviceInfo[] getDeviceInfoFromRemoteServer(String device_mac_Id, String appid, String secrete) throws Exception {
+        DeviceInfo[] infos = new DeviceInfo[2];
 
-        try {
-            QueryDevicesInDTO queryDevicesInDTO = new QueryDevicesInDTO();
+        JsonNode node = DeviceRemoteSearchUtil.getResult(device_mac_Id);
 
-            QueryDevicesOutDTO devicesOutDTO = collection.queryDevices(queryDevicesInDTO, DeviceRemoteSearchUtil.appId, DeviceRemoteSearchUtil.authOutDTO.getAccessToken());
 
-            List<QueryDeviceDTO> devicesList = devicesOutDTO.getDevices();
-            List<String> devicesIdList = new LinkedList<>();
+        JsonNode response = node.get("error_code");
 
-            for (QueryDeviceDTO deviceDTO : devicesList) {
-                devicesIdList.add(deviceDTO.getDeviceId());
-            }
-        } catch (NorthApiException e) {
-            e.printStackTrace();
+        if(response != null){
+            System.out.println("error desc : " + node.get("error_desc").toString() + "device Id : "+ device_mac_Id);
+
+            return null;
         }
 
-        return null;
-    }
+        JsonNode temp = node.get("services");
 
-    /**
-     * 根据此appid, secret 下，远程服务器所拥有的所有设备
-     * */
-    @Override
-    public List<Device> getAllDeviceFromRemoteServer() {
-        DataCollection collection = new DataCollection(DeviceRemoteSearchUtil.northApiClient);
-
-        try {
-            QueryDevicesInDTO queryDevicesInDTO = new QueryDevicesInDTO();
-            queryDevicesInDTO.setPageSize(Integer.MAX_VALUE);
-            queryDevicesInDTO.setPageNo(0);
-
-            QueryDevicesOutDTO devicesOutDTO = collection.queryDevices(queryDevicesInDTO, DeviceRemoteSearchUtil.appId, DeviceRemoteSearchUtil.authOutDTO.getAccessToken());
-
-            List<QueryDeviceDTO> devicesList = devicesOutDTO.getDevices();
-
-            List<Device> devicesIdList = new LinkedList<>();
-
-            Timestamp timestamp = new Timestamp(new Date().getTime());
-
-            for (QueryDeviceDTO queryDeviceDTO : devicesList) {
-                com.huawei.iotplatform.client.dto.DeviceInfo deviceInfo = queryDeviceDTO.getDeviceInfo();
-
-                String deviceName = deviceInfo.getName();
-                int type = 0;
-                String addressOfDevice = deviceInfo.getLocation();
-                String attributionOfDevice = "";
-                String organization_name = "";
-                int organizationId = 0;
-                int level = 0;
-                String mac_id = queryDeviceDTO.getDeviceId();
-
-                Device device = new Device(0, deviceName, type, addressOfDevice, attributionOfDevice, organization_name, organizationId, level, mac_id, timestamp, timestamp, deviceName,0);
-
-                devicesIdList.add(device);
-            }
-
-            return devicesIdList;
-
-        } catch (NorthApiException e) {
-            e.printStackTrace();
+        if(temp == null){
+            return null;
         }
 
-        return new LinkedList<Device>();
+
+
+
+        String signalIntensity = "";
+
+        double humidity = 0;
+        double temperature = 0;
+        int light = 0;
+        int battery = 0;
+
+        String status = "";
+        String imei_id = "";
+
+        DeviceInfo deviceInfo = null;
+
+        for (int i = 0; i < temp.size(); i++) {
+            JsonNode temp_node = temp.get(i);
+
+            //获取signalIntensity
+            if( temp_node.get("serviceId").toString().equals("\"SignalStrength\"") ){
+                signalIntensity = temp_node.get("data").get("signalStrength").toString();
+
+                signalIntensity = signalIntensity.substring(1, signalIntensity.length() - 1);
+            }
+
+            if ( temp_node.get("serviceId").toString().equals("\"DataMinute30\"") ) {//半点的记录
+                JsonNode temp_data = temp_node.get("data");
+
+                String temp_battery = temp_data.get("battery").toString();
+                String temp_light = temp_data.get("light").toString();
+                String temp_temperature = temp_data.get("temperature").toString();
+                String temp_humidity = temp_data.get("humidity").toString();
+
+                temp_battery = temp_battery.substring(1, temp_battery.length() - 1);
+                temp_light = temp_light.substring(1, temp_light.length() - 1);
+                temp_temperature = temp_temperature.substring(1, temp_temperature.length() - 1);
+                temp_humidity = temp_humidity.substring(1, temp_humidity.length() - 1);
+
+                battery = Integer.parseInt(temp_battery);
+                light = temp_light.equals("off") ? 1 : 0 ;
+                temperature = Double.parseDouble(temp_temperature);
+                humidity = Double.parseDouble(temp_humidity);
+
+                status = node.get("deviceInfo").get("status").toString();
+                imei_id = node.get("deviceInfo").get("name").toString();
+                imei_id = imei_id.substring(1, imei_id.length() - 1);
+
+                String lastModifiedTime = node.get("lastModifiedTime").toString();
+                lastModifiedTime = lastModifiedTime.substring(1, lastModifiedTime.length() - 1);
+
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd'T'hhmmss'Z'");
+                Date date_update = simpleDateFormat.parse(lastModifiedTime);
+                Calendar calendar_update = Calendar.getInstance();
+                calendar_update.setTime(date_update);
+                calendar_update.set(Calendar.HOUR_OF_DAY, calendar_update.get(Calendar.HOUR_OF_DAY) + 8);
+                calendar_update.set(Calendar.MINUTE, 30);
+                Timestamp timestamp_update = new Timestamp(calendar_update.getTimeInMillis());
+
+                Date date_now = new Date();
+                Calendar calendar_now = Calendar.getInstance();
+                calendar_now.setTime(date_now);
+                calendar_now.set(Calendar.HOUR_OF_DAY, calendar_now.get(Calendar.HOUR_OF_DAY));
+                Timestamp timestamp_now = new Timestamp(calendar_now.getTimeInMillis());
+
+                long deviceId = deviceService.getIdByDevice_mac_id(device_mac_Id);
+
+                deviceInfo = new DeviceInfo(0,device_mac_Id, deviceId, humidity, status, signalIntensity, battery, light, temperature, 0, imei_id, timestamp_update, timestamp_now );
+
+                infos[0] = deviceInfo;
+            }
+
+            if ( temp_node.get("serviceId").toString().equals("\"DataMinute60\"") ) {//整点的记录
+                JsonNode temp_data = temp_node.get("data");
+
+                String temp_battery = temp_data.get("battery").toString();
+                String temp_light = temp_data.get("light").toString();
+                String temp_temperature = temp_data.get("temperature").toString();
+                String temp_humidity = temp_data.get("humidity").toString();
+
+                temp_battery = temp_battery.substring(1, temp_battery.length() - 1);
+                temp_light = temp_light.substring(1, temp_light.length() - 1);
+                temp_temperature = temp_temperature.substring(1, temp_temperature.length() - 1);
+                temp_humidity = temp_humidity.substring(1, temp_humidity.length() - 1);
+
+                battery = Integer.parseInt(temp_battery);
+                light = temp_light.equals("off") ? 1 : 0 ;
+                temperature = Double.parseDouble(temp_temperature);
+                humidity = Double.parseDouble(temp_humidity);
+
+                status = node.get("deviceInfo").get("status").toString();
+                imei_id = node.get("deviceInfo").get("name").toString();
+                imei_id = imei_id.substring(1, imei_id.length() - 1);
+
+                String lastModifiedTime = node.get("lastModifiedTime").toString();
+                lastModifiedTime = lastModifiedTime.substring(1, lastModifiedTime.length() - 1);
+
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd'T'hhmmss'Z'");
+                Date date_update = simpleDateFormat.parse(lastModifiedTime);
+                Calendar calendar_update = Calendar.getInstance();
+                calendar_update.setTime(date_update);
+                calendar_update.set(Calendar.HOUR_OF_DAY, calendar_update.get(Calendar.HOUR_OF_DAY) + 8);
+                calendar_update.set(Calendar.MINUTE, 59);
+                Timestamp timestamp_update = new Timestamp(calendar_update.getTimeInMillis());
+
+                Date date_now = new Date();
+                Calendar calendar_now = Calendar.getInstance();
+                calendar_now.setTime(date_now);
+                calendar_now.set(Calendar.HOUR_OF_DAY, calendar_now.get(Calendar.HOUR_OF_DAY));
+                Timestamp timestamp_now = new Timestamp(calendar_now.getTimeInMillis());
+
+                long deviceId = deviceService.getIdByDevice_mac_id(device_mac_Id);
+
+                deviceInfo = new DeviceInfo(0,device_mac_Id, deviceId, humidity, status, signalIntensity, battery, light, temperature, 0, imei_id, timestamp_update, timestamp_now );
+
+                infos[1] = deviceInfo;
+            }
+        }
+
+        return infos;
     }
 
-    /**
-     * 根据本地的设备device_mac_id 去从远程服务器更新数据
-     * */
-//    @Override
-//    public void refreshDevicesInfoFromRemoteServer() throws NorthApiException {
-//        Pageable pageable = new PageRequest(0, Integer.MAX_VALUE, new Sort(Sort.Direction.DESC, "id"));
-//
-//        List<Device> deviceList_temp = deviceService.getAllDevice(pageable).getContent();
-//
-//        for(Device device_temp : deviceList_temp){
-//            DeviceInfo deviceInfo = getDeviceInfoFromRemoteServer( device_temp.getMac_id() );
-//
-//            if(deviceInfo != null){
-//                //deviceInfoService.addDeviceInfo(deviceInfo);
-//            }
-//        }
-//    }
-
     @Override
-    public void refreshDevicesInfoFromRemoteServer_() throws NorthApiException {
+    public void refreshDevicesInfoFromRemoteServer() throws Exception {
+        deviceInfoService.removeAllNewNewDeviceInfo();//清除记录最新设备信息的表中的信息
+
         List<User> userList = userService.findAll();
 
         for(User userTemp : userList){
@@ -224,106 +202,27 @@ public class DeviceInfoSearchServiceImp implements DeviceInfoSearchService {
 
             DeviceRemoteSearchUtil.appId = userTemp.getAppId();
             DeviceRemoteSearchUtil.secret = userTemp.getSecret_service();
-            //重新获取accessToken
-            DeviceRemoteSearchUtil.initRemoteServer();
+
+            HttpsUtil httpsUtil = new HttpsUtil();
+            httpsUtil.initSSLConfigForTwoWay();
+
+            DeviceRemoteSearchUtil.login(httpsUtil);
 
             List<Device> deviceList = deviceService.getDevicesByUserId(userTemp.getId());
 
             for(Device deviceTemp : deviceList){
-                DeviceInfo deviceInfo = getDeviceInfoFromRemoteServer( deviceTemp.getMac_id() );
+                DeviceInfo[] deviceInfo = getDeviceInfoFromRemoteServer( deviceTemp.getMac_id(), userTemp.getAppId(), userTemp.getSecret_service() );
 
                 if(deviceInfo != null){
+                    deviceInfoService.addDeviceInfo(deviceInfo[0]);
+                    deviceInfoService.addDeviceInfo(deviceInfo[1]);
 
-                    /*暂时添加*/
-                    if(deviceInfo.getTemperature() < 12 ){
-                        deviceInfo.setTemperature(18.1);
-                    }
+                    deviceInfoService.addNewDeviceInfo(deviceInfo[0].toNewDeviceInfo());
+                    deviceInfoService.addNewDeviceInfo(deviceInfo[1].toNewDeviceInfo());
 
-                    deviceInfo.setTemperature(deviceInfo.getTemperature()+2);
-
-                    deviceInfoService.addDeviceInfo(deviceInfo);
-                    
                     System.out.println(deviceInfo.toString());
                 }
             }
         }
     }
-
-    @Override
-    public String getIEMENumberByDeviceId(String deviceId) throws NorthApiException {
-        DataCollection collection = new DataCollection(DeviceRemoteSearchUtil.northApiClient);
-
-        QueryDeviceDataOutDTO queryDevicesOutDTO = collection.queryDeviceData(deviceId, DeviceRemoteSearchUtil.appId, DeviceRemoteSearchUtil.authOutDTO.getAccessToken());
-
-        System.out.println(queryDevicesOutDTO.getDeviceInfo().getName());
-
-        return queryDevicesOutDTO.getDeviceInfo().getNodeId();
-    }
-
-    @Override
-    public String getDeviceNameFromRemoteServer(String deviceId) throws NorthApiException {
-        DataCollection collection = new DataCollection(DeviceRemoteSearchUtil.northApiClient);
-
-        QueryDeviceDataOutDTO queryDevicesOutDTO = collection.queryDeviceData(deviceId, DeviceRemoteSearchUtil.appId, DeviceRemoteSearchUtil.authOutDTO.getAccessToken());
-
-        return queryDevicesOutDTO.getDeviceInfo().getName();
-    }
-
-    @Override
-    public DeviceInfo_all replaceDeviceInfoFromRemoteServer(DeviceInfo_all deviceInfo_all) throws NorthApiException {
-//        DataCollection collection = new DataCollection(DeviceRemoteSearchUtil.northApiClient);
-//        QueryDeviceDataOutDTO queryDevicesOutDTO = collection.queryDeviceData(deviceInfo_all.getDeviceId(), DeviceRemoteSearchUtil.appId, DeviceRemoteSearchUtil.authOutDTO.getAccessToken());
-//
-//        deviceInfo_all.setName(queryDevicesOutDTO.getDeviceInfo().getName());
-//        deviceInfo_all.setDeviceId(queryDevicesOutDTO.getDeviceInfo().getNodeId());
-
-        return null;
-    }
-
-    @Override
-    public DeviceInfo_detail replaceDeviceInfoFromRemoteServer(DeviceInfo_detail deviceInfo_detail) throws NorthApiException {
-//        DataCollection collection = new DataCollection(DeviceRemoteSearchUtil.northApiClient);
-//        QueryDeviceDataOutDTO queryDevicesOutDTO = collection.queryDeviceData(deviceInfo_detail.getDeviceId(), DeviceRemoteSearchUtil.appId, DeviceRemoteSearchUtil.authOutDTO.getAccessToken());
-//
-//        deviceInfo_detail.setName(queryDevicesOutDTO.getDeviceInfo().getName());
-//        deviceInfo_detail.setDeviceId(queryDevicesOutDTO.getDeviceInfo().getNodeId());
-//
-//        deviceInfo_detail.setAddressOfDevice(queryDevicesOutDTO.getDeviceInfo().getLocation());
-
-        return null;
-    }
-
-    /**
-     * 新接口，所有数据从远程服务器获取
-     * */
-    @Override
-    public QueryDataHistoryOutDTO getDeviceInfo_allByDeviceIdFromRemoteServer(int pageSize, int pageNo, String deviceId, Date date_startTime, Date date_endTime) throws NorthApiException {
-        DataCollection dataCollection = new DataCollection();
-
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("YYYYMMdd'T'hhmmss");
-
-        QueryDataHistoryInDTO dataHistoryInDTO = new QueryDataHistoryInDTO();
-        dataHistoryInDTO.setPageNo(pageNo);
-        dataHistoryInDTO.setPageSize(pageSize);
-        dataHistoryInDTO.setDeviceId(deviceId);
-        dataHistoryInDTO.setGatewayId(deviceId);
-        dataHistoryInDTO.setStartTime(simpleDateFormat.format(date_startTime));
-        dataHistoryInDTO.setEndTime(simpleDateFormat.format(date_endTime));
-
-        return dataCollection.queryDataHistory(dataHistoryInDTO,DeviceRemoteSearchUtil.appId,DeviceRemoteSearchUtil.secret);
-    }
-
-    @Override
-    public QueryDataHistoryOutDTO getDeviceInfo_allByDeviceIdFromRemoteServer(int pageSize, int pageNo, String deviceId) throws NorthApiException {
-        DataCollection dataCollection = new DataCollection();
-
-        QueryDataHistoryInDTO dataHistoryInDTO = new QueryDataHistoryInDTO();
-        dataHistoryInDTO.setPageNo(pageNo);
-        dataHistoryInDTO.setPageSize(pageSize);
-        dataHistoryInDTO.setDeviceId(deviceId);
-        dataHistoryInDTO.setGatewayId(deviceId);
-
-        return dataCollection.queryDataHistory(dataHistoryInDTO,DeviceRemoteSearchUtil.appId,DeviceRemoteSearchUtil.secret);
-    }
-
 }

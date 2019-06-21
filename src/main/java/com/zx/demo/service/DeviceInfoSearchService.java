@@ -14,26 +14,7 @@ import java.util.List;
  * 向远程服务器查询信息
  * */
 public interface DeviceInfoSearchService {
-    DeviceInfo getDeviceInfoFromRemoteServer(String deviceId);
+    DeviceInfo[] getDeviceInfoFromRemoteServer(String device_mac_Id, String appid, String secrete) throws Exception;
 
-    List<String> getAllDeviceIdListFromRemoteServer();
-
-    List<Device> getAllDeviceFromRemoteServer();
-
-//    void refreshDevicesInfoFromRemoteServer() throws NorthApiException;
-
-    void refreshDevicesInfoFromRemoteServer_() throws NorthApiException;
-
-    String getIEMENumberByDeviceId(String deviceId) throws NorthApiException;
-
-    String getDeviceNameFromRemoteServer(String deviceId) throws NorthApiException;
-
-    DeviceInfo_all replaceDeviceInfoFromRemoteServer(DeviceInfo_all deviceInfo_all) throws NorthApiException;
-
-    DeviceInfo_detail replaceDeviceInfoFromRemoteServer(DeviceInfo_detail deviceInfo_detail) throws NorthApiException;
-
-    QueryDataHistoryOutDTO getDeviceInfo_allByDeviceIdFromRemoteServer(int pageSize, int pageNo, String deviceId, Date date_startTime, Date date_endTime) throws NorthApiException;
-
-    QueryDataHistoryOutDTO getDeviceInfo_allByDeviceIdFromRemoteServer(int pageSize, int pageNo, String deviceId) throws NorthApiException;
-
+    void refreshDevicesInfoFromRemoteServer() throws Exception;
 }

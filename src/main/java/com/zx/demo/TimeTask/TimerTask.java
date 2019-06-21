@@ -1,15 +1,13 @@
 package com.zx.demo.TimeTask;
 
-import com.huawei.iotplatform.client.NorthApiException;
 import com.zx.demo.service.DeviceInfoSearchService;
 import com.zx.demo.util.DeviceRemoteSearchUtil;
+import com.zx.demo.util_api.HttpsUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.AutoConfigurationPackage;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
 
 @Component
 public class TimerTask {
@@ -18,21 +16,24 @@ public class TimerTask {
 
     private static final SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
 
-    @Scheduled(cron = "59 0/30 * * * ?")
-    public void getTask1() throws NorthApiException {//每到半点，向数据库中查询设备信息，存入数据库中
+    @Scheduled(cron = "0 1 * * * ? ")
+    public void getTask1() throws Exception {//每到小时整点查询一次，向数据库中放入两条记录
         System.out.println("update data from remote server");
 
-        deviceInfoSearchService.refreshDevicesInfoFromRemoteServer_();
+        deviceInfoSearchService.refreshDevicesInfoFromRemoteServer();
     }
 
-    @Scheduled(cron = "0 0/15 * * * *")
-    public void getTask2() {//半点刷新一次token
+    @Scheduled(cron = "0 0/5 * * * *")
+    public void getTask2() {//每5分钟更新一次token
         try {
             System.out.println("refresh token");
 
-            DeviceRemoteSearchUtil.refreshToken();
+            HttpsUtil httpsUtil = new HttpsUtil();
+            httpsUtil.initSSLConfigForTwoWay();
 
-        } catch (NorthApiException e) {
+            DeviceRemoteSearchUtil.getRefreshToken( httpsUtil );
+
+        }catch (Exception e) {
             e.printStackTrace();
         }
     }
