@@ -57,6 +57,40 @@ public class DeviceRemoteSearchUtil {
         return node;
     }
 
+    public static JsonNode getAllDevices() throws Exception {
+        if(accessToken == ""){
+            return null;
+        }
+
+        // Two-Way Authentication
+        HttpsUtil httpsUtil = new HttpsUtil();
+        httpsUtil.initSSLConfigForTwoWay();
+
+
+        //Please make sure that the following parameter values have been modified in the Constant file.
+        String urlQueryDeviceGroups = Constant.QUERY_BATCH_DEVICES;
+        String appId = Constant.APPID;
+
+        //please replace the pageSize, when you call this interface.
+        Integer pageSize = 10000;
+
+        Map<String, String> paramQueryDeviceGroups = new HashMap<>();
+        paramQueryDeviceGroups.put("pageSize", pageSize.toString());
+
+        Map<String, String> header = new HashMap<>();
+        header.put(Constant.HEADER_APP_KEY, appId);
+        header.put(Constant.HEADER_APP_AUTH, "Bearer" + " " + accessToken);
+
+        StreamClosedHttpResponse responseQueryDeviceGroups =
+                httpsUtil.doGetWithParasGetStatusLine(urlQueryDeviceGroups, paramQueryDeviceGroups, header);
+
+        JsonNode node = JsonUtil.convertJsonStringToObject(responseQueryDeviceGroups.getContent() ,JsonNode.class);
+
+        node = node.get("devices");
+
+        return node;
+    }
+
     public static synchronized void login(HttpsUtil httpsUtil) throws Exception {//获取accessToken
         String urlLogin = Constant.APP_AUTH;
 

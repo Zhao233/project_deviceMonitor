@@ -1,5 +1,6 @@
 package com.zx.demo;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.huawei.iotplatform.client.NorthApiException;
 import com.huawei.iotplatform.client.dto.DeviceDataHistoryDTO;
@@ -61,7 +62,7 @@ public class DemoApplicationTests {
         String accessToken = login(httpsUtil);
 
         //Please make sure that the following parameter values have been modified in the Constant file.
-        String urlQueryDeviceGroups = Constant.QUERY_DEVICE_GROUPS;
+        String urlQueryDeviceGroups = Constant.QUERY_BATCH_DEVICES;
         String appId = Constant.APPID;
 
         //please replace the pageSize, when you call this interface.
@@ -77,10 +78,23 @@ public class DemoApplicationTests {
         StreamClosedHttpResponse responseQueryDeviceGroups =
                 httpsUtil.doGetWithParasGetStatusLine(urlQueryDeviceGroups, paramQueryDeviceGroups, header);
 
+        JsonNode node = JsonUtil.convertJsonStringToObject(responseQueryDeviceGroups.getContent() ,JsonNode.class);
+
+        node = node.get("devices");
+
+        for(int i = 0; i < node.size(); i++){
+            System.out.println(node.get(i).toString());
+        }
+
         System.out.println("QueryDeviceGroups, response content:");
         System.out.println(responseQueryDeviceGroups.getStatusLine());
         System.out.println(responseQueryDeviceGroups.getContent());
         System.out.println();
+    }
+
+    @Test
+    public void test_2() throws Exception {
+
     }
 
     public static String login(HttpsUtil httpsUtil) throws Exception {

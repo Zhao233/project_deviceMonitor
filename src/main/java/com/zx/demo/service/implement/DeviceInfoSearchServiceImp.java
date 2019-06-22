@@ -67,9 +67,6 @@ public class DeviceInfoSearchServiceImp implements DeviceInfoSearchService {
             return null;
         }
 
-
-
-
         String signalIntensity = "";
 
         double humidity = 0;
@@ -214,11 +211,11 @@ public class DeviceInfoSearchServiceImp implements DeviceInfoSearchService {
                 DeviceInfo[] deviceInfo = getDeviceInfoFromRemoteServer( deviceTemp.getMac_id(), userTemp.getAppId(), userTemp.getSecret_service() );
 
                 if(deviceInfo != null){
-                    deviceInfoService.addDeviceInfo(deviceInfo[0]);
-                    deviceInfoService.addDeviceInfo(deviceInfo[1]);
+                    //deviceInfoService.addDeviceInfo(deviceInfo[0]);
+                    //deviceInfoService.addDeviceInfo(deviceInfo[1]);
 
-                    deviceInfoService.addNewDeviceInfo(deviceInfo[0].toNewDeviceInfo());
-                    deviceInfoService.addNewDeviceInfo(deviceInfo[1].toNewDeviceInfo());
+                    //deviceInfoService.addNewDeviceInfo(deviceInfo[0].toNewDeviceInfo());
+                    //deviceInfoService.addNewDeviceInfo(deviceInfo[1].toNewDeviceInfo());
 
                     System.out.println(deviceInfo.toString());
                 }
