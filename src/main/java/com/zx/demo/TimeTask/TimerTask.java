@@ -20,10 +20,10 @@ public class TimerTask {
     public void getTask1() throws Exception {//每到小时整点查询一次，向数据库中放入两条记录
         System.out.println("update data from remote server");
 
-        deviceInfoSearchService.refreshDevicesInfoFromRemoteServer();
+        deviceInfoSearchService.refreshDevicesInfoFromRemoteServer_();
     }
 
-    @Scheduled(cron = "0 0/5 * * * *")
+    /*@Scheduled(cron = "0 0/5 * * * *")
     public void getTask2() {//每5分钟更新一次token
         try {
             System.out.println("refresh token");
@@ -31,11 +31,11 @@ public class TimerTask {
             HttpsUtil httpsUtil = new HttpsUtil();
             httpsUtil.initSSLConfigForTwoWay();
 
-            DeviceRemoteSearchUtil.getRefreshToken( httpsUtil );
+            //DeviceRemoteSearchUtil.getRefreshToken( httpsUtil );
 
         }catch (Exception e) {
             e.printStackTrace();
         }
-    }
+    }*/
 
 }

@@ -12,9 +12,8 @@ import com.zx.demo.domain.*;
 import com.zx.demo.model.DeviceInfo_all;
 import com.zx.demo.model.Test1;
 import com.zx.demo.repository.*;
-import com.zx.demo.service.ConfigService;
-import com.zx.demo.service.DeviceInfoSearchService;
-import com.zx.demo.service.DeviceInfoService;
+import com.zx.demo.service.*;
+import com.zx.demo.util.DateTimeUtil;
 import com.zx.demo.util.DecodeUtil;
 import com.zx.demo.util.DeviceRemoteSearchUtil;
 import com.zx.demo.util.PasswordEncodeAssistant;
@@ -32,10 +31,12 @@ import org.springframework.data.domain.*;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.management.Query;
+import javax.validation.constraints.Null;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -47,13 +48,19 @@ public class DemoApplicationTests {
     private UserDao userDao;
 
     @Autowired
-    private DeviceInfoDao deviceInfoDao;
+    private UserService userService;
+
+    @Autowired
+    private DeviceService deviceService;
+
+    @Autowired
+    private DeviceDao deviceDao;
 
     @Autowired
     private DeviceInfoSearchService deviceInfoSearchService;
 
-    @Test
-    public void Test() throws Exception {
+/*
+    public JsonNode Test() throws Exception {
         // Two-Way Authentication
         HttpsUtil httpsUtil = new HttpsUtil();
         httpsUtil.initSSLConfigForTwoWay();
@@ -67,6 +74,7 @@ public class DemoApplicationTests {
 
         //please replace the pageSize, when you call this interface.
         Integer pageSize = 100;
+
 
         Map<String, String> paramQueryDeviceGroups = new HashMap<>();
         paramQueryDeviceGroups.put("pageSize", pageSize.toString());
@@ -82,19 +90,102 @@ public class DemoApplicationTests {
 
         node = node.get("devices");
 
-        for(int i = 0; i < node.size(); i++){
-            System.out.println(node.get(i).toString());
-        }
+        return node;
 
-        System.out.println("QueryDeviceGroups, response content:");
-        System.out.println(responseQueryDeviceGroups.getStatusLine());
-        System.out.println(responseQueryDeviceGroups.getContent());
-        System.out.println();
+//        for(int i = 0; i < node.size(); i++){
+//            System.out.println(node.get(i).toString());
+//        }
+//
+//        System.out.println("QueryDeviceGroups, response content:");
+//        System.out.println(responseQueryDeviceGroups.getStatusLine());
+//        System.out.println(responseQueryDeviceGroups.getContent());
+//        System.out.println();
+
+
     }
 
     @Test
     public void test_2() throws Exception {
+        *//*List<User> userList = userService.findAll();
 
+        List<Device> devices = deviceDao.findAll();
+        List<String> deviceList = new LinkedList<>();
+        List<String> deviceList_ = new LinkedList<>();
+
+
+        for(User userTemp : userList) {
+            if (userTemp.getSecret_service() == null || userTemp.getSecret_service().equals("")) {
+                //如果是管理员就跳过
+                continue;
+            }
+
+            String appId = userTemp.getAppId();
+            String secret = userTemp.getSecret_service();
+
+            JsonNode allDeviceInfos = DeviceRemoteSearchUtil.getAllDeviceInfos(appId, secret);
+
+            for (int i = 0; i < allDeviceInfos.size(); i++) {
+                JsonNode temp_node = allDeviceInfos.get(i);
+
+                JsonNode deviceInfo = temp_node.get("deviceInfo");
+
+                String name = deviceInfo.get("name").textValue();
+                String deviceId = temp_node.get("deviceId").textValue();
+
+                String cardNumber = "";
+
+
+                for (JsonNode temp : temp_node.get("services")) {
+                    String temp_service = temp.get("serviceId").textValue();
+
+                    if (temp_service.equals("SimCardId")) {
+                        cardNumber = temp.get("data").get("cardNumber").textValue();
+
+                        break;
+                    }
+                }
+
+
+                boolean flag = true;
+
+                for(Device te : devices){
+                    if(te.getImei_id().equals(name)){
+                        System.out.println("update");
+
+                        deviceList.add(deviceId);
+
+                        te.setCardNumber(cardNumber);
+
+                        flag = false;
+
+                        System.out.println(te.toString());
+
+                        deviceDao.save(te);
+
+                        break;
+
+                        //te.setCardNumber("");
+
+                    }
+                }
+
+                if(flag){
+                    deviceList_.add(deviceId);
+
+                    Device device = new Device(0,"",0,"","","",0,0, deviceId, null,null,name,cardNumber, userTemp.getId());
+
+                    deviceDao.save(device);
+                }
+            }
+        }
+
+        System.out.println(deviceList);
+        System.out.println(deviceList_);*//*
+    }
+
+    @Test
+    public void test_3() throws Exception {
+        //deviceInfoSearchService.refreshDevicesInfoFromRemoteServer_();
     }
 
     public static String login(HttpsUtil httpsUtil) throws Exception {
@@ -117,7 +208,7 @@ public class DemoApplicationTests {
         Map<String, String> data = new HashMap<>();
         data = JsonUtil.jsonString2SimpleObj(responseLogin.getContent(), data.getClass());
         return data.get("accessToken");
-    }
+    }*/
 
     private List<DeviceInfo_all> sort(List<DeviceInfo_all> list, String property, String order) {
         int len = list.size();

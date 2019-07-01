@@ -41,6 +41,9 @@ public class Device {
     @Column(name = "imei_id")
     private String imei_id;
 
+    @Column(name = "card_number")
+    private String cardNumber;
+
     @Column(name = "update_time")
     private Timestamp update_time;
 
@@ -53,7 +56,7 @@ public class Device {
     @Column(name ="user_id")
     private long user_id;
 
-    public Device(long id, String name, int type, String addressOfDevice, String attributionOfDevice, String organization_name, int organizationId, int level, String mac_id, Timestamp timestamp_update, Timestamp timestamp_create, String imei_id, long user_id) {
+    public Device(long id, String name, int type, String addressOfDevice, String attributionOfDevice, String organization_name, int organizationId, int level, String mac_id, Timestamp timestamp_update, Timestamp timestamp_create, String imei_id, String cardNumber, long user_id) {
         this.id=id;
         this.name = name;
         this.type = type;
@@ -66,6 +69,7 @@ public class Device {
         this.create_time = timestamp_create;
         this.update_time = timestamp_update;
         this.imei_id = imei_id;
+        this.cardNumber = cardNumber;
         this.user_id = user_id;
     }
 

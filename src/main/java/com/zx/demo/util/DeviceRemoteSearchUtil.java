@@ -25,20 +25,21 @@ import java.text.SimpleDateFormat;
 //import com.huawei.iotplatform.client.dto.DeviceInfo;
 
 public class DeviceRemoteSearchUtil {
-    public static String                  appId = "wukHyW0OkG2xPbShcsev3zolbfEa";
-    public static String                 secret = "8CYF7_Nx7IaoLM2jB1mzcMMyA3Ya";
-
-    private static String accessToken = "";
+    //public static String accessToken = "";
 
     public static JsonNode getResult(String device_mac_Id) throws Exception {
-        if(accessToken == ""){
-            return null;
-        }
+//        if(accessToken == ""){
+//            return null;
+//        }
+
+        String appId = "";
 
         JsonNode node = null;
 
         HttpsUtil httpsUtil = new HttpsUtil();
         httpsUtil.initSSLConfigForTwoWay();
+
+        String accessToken = login(httpsUtil,"","");
 
         String urlQuerySpecifyDevice = Constant.QUERY_SPECIFY_DEVICE + "/" + device_mac_Id;
 
@@ -57,22 +58,19 @@ public class DeviceRemoteSearchUtil {
         return node;
     }
 
-    public static JsonNode getAllDevices() throws Exception {
-        if(accessToken == ""){
-            return null;
-        }
-
+    public static JsonNode getAllDeviceInfos(String appId, String secret) throws Exception {
         // Two-Way Authentication
         HttpsUtil httpsUtil = new HttpsUtil();
         httpsUtil.initSSLConfigForTwoWay();
 
+        // Authentication.get token
+        String accessToken = login(httpsUtil, appId, secret);
 
         //Please make sure that the following parameter values have been modified in the Constant file.
         String urlQueryDeviceGroups = Constant.QUERY_BATCH_DEVICES;
-        String appId = Constant.APPID;
 
         //please replace the pageSize, when you call this interface.
-        Integer pageSize = 10000;
+        Integer pageSize = 100;
 
         Map<String, String> paramQueryDeviceGroups = new HashMap<>();
         paramQueryDeviceGroups.put("pageSize", pageSize.toString());
@@ -91,7 +89,7 @@ public class DeviceRemoteSearchUtil {
         return node;
     }
 
-    public static synchronized void login(HttpsUtil httpsUtil) throws Exception {//获取accessToken
+    public static String login(HttpsUtil httpsUtil, String appId, String secret) throws Exception {//获取accessToken
         String urlLogin = Constant.APP_AUTH;
 
         Map<String, String> paramLogin = new HashMap<>();
@@ -107,10 +105,10 @@ public class DeviceRemoteSearchUtil {
 
         Map<String, String> data = new HashMap<>();
         data = JsonUtil.jsonString2SimpleObj(responseLogin.getContent(), data.getClass());
-        accessToken =  data.get("accessToken");
+        return data.get("accessToken");
     }
 
-    public static synchronized void getRefreshToken(HttpsUtil httpsUtil) throws Exception {
+    /*public static synchronized void getRefreshToken(HttpsUtil httpsUtil) throws Exception {
         String urlLogin = Constant.APP_AUTH;
 
         Map<String, String> paramLogin = new HashMap<>();
@@ -126,8 +124,7 @@ public class DeviceRemoteSearchUtil {
 
         Map<String, String> data = new HashMap<>();
         data = JsonUtil.jsonString2SimpleObj(responseLogin.getContent(), data.getClass());
-
 
         accessToken =  data.get("refreshToken");
-    }
+    }*/
 }

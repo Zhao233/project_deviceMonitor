@@ -43,4 +43,6 @@ public interface DeviceDao extends JpaRepository<Device, Long> {
     @Query(value = "select device from Device device where device.user_id = ?1")
     List<Device> getDevicesByUserId(long userId);
 
+    @Query(value = "SELECT device.id FROM Device device WHERE device.cardNumber = ?1")
+    Long getIdByCardNumber(String cardNumber);
 }

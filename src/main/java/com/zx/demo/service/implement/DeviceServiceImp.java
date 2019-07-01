@@ -90,6 +90,11 @@ public class DeviceServiceImp implements DeviceService {
     }
 
     @Override
+    public Long getIdByCardNumber(String cardNumber) {
+        return deviceDao.getIdByCardNumber(cardNumber);
+    }
+
+    @Override
     public List<Device> getDevicesByUserId(long userId){
         return deviceDao.getDevicesByUserId(userId);
     }

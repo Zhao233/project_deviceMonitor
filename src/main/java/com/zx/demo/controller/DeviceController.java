@@ -117,10 +117,10 @@ public class DeviceController {
             Timestamp timestamp_create = new Timestamp(new Date().getTime());
             timestamp_create.setTime(date.getTime());
 
-            Device device = new Device(id, name, type, addressOfDevice, attributionOfDevice, organization_name, 0,level,deviceId,timestamp,timestamp_create,name,0);
-
-            deviceService.updateDevice(device);
-            map.put("status", "SUCCEED");
+//            Device device = new Device(id, name, type, addressOfDevice, attributionOfDevice, organization_name, 0,level,deviceId,timestamp,timestamp_create,name,0);
+//
+//            deviceService.updateDevice(device);
+//            map.put("status", "SUCCEED");
 
         }
 

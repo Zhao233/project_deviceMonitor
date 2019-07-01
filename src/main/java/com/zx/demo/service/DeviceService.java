@@ -31,5 +31,7 @@ public interface DeviceService{
 
     String getDevice_mac_idById(long id);
 
+    Long getIdByCardNumber(String cardNumber);
+
     List<Device> getDevicesByUserId(long userId);
 }

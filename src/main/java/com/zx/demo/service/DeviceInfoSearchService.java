@@ -1,5 +1,6 @@
 package com.zx.demo.service;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.huawei.iotplatform.client.NorthApiException;
 import com.huawei.iotplatform.client.dto.QueryDataHistoryOutDTO;
 import com.zx.demo.domain.Device;
@@ -16,5 +17,9 @@ import java.util.List;
 public interface DeviceInfoSearchService {
     DeviceInfo[] getDeviceInfoFromRemoteServer(String device_mac_Id, String appid, String secrete) throws Exception;
 
+    DeviceInfo[] getDeviceInfoFromRemoteServer(JsonNode node) throws Exception;
+
     void refreshDevicesInfoFromRemoteServer() throws Exception;
+
+    void refreshDevicesInfoFromRemoteServer_() throws Exception;
 }
