@@ -20,7 +20,7 @@ public class TimerTask {
     public void getTask1() throws Exception {//每到小时整点查询一次，向数据库中放入两条记录
         System.out.println("update data from remote server");
 
-        deviceInfoSearchService.refreshDevicesInfoFromRemoteServer_();
+        deviceInfoSearchService.refreshDevicesInfoFromRemoteServer();
     }
 
     /*@Scheduled(cron = "0 0/5 * * * *")

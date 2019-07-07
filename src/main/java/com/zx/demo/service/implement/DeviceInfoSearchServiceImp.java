@@ -338,58 +338,11 @@ public class DeviceInfoSearchServiceImp implements DeviceInfoSearchService {
         return infos;
     }
 
-
-    /**
-     * old version
-     * */
-    @Override
-    public void refreshDevicesInfoFromRemoteServer() throws Exception {
-        deviceInfoService.removeAllNewNewDeviceInfo();//清除记录最新设备信息的表中的信息
-
-        List<User> userList = userService.findAll();
-
-        for(User userTemp : userList){
-            if(userTemp.getSecret_service() == null || userTemp.getSecret_service().equals("")){
-                //如果是管理员就跳过
-                continue;
-            }
-
-            String appId = userTemp.getAppId();
-            String  secret = userTemp.getSecret_service();
-
-            JsonNode allDeviceInfos = DeviceRemoteSearchUtil.getAllDeviceInfos(appId, secret);
-
-            for(int i = 0; i < allDeviceInfos.size(); i++){
-                JsonNode temp_node = allDeviceInfos.get(i);
-
-                temp_node = temp_node.get("services");
-            }
-
-            //DeviceRemoteSearchUtil.login(httpsUtil);
-
-            List<Device> deviceList = deviceService.getDevicesByUserId(userTemp.getId());
-
-            for(Device deviceTemp : deviceList){
-                DeviceInfo[] deviceInfo = getDeviceInfoFromRemoteServer( deviceTemp.getMac_id(), userTemp.getAppId(), userTemp.getSecret_service() );
-
-                if(deviceInfo != null){
-                    deviceInfoService.addDeviceInfo(deviceInfo[0]);
-                    deviceInfoService.addDeviceInfo(deviceInfo[1]);
-
-                    deviceInfoService.addNewDeviceInfo(deviceInfo[0].toNewDeviceInfo());
-                    deviceInfoService.addNewDeviceInfo(deviceInfo[1].toNewDeviceInfo());
-
-                    System.out.println(deviceInfo.toString());
-                }
-            }
-        }
-    }
-
     /**
      * new version
      * */
     @Override
-    public void refreshDevicesInfoFromRemoteServer_() throws Exception{
+    public void refreshDevicesInfoFromRemoteServer() throws Exception{
         deviceInfoService.removeAllNewNewDeviceInfo();//清除记录最新设备信息的表中的信息
 
         List<User> userList = userService.findAll();
@@ -414,7 +367,7 @@ public class DeviceInfoSearchServiceImp implements DeviceInfoSearchService {
                     deviceInfoService.addDeviceInfo(deviceInfo[0]);
                     deviceInfoService.addDeviceInfo(deviceInfo[1]);
 
-                    deviceInfoService.addNewDeviceInfo(deviceInfo[0].toNewDeviceInfo());
+                    //deviceInfoService.addNewDeviceInfo(deviceInfo[0].toNewDeviceInfo());
                     deviceInfoService.addNewDeviceInfo(deviceInfo[1].toNewDeviceInfo());
 
                     System.out.println(deviceInfo);

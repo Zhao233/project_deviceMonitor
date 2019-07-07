@@ -18,11 +18,6 @@ public class DeviceServiceImp implements DeviceService {
 
 
     @Override
-    public Page<Device> getAllDevice(Pageable page, long userId) {
-        return deviceDao.getAllDevice(userId,page);
-    }
-
-    @Override
     public Page<Device> getAllDevice(String search, Pageable pageable, long userId) {
         return deviceDao.getAllDevice(search, userId, pageable);
     }

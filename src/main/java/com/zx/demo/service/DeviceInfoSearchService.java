@@ -20,6 +20,4 @@ public interface DeviceInfoSearchService {
     DeviceInfo[] getDeviceInfoFromRemoteServer(JsonNode node) throws Exception;
 
     void refreshDevicesInfoFromRemoteServer() throws Exception;
-
-    void refreshDevicesInfoFromRemoteServer_() throws Exception;
 }

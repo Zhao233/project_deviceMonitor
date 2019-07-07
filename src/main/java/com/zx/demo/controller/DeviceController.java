@@ -41,11 +41,7 @@ public class DeviceController {
 
         Page<Device> page;
 
-        if ("".equals(search.trim())) {
-            page = deviceService.getAllDevice(pageable, user.getId());
-        } else {
-            page = deviceService.getAllDevice(search.trim(), pageable, user.getId());
-        }
+        page = deviceService.getAllDevice(search.trim(), pageable, user.getId());
 
         map.put("total", page != null ? page.getTotalElements() : 0);
         map.put("rows", page != null ? page.getContent() : "");

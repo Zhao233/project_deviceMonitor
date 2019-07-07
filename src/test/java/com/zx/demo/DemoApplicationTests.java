@@ -515,7 +515,12 @@ public class DemoApplicationTests {
 
     @Test
     public void test() throws Exception {
-        deviceInfoSearchService.refreshDevicesInfoFromRemoteServer();
+        Pageable pageable = new PageRequest(1, 10, new Sort(Sort.Direction.DESC, "id"));
+
+        Page<Device> page;
+
+        page = deviceDao.getAll(,pageable);
+
     }
 }
 //
