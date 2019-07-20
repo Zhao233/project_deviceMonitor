@@ -6,19 +6,20 @@ import com.huawei.iotplatform.client.dto.*;
 import com.huawei.iotplatform.client.invokeapi.DataCollection;
 import com.zx.demo.domain.Device;
 import com.zx.demo.domain.DeviceInfo;
+import com.zx.demo.domain.DeviceSearchInfo;
 import com.zx.demo.domain.User;
 import com.zx.demo.model.DeviceInfo_all;
 import com.zx.demo.model.DeviceInfo_detail;
-import com.zx.demo.service.DeviceInfoSearchService;
-import com.zx.demo.service.DeviceInfoService;
+import com.zx.demo.repository.DeviceSearchInfoDao;
+import com.zx.demo.service.*;
 import com.zx.demo.service.DeviceService;
-import com.zx.demo.service.UserService;
 import com.zx.demo.util.DeviceRemoteSearchUtil;
 import com.zx.demo.util_api.Constant;
 import com.zx.demo.util_api.HttpsUtil;
 import com.zx.demo.util_api.JsonUtil;
 import com.zx.demo.util_api.StreamClosedHttpResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
@@ -43,6 +44,8 @@ public class DeviceInfoSearchServiceImp implements DeviceInfoSearchService {
     @Autowired
     DeviceInfoService deviceInfoService;
 
+    @Autowired
+    DeviceSearchInfoDao deviceSearchInfoDao;
     /**
      * 从服务器获取信息
      * old version
@@ -346,8 +349,39 @@ public class DeviceInfoSearchServiceImp implements DeviceInfoSearchService {
         deviceInfoService.removeAllNewNewDeviceInfo();//清除记录最新设备信息的表中的信息
 
         List<User> userList = userService.findAll();
+        List<DeviceSearchInfo> list_searchInfo = deviceSearchInfoDao.findAll();
 
-        for(User userTemp : userList) {
+        for(DeviceSearchInfo temp: list_searchInfo){
+            String appID = temp.getAppID();
+            String secret = temp.getSecret();
+
+            JsonNode allDeviceInfos = DeviceRemoteSearchUtil.getAllDeviceInfos(appID, secret);
+
+            for (int i = 0; i < allDeviceInfos.size(); i++) {
+                JsonNode temp_node = allDeviceInfos.get(i);
+
+                DeviceInfo[] deviceInfo = getDeviceInfoFromRemoteServer( temp_node );
+
+                if(deviceInfo != null){
+                    deviceInfoService.addDeviceInfo(deviceInfo[0]);
+                    deviceInfoService.addDeviceInfo(deviceInfo[1]);
+
+                    //deviceInfoService.addNewDeviceInfo(deviceInfo[0].toNewDeviceInfo());
+                    deviceInfoService.addNewDeviceInfo(deviceInfo[1].toNewDeviceInfo());
+
+                    System.out.println(deviceInfo);
+                }
+
+            }
+
+            System.out.println(appID+":"+secret);
+        }
+
+        /**
+         * old version
+         * 修改日期：2018.7.20 18.41
+         * */
+        /*for(User userTemp : userList) {
             if (userTemp.getSecret_service() == null || userTemp.getSecret_service().equals("")) {
                 //如果是管理员就跳过
                 continue;
@@ -374,6 +408,6 @@ public class DeviceInfoSearchServiceImp implements DeviceInfoSearchService {
                 }
 
             }
-        }
+        }*/
     }
 }
