@@ -13,6 +13,13 @@ import java.util.List;
 
 @Repository
 public interface DeviceDao extends JpaRepository<Device, Long> {
+    /**管理员*/
+    @Query(value = "SELECT device FROM Device device where ( device.name like %?1% " +
+            "             OR device.addressOfDevice LIKE %?1% OR device.attributionOfDevice LIKE %?1% OR device.level LIKE %?1%)")
+    Page<Device> getAllDevice(String search, Pageable pageable);
+
+    /**普通用户*/
+
     @Query(value = "select device from Device device where device.mac_id=?1")
     Device getDeviceByDeviceId(String id);
 

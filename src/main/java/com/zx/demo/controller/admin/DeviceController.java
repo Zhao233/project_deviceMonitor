@@ -35,13 +35,13 @@ public class DeviceController {
                                             @RequestParam("offset") Integer offset){
         Map<String,Object> map = new HashMap<>();
 
-        User user = UserUtil.getCureentUser();
+        //User user = UserUtil.getCureentUser();
 
         Pageable pageable = new PageRequest(offset, limit, new Sort(Sort.Direction.DESC, "id"));
 
         Page<Device> page;
 
-        page = deviceService.getAllDevice(search.trim(), pageable, user.getId());
+        page = deviceService.getAllDevice(search.trim(), pageable);
 
         map.put("total", page != null ? page.getTotalElements() : 0);
         map.put("rows", page != null ? page.getContent() : "");

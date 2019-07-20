@@ -17,6 +17,13 @@ public class DeviceServiceImp implements DeviceService {
     private DeviceDao deviceDao;
 
 
+    /**管理员*/
+    public Page<Device> getAllDevice(String search, Pageable pageable){
+        return deviceDao.getAllDevice(search, pageable);
+    }
+
+    /**普通用户*/
+
     @Override
     public Page<Device> getAllDevice(String search, Pageable pageable, long userId) {
         return deviceDao.getAllDevice(search, userId, pageable);

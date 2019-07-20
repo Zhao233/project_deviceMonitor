@@ -7,6 +7,11 @@ import org.springframework.data.domain.Pageable;
 import java.util.List;
 
 public interface DeviceService{
+    /**管理员*/
+    Page<Device> getAllDevice(String search, Pageable pageable);
+
+    /**普通用户*/
+
 
     Page<Device> getAllDevice(String search, Pageable pageable, long userId);
 
