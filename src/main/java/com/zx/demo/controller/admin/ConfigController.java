@@ -1,4 +1,4 @@
-package com.zx.demo.controller;
+package com.zx.demo.controller.admin;
 
 import com.zx.demo.domain.Config;
 import com.zx.demo.service.ConfigService;
