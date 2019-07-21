@@ -347,3 +347,62 @@ function getFormmattedTime(time){
 
 
 }
+
+function getPrimaryMenuNumber(secondaryMenuName){
+    switch (secondaryMenuName){
+        case "user_management" :
+            return {primaryMenuNumber : 1,
+                    secondaryMenuName : 0};
+
+        case "device_management" :
+            return {primaryMenuNumber : 0,
+                    secondaryMenuName : 0};
+
+        case "config" :
+            return {primaryMenuNumber : 2,
+                    secondaryMenuName : 0};
+    }
+}
+
+
+function loadMenu(){
+    $.ajax({
+        url : '/console/getMenu',
+        type : 'GET',
+        dataType : 'html',
+        async:false,
+        success : function(res){
+            $("#nave_side").append( $(res).find('nav') );
+        },
+
+        fail : function (res) {
+
+        },
+
+        timeout : function (res) {
+
+        }
+    });
+
+    //获取确认当前界面
+    var url = window.location.pathname;
+
+    var paths = url.split("/");
+    var presentPath = paths[paths.length-1]
+
+    //添加隐藏效果
+    var primaryMenus = $("#nave_side").find('.primaryMenu');
+    var menuNum = getPrimaryMenuNumber(presentPath);
+
+    var primaryMenu = primaryMenus.get(menuNum.primaryMenuNumber);
+
+    //展开一级菜单
+    //$(primaryMenu).addClass("active");
+    $(primaryMenu).find("a").addClass("active-menu");
+
+
+    // var secondaryMenus = $(primaryMenu).find('li');
+    // var secondaryMenu = secondaryMenus.get(menuNum.secondaryMenu);
+    //
+    // $(secondaryMenu).addClass("active-menu-item");
+}
