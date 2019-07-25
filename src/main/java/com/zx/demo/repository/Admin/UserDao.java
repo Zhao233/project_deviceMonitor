@@ -11,11 +11,12 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface UserDao extends JpaRepository <User,Long> {
     /**管理员*/
+
     //用于在登录时找出对应用户
-    @Query(value = "select user from User user where user.name=?1")
+    @Query(value = "SELECT user FROM User user WHERE user.name=?1")
     User findByName(String name);
 
-    //
-    @Query(vlaue = "")
-    Page<User> getAll
+    //查看所有用户
+    @Query(value = "SELECT user FROM User user WHERE user.name = ?1")
+    Page<User> getAll(String search, Pageable pageable);
 }

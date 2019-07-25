@@ -1,4 +1,4 @@
-package com.zx.demo.repository;
+package com.zx.demo.repository.Admin;
 
 import com.zx.demo.domain.DeviceSearchInfo;
 import org.springframework.data.domain.Page;
