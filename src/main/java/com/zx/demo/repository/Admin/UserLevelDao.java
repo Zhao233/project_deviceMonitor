@@ -12,6 +12,9 @@ public interface UserLevelDao extends JpaRepository<UserLevel,Long> {
     /**管理员*/
 
     //查看所有用户
-    @Query(value = "SELECT userLevel FROM UserLevel userLevel WHERE userLevel.description = ?1")
-    Page<User> getAll(String search, Pageable pageable);
+    @Query(value = "SELECT userLevel FROM UserLevel userLevel WHERE userLevel.description LIKE %?1%")
+    Page<UserLevel> getAll(String search, Pageable pageable);
+
+    @Query(value = "SELECT userLevel FROM UserLevel userLevel WHERE userLevel.id = ?1")
+    UserLevel getOneById(Long id);
 }

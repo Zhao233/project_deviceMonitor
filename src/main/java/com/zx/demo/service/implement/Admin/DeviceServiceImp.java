@@ -1,8 +1,8 @@
 package com.zx.demo.service.implement;
 
 import com.zx.demo.domain.Device;
-import com.zx.demo.repository.DeviceDao;
-import com.zx.demo.service.DeviceService;
+import com.zx.demo.repository.Admin.DeviceDao;
+import com.zx.demo.service.Admin.DeviceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
